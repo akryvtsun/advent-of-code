@@ -23,6 +23,6 @@ class Task2Test {
             list1.add(parts[0].toLong())
             list2.add(parts[1].toLong())
         }
-        println("Task 1 solving: ${Task2.solve(list1, list2)}")
+        println("Task 2 solving: ${Task2.solve(list1, list2)}")
     }
 }

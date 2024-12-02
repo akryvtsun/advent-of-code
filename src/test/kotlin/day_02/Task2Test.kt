@@ -22,12 +22,8 @@ class Task2Test {
 
     @Test
     fun `should successfully solve the real task`() {
-        val list = mutableListOf<List<Int>>()
-        File("src/test/resources/day_02/TaskData.txt").forEachLine { line ->
-            val path = line.split(" ")
-                .map { it.toInt() }
-            list.add(path)
-        }
+        val list = File("src/test/resources/day_02/TaskData.txt").readLines()
+            .map { it.split(" ").map(String::toInt) }
         println("Task solution: ${Task2.solve(list)}")
     }
 }

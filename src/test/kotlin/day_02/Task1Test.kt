@@ -7,22 +7,27 @@ import kotlin.test.assertEquals
 class Task1Test {
 
     @Test
-    fun `should successfully pass task 1 example`() {
-        val list1: List<Long> = listOf(3, 4, 2, 1, 3, 3)
-        val list2: List<Long> = listOf(4, 3, 5, 3, 9, 3)
+    fun `should successfully pass task example`() {
+        val paths = listOf(
+            listOf(7, 6, 4, 2, 1),
+            listOf(1, 2, 7, 8, 9),
+            listOf(9, 7, 6, 2, 1),
+            listOf(1, 3, 2, 4, 5),
+            listOf(8, 6, 4, 4, 1),
+            listOf(1, 3, 6, 7, 9),
+        )
 
-        assertEquals(11, Task1.solve(list1, list2))
+        assertEquals(2, Task1.solve(paths))
     }
 
     @Test
-    fun `should successfully solve the real task 1`() {
-        val list1 = mutableListOf<Long>()
-        val list2 = mutableListOf<Long>()
-        File("src/test/resources/day_01/TaskData.txt").forEachLine { line ->
-            val parts = line.split("   ")
-            list1.add(parts[0].toLong())
-            list2.add(parts[1].toLong())
+    fun `should successfully solve the real task`() {
+        val list = mutableListOf<List<Int>>()
+        File("src/test/resources/day_02/TaskData.txt").forEachLine { line ->
+            val path = line.split(" ")
+                .map { it.toInt() }
+            list.add(path)
         }
-        println("Task 1 solution: ${Task1.solve(list1, list2)}")
+        println("Task solution: ${Task1.solve(list)}")
     }
 }

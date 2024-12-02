@@ -1,16 +1,26 @@
 package day_02
 
 import kotlin.math.abs
+import kotlin.math.sign
 
 
 class Task1 {
     companion object {
 
-        fun solve(list1: List<Long>, list2: List<Long>): Long {
-            val sorted1 = list1.sorted()
-            val sorted2 = list2.sorted()
-            val pairs = sorted1 zip sorted2
-            return pairs.map { abs(it.second - it.first) }.sum()
+        fun solve(paths: List<List<Int>>): Int {
+            return paths.count { isSafe(it) }
         }
+
+        private fun isSafe(path: List<Int>): Boolean {
+            return path
+                .zipWithNext()
+                .map { it.second - it.first }
+                .zipWithNext()
+                .all { isSafeStep(it.first) && haveSameSign(it.first, it.second) && isSafeStep(it.second) }
+        }
+
+        private fun haveSameSign(first: Int, second: Int) = first.sign == second.sign
+
+        private fun isSafeStep(step: Int) = abs(step) in 1..3
     }
 }

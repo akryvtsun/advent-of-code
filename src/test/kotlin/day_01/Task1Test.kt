@@ -1,6 +1,5 @@
 package day_01
 
-import com.akryvtsun.day1.Task1
 import org.junit.jupiter.api.Test
 import java.io.File
 import kotlin.test.assertEquals

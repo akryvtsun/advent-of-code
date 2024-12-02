@@ -1,4 +1,4 @@
-package com.akryvtsun.day1
+package day_01
 
 
 class Task2 {

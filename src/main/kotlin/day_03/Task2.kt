@@ -9,27 +9,28 @@ class Task2 {
             var doFlag = true
             var begin = 0
 
-            fun executeDo(begin: Int, end: Int = input.length) {
+            fun tryExecuteDo(begin: Int, end: Int = input.length) {
                 if (doFlag) {
                     sum += calc(input.substring(begin, end))
                 }
             }
 
             for (i in input.indices) {
+                val str = input.substring(i)
                 when {
-                    input.substring(i).startsWith("don't()") -> {
-                        executeDo(begin, i)
+                    str.startsWith("don't()") -> {
+                        tryExecuteDo(begin, i)
                         begin = i
                         doFlag = false
                     }
-                    input.substring(i).startsWith("do()") -> {
-                        executeDo(begin, i)
+                    str.startsWith("do()") -> {
+                        tryExecuteDo(begin, i)
                         begin = i
                         doFlag = true
                     }
                 }
             }
-            executeDo(begin)
+            tryExecuteDo(begin)
             return sum
         }
 

@@ -17,6 +17,6 @@ class Task1Test {
     fun `should successfully solve the real task`() {
         File("src/test/resources/day_03/TaskData.txt")
             .readText()
-            .also { "Task solution: ${Task1.solve(it)}" }
+            .also { println("Task solution: ${Task1.solve(it)}") }
     }
 }

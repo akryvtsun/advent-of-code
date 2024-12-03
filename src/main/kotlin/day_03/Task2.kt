@@ -8,40 +8,40 @@ class Task2 {
             var sum = 0
             var doFlag = true
             var begin = 0
+
+            fun executeDo(begin: Int, end: Int = input.length) {
+                if (doFlag) {
+                    sum += calc(input.substring(begin, end))
+                }
+            }
+
             for (i in input.indices) {
                 when {
                     input.substring(i).startsWith("don't()") -> {
-                        if (doFlag) {
-                            sum += calc(input.substring(begin, i))
-                        }
+                        executeDo(begin, i)
                         begin = i
                         doFlag = false
                     }
                     input.substring(i).startsWith("do()") -> {
-                        if (doFlag) {
-                            sum += calc(input.substring(begin, i))
-                        }
+                        executeDo(begin, i)
                         begin = i
                         doFlag = true
                     }
                 }
             }
-            if (doFlag) {
-                sum += calc(input.substring(begin))
-            }
+            executeDo(begin)
             return sum
         }
 
-        private fun calc(data: String): Int {
-            var pattern = """mul\((\d{1,3}),(\d{1,3})\)""".toRegex()
+        val pattern = """mul\((\d{1,3}),(\d{1,3})\)""".toRegex()
 
+        private fun calc(data: String): Int {
             var sum = 0
             var match = pattern.find(data)
             while (match != null) {
                 check(match.groupValues.size == 3)
-                val number1 = match.groupValues[1].toInt()
-                val number2 = match.groupValues[2].toInt()
-                sum += number1 * number2
+                val (_, first, second) = match.groupValues
+                sum += first.toInt() * second.toInt()
                 match = match.next()
             }
             return sum

@@ -4,7 +4,7 @@ package day_03
 class Task1 {
     companion object {
 
-        fun solve(paths: List<List<Int>>): Int {
+        fun solve(data: String): Int {
             return 0
         }
     }

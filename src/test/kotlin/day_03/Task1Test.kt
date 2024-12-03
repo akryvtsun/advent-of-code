@@ -8,22 +8,15 @@ class Task1Test {
 
     @Test
     fun `should successfully pass task example`() {
-        val paths = listOf(
-            listOf(7, 6, 4, 2, 1),
-            listOf(1, 2, 7, 8, 9),
-            listOf(9, 7, 6, 2, 1),
-            listOf(1, 3, 2, 4, 5),
-            listOf(8, 6, 4, 4, 1),
-            listOf(1, 3, 6, 7, 9),
-        )
-
-        assertEquals(2, Task1.solve(paths))
+        assertEquals(0, Task1.solve("mul(4*, mul(6,9!, ?(12,34),"))
+        assertEquals(0, Task1.solve("mul ( 2 , 4 )"))
+        assertEquals(161, Task1.solve("xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))"))
     }
 
     @Test
     fun `should successfully solve the real task`() {
-        val list = File("src/test/resources/day_03/TaskData.txt").readLines()
-            .map { it.split(" ").map(String::toInt) }
-        println("Task solution: ${Task1.solve(list)}")
+        File("src/test/resources/day_03/TaskData.txt")
+            .readText()
+            .also { "Task solution: ${Task1.solve(it)}" }
     }
 }

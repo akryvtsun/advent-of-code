@@ -16,25 +16,24 @@ class Task1 {
             return sum
         }
 
-        const val WORD = "XMAS"
+        const val XMAS = "XMAS"
 
         data class Step(val dy: Int, val dx: Int)
 
         data class Pattern(private val steps: List<Step>) {
             fun match(data: Board, y: Int, x: Int) : Boolean {
-                var match = true
-                for (i in steps.indices) {
-                    val step = steps[i]
-
-                    val ry = y + step.dy
-                    if (ry !in 0..<data.size) return false
-
-                    val rx = x + step.dx
-                    if (rx !in 0..<data.first().length) return false
-
-                    match = match && data[ry][rx] == WORD[i]
+                try {
+                    var match = true
+                    for (i in steps.indices) {
+                        val step = steps[i]
+                        val ry = y + step.dy
+                        val rx = x + step.dx
+                        match = match && data[ry][rx] == XMAS[i]
+                    }
+                    return match
+                } catch (e: Exception) {
+                    return false
                 }
-                return match
             }
         }
 

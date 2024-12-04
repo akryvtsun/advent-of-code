@@ -34,6 +34,6 @@ class Task2Test {
     fun `should successfully solve the real task`() {
         File("src/test/resources/day_04/TaskData.txt")
             .readLines()
-            .also { println("Task solution: ${Task2.solve(it)}") }
+            .also { println("Task solution: ${Task2.solve(it)}") }  // 2041
     }
 }

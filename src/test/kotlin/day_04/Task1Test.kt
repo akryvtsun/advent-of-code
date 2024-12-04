@@ -8,15 +8,34 @@ class Task1Test {
 
     @Test
     fun `should successfully pass task example`() {
-        assertEquals(0, Task1.solve("mul(4*, mul(6,9!, ?(12,34),"))
-        assertEquals(0, Task1.solve("mul ( 2 , 4 )"))
-        assertEquals(161, Task1.solve("xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))"))
+        val ex1 = listOf(
+            "..X...",
+            ".SAMX.",
+            ".A..A.",
+            "XMAS.S",
+            ".X....",
+        )
+        assertEquals(4, Task1.solve(ex1))
+
+        val ex2 = listOf(
+            "MMMSXXMASM",
+            "MSAMXMSMSA",
+            "AMXSXMAAMM",
+            "MSAMASMSMX",
+            "XMASAMXAMM",
+            "XXAMMXXAMA",
+            "SMSMSASXSS",
+            "SAXAMASAAA",
+            "MAMMMXMMMM",
+            "MXMXAXMASX",
+        )
+        assertEquals(18, Task1.solve(ex2))
     }
 
     @Test
     fun `should successfully solve the real task`() {
-        File("src/test/resources/day_03/TaskData.txt")
-            .readText()
-            .also { println("Task solution: ${Task1.solve(it)}") }  // 173785482
+        File("src/test/resources/day_04/TaskData.txt")
+            .readLines()
+            .also { println("Task solution: ${Task1.solve(it)}") }
     }
 }

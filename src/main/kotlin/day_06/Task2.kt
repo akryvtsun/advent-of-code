@@ -59,7 +59,7 @@ class Task2 {
                         allVisited = false
                         break
                     }
-                } while (map[newY][newX] == '#')
+                } while (map[newY][newX] != '#')
                 return if (allVisited) 1 else 0
             } catch (e: Exception) {
                 return 0

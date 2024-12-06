@@ -14,6 +14,7 @@ class Task2 {
         fun solve(map: Board): Int {
             var count = 0
 
+            var direction = Direction.UP
             var x = 0
             var y = 0
             map.forEachIndexed() { i, row ->
@@ -27,7 +28,6 @@ class Task2 {
             map[y][x] = 'X'
 
             var finished = false
-            var direction = Direction.UP
             while (!finished) {
                 try {
                     if (map[y + direction.dy][x + direction.dx] == '#')
@@ -48,18 +48,22 @@ class Task2 {
 
         private fun checkObsPosition(map: Board, y: Int, x: Int, direction: Direction): Int {
             val checkDir = direction.turnRight()
-            var newX = x
             var newY = y
+            var newX = x
             var allVisited = true
-            do {
-                newY += checkDir.dy
-                newX += checkDir.dx
-                if (map[newY][newX] == '.') {
-                    allVisited = false
-                    break
-                }
-            } while (map[newY][newX] == '#')
-            return if (allVisited) 1 else 0
+            try {
+                do {
+                    newY += checkDir.dy
+                    newX += checkDir.dx
+                    if (map[newY][newX] == '.') {
+                        allVisited = false
+                        break
+                    }
+                } while (map[newY][newX] == '#')
+                return if (allVisited) 1 else 0
+            } catch (e: Exception) {
+                return 0
+            }
         }
 
         fun Direction.turnRight(): Direction {

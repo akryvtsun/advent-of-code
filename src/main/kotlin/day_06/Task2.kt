@@ -2,11 +2,11 @@ package day_06
 
 class Task2 {
 
-    enum class Direction(val dy: Int, val dx: Int) {
-           UP(-1, 0),
-        RIGHT(0, +1),
-         DOWN(+1, 0),
-         LEFT( 0, -1)
+    enum class Direction(val gliph: Char, val dy: Int, val dx: Int) {
+           UP('^', -1, 0),
+        RIGHT('>',0, +1),
+         DOWN('V', +1, 0),
+         LEFT( '<',0, -1)
     }
 
     companion object {
@@ -25,7 +25,7 @@ class Task2 {
                     return@forEachIndexed
                 }
             }
-            map[y][x] = 'X'
+            map[y][x] = direction.gliph
 
             var finished = false
             while (!finished) {
@@ -36,7 +36,7 @@ class Task2 {
                         count += checkObsPosition(map, y, x, direction)
                         y += direction.dy
                         x += direction.dx
-                        map[y][x] = 'X'
+                        map[y][x] = direction.gliph
                     }
                 }
                 catch (e: Exception) {
@@ -46,21 +46,20 @@ class Task2 {
             return count
         }
 
-        private fun checkObsPosition(map: Board, y: Int, x: Int, direction: Direction): Int {
-            val checkDir = direction.turnRight()
-            var newY = y
-            var newX = x
-            var allVisited = true
+        private fun checkObsPosition(map: Board, oldY: Int, oldX: Int, oldDirection: Direction): Int {
+            var y = oldY
+            var x = oldX
+            var direction = oldDirection.turnRight()
             try {
                 do {
-                    newY += checkDir.dy
-                    newX += checkDir.dx
-                    if (map[newY][newX] == '.') {
-                        allVisited = false
-                        break
+                    if (map[y + direction.dy][x + direction.dx] == '#')
+                        direction = direction.turnRight()
+                    else {
+                        y += direction.dy
+                        x += direction.dx
                     }
-                } while (map[newY][newX] != '#')
-                return if (allVisited) 1 else 0
+                } while (direction.gliph != map[y][x])
+                return 1
             } catch (e: Exception) {
                 return 0
             }

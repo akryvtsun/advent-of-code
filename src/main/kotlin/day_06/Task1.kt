@@ -14,8 +14,8 @@ class Task1 {
     companion object {
 
         fun solve(map: Board): Int {
-            var x: Int = 0
-            var y: Int = 0
+            var x = 0
+            var y = 0
             map.forEachIndexed() { i, row ->
                 val idx = row.indexOf('^')
                 if (idx != -1) {
@@ -24,9 +24,10 @@ class Task1 {
                     return@forEachIndexed
                 }
             }
+            map[y][x] = 'X'
 
             var finished = false
-            var direction: Direction = Direction.UP
+            var direction = Direction.UP
             while (!finished) {
                 try {
                     if (map[y + direction.dy][x + direction.dx] == '#')

@@ -20,12 +20,24 @@ class Task2Test {
             #.........
             ......#...
         """.trimIndent()
-        assertEquals(6, Task2.solve(map.split("\n").map { StringBuilder(it) }))
+        assertEquals(6, Task2.solve(map.split("\n").map {
+            buildList {
+                for (c in it) {
+                    add(mutableSetOf(c))
+                }
+            }
+        }))
     }
 
     @Test
     fun `should successfully solve the real task`() {
-        val map = File("src/test/resources/day_06/TaskData.txt").readLines().map { StringBuilder(it) }
+        val map = File("src/test/resources/day_06/TaskData.txt").readLines().map {
+            buildList {
+                for (c in it) {
+                    add(mutableSetOf(c))
+                }
+            }
+        }
         println("Task solution: ${Task2.solve(map)}")   // 4433
     }
 }

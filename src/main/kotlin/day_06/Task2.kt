@@ -1,28 +1,26 @@
 package day_06
 
-typealias MapBoard = List<List<MutableSet<Char>>>
+enum class Direction(val dy: Int, val dx: Int) {
+    UP(-1, 0),
+    RIGHT(0, +1),
+    DOWN( +1, 0),
+    LEFT( 0, -1);
 
-class Task2 {
-
-    enum class Direction(val dy: Int, val dx: Int) {
-           UP(-1, 0),
-        RIGHT(0, +1),
-         DOWN( +1, 0),
-         LEFT( 0, -1);
-
-        fun turnRight(): Direction {
-            return when (this) {
-                UP -> RIGHT
-                RIGHT -> DOWN
-                DOWN -> LEFT
-                LEFT -> UP
-            }
+    fun turnRight(): Direction {
+        return when (this) {
+            UP -> RIGHT
+            RIGHT -> DOWN
+            DOWN -> LEFT
+            LEFT -> UP
         }
     }
+}
 
-    data class Position(val y: Int, val x: Int) {
-        fun move(dir: Direction) = Position(y + dir.dy, x + dir.dx)
-    }
+data class Position(val y: Int, val x: Int) {
+    fun move(dir: Direction) = Position(y + dir.dy, x + dir.dx)
+}
+
+class Task2 {
 
     data class State(val pos: Position, val dir: Direction)
 
@@ -33,38 +31,36 @@ class Task2 {
             initPos: Position, initDir: Direction): Int {
             var count = 0
 
-            fun checkObsPosition(
-                obsPos: Position, obsDir: Direction,
-                visited: MutableList<State>): Int {
-                var current = obsPos
-                var direction = obsDir.turnRight()
-                visited += State(current, direction)
-                while (current.y in 0 until height && current.x in 0 until width) {
-                    if (State(current, direction) in visited) return 1
-                    val next = current.move(direction)
-                    if (next in obstacles)
-                        direction = direction.turnRight()
-                    else {
-                        current = next
-                        visited += State(current, direction)
-                    }
+            fun ifMakesLoop(
+                initPos: Position, initDir: Direction, obsPos: Position,
+                visited: MutableList<State>): Boolean {
+                var curPos = initPos
+                var curDir = initDir
+                while (curPos.y in 0 until height && curPos.x in 0 until width) {
+                    val nextPos = curPos.move(curDir)
+                    if (nextPos in (obstacles + obsPos))
+                        curDir = curDir.turnRight()
+                    else
+                        curPos = nextPos
+                    if (State(curPos, curDir) in visited) return true
+                    visited += State(curPos, curDir)
                 }
-                return 0
+                return false
             }
 
             val visited = mutableListOf<State>()
-            var current = initPos
-            var direction = initDir
-            visited += State(current, direction)
-            while (current.y in 0 until height && current.x in 0 until width) {
-                val next = current.move(direction)
-                if (next in obstacles) {
-                    direction = direction.turnRight()
+            var curPos = initPos
+            var curDir = initDir
+            visited += State(curPos, curDir)
+            while (curPos.y in 0 until height && curPos.x in 0 until width) {
+                val nextPos = curPos.move(curDir)
+                if (nextPos in obstacles) {
+                    curDir = curDir.turnRight()
                 } else {
-                    count += checkObsPosition(next, direction, visited.toMutableList())
-                    current = next
-                    visited += State(current, direction)
+                    if (ifMakesLoop(curPos, curDir, nextPos, visited.toMutableList())) count++
+                    curPos = nextPos
                 }
+                visited += State(curPos, curDir)
             }
             return count
         }

@@ -32,19 +32,17 @@ class Task1 {
                 }
         }
 
-        private fun generateOps(side: Int) : List<List<Operation>> {
-            val permutations = mutableListOf<List<Operation>>()
+        private fun generateOps(side: Int) : Sequence<List<Operation>> = sequence {
             for (operation in Operation.entries) {
                 if (side == 1) {
-                    permutations.add(listOf(operation))
+                    yield(listOf(operation))
                 }
                 else {
                     for (permutation in generateOps(side-1)) {
-                        permutations.add(listOf(operation) + permutation)
+                        yield(listOf(operation) + permutation)
                     }
                 }
             }
-            return permutations
         }
     }
 }

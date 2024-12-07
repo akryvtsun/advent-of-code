@@ -32,6 +32,22 @@ class Task1 {
                 }
         }
 
+//  Not optimal generation on Lists
+//        private fun generateOps(side: Int) : List<List<Operation>> {
+//            val permutations = mutableListOf<List<Operation>>()
+//            for (operation in Operation.entries) {
+//                if (side == 1) {
+//                    permutations.add(listOf(operation))
+//                }
+//                else {
+//                    for (permutation in generateOps(side-1)) {
+//                        permutations.add(listOf(operation) + permutation)
+//                    }
+//                }
+//            }
+//            return permutations
+//        }
+
         private fun generateOps(side: Int) : Sequence<List<Operation>> = sequence {
             for (operation in Operation.entries) {
                 if (side == 1) {

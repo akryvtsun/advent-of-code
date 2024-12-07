@@ -1,8 +1,19 @@
 package day_07
 
+data class Equation(val test: Long, val nums: List<Long>)
+
 class Task1 {
 
-    data class Equation(val test: Long, val nums: List<Long>)
+    enum class Operation{
+        PLUS {
+            override fun apply(arg1: Long, arg2: Long) = arg1 + arg2
+        },
+        MULTIPLY {
+            override fun apply(arg1: Long, arg2: Long) = arg1 * arg2
+        };
+
+        abstract fun apply(arg1: Long, arg2: Long): Long
+    }
 
     companion object {
 
@@ -13,7 +24,27 @@ class Task1 {
         }
 
         private fun isTrue(equation: Equation): Boolean {
-            return true
+            val opsPermutations = generateOps(equation.nums.size-1)
+            return opsPermutations.any { operations ->
+                    equation.nums.reduceIndexed {
+                        index, acc, value -> operations[index-1].apply(acc, value)
+                    } == equation.test
+                }
+        }
+
+        private fun generateOps(side: Int) : List<List<Operation>> {
+            val permutations = mutableListOf<List<Operation>>()
+            for (operation in Operation.entries) {
+                if (side == 1) {
+                    permutations.add(listOf(operation))
+                }
+                else {
+                    for (permutation in generateOps(side-1)) {
+                        permutations.add(listOf(operation) + permutation)
+                    }
+                }
+            }
+            return permutations
         }
     }
 }

@@ -4,79 +4,69 @@ typealias MapBoard = List<List<MutableSet<Char>>>
 
 class Task2 {
 
-    enum class Direction(val gliph: Char, val dy: Int, val dx: Int) {
-           UP('^', -1, 0),
-        RIGHT('>',0, +1),
-         DOWN('V', +1, 0),
-         LEFT( '<',0, -1)
+    enum class Direction(val dy: Int, val dx: Int) {
+           UP(-1, 0),
+        RIGHT(0, +1),
+         DOWN( +1, 0),
+         LEFT( 0, -1);
+
+        fun turnRight(): Direction {
+            return when (this) {
+                UP -> RIGHT
+                RIGHT -> DOWN
+                DOWN -> LEFT
+                LEFT -> UP
+            }
+        }
     }
+
+    data class Position(val y: Int, val x: Int) {
+        fun move(dir: Direction) = Position(y + dir.dy, x + dir.dx)
+    }
+
+    data class State(val pos: Position, val dir: Direction)
 
     companion object {
 
-        fun solve(map: MapBoard): Int {
+        fun solve(
+            height: Int, width: Int, obstacles: List<Position>,
+            initPos: Position, initDir: Direction): Int {
             var count = 0
 
-            var direction = Direction.UP
-            var x = 0
-            var y = 0
-            map.forEachIndexed() { i, row ->
-                val idx = row.indexOfFirst { direction.gliph in it }
-                if (idx != -1) {
-                    y = i
-                    x = idx
-                    return@forEachIndexed
+            fun checkObsPosition(
+                obsPos: Position, obsDir: Direction,
+                visited: MutableList<State>): Int {
+                var current = obsPos
+                var direction = obsDir.turnRight()
+                visited += State(current, direction)
+                while (current.y in 0 until height && current.x in 0 until width) {
+                    if (State(current, direction) in visited) return 1
+                    val next = current.move(direction)
+                    if (next in obstacles)
+                        direction = direction.turnRight()
+                    else {
+                        current = next
+                        visited += State(current, direction)
+                    }
                 }
+                return 0
             }
 
-            var finished = false
-            while (!finished) {
-                try {
-                    if (map[y + direction.dy][x + direction.dx] == setOf('#')) {
-                        direction = direction.turnRight()
-                    }
-                    else {
-                        count += checkObsPosition(map, y, x, direction)
-                        y += direction.dy
-                        x += direction.dx
-                        //println("$y:$x")
-                    }
-                    map[y][x].add(direction.gliph)
-                }
-                catch (e: Exception) {
-                    finished = true
+            val visited = mutableListOf<State>()
+            var current = initPos
+            var direction = initDir
+            visited += State(current, direction)
+            while (current.y in 0 until height && current.x in 0 until width) {
+                val next = current.move(direction)
+                if (next in obstacles) {
+                    direction = direction.turnRight()
+                } else {
+                    count += checkObsPosition(next, direction, visited.toMutableList())
+                    current = next
+                    visited += State(current, direction)
                 }
             }
             return count
-        }
-
-        private fun checkObsPosition(map: MapBoard, oldY: Int, oldX: Int, oldDirection: Direction): Int {
-            var y = oldY
-            var x = oldX
-            var direction = oldDirection.turnRight()
-            try {
-                while (direction.gliph !in map[y][x]) {
-                    if (map[y + direction.dy][x + direction.dx] == setOf('#'))
-                        direction = direction.turnRight()
-                        //return 0
-                    else {
-                        y += direction.dy
-                        x += direction.dx
-                    }
-                    println("$y:$x")
-                }
-                return 1
-            } catch (e: Exception) {
-                return 0
-            }
-        }
-
-        fun Direction.turnRight(): Direction {
-            return when (this) {
-                Direction.UP -> Direction.RIGHT
-                Direction.RIGHT -> Direction.DOWN
-                Direction.DOWN -> Direction.LEFT
-                Direction.LEFT -> Direction.UP
-            }
         }
     }
 }

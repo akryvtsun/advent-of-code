@@ -28,7 +28,7 @@ class Task2Test {
     fun `should successfully solve the real task`() {
         val input = File("src/test/resources/day_06/TaskData.txt").readText()
 
-        doTest(0, input)
+        doTest(-1, input)
     }
 
     private fun doTest(expected: Int, input: String) {

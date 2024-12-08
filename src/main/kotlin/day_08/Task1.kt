@@ -14,10 +14,15 @@ class Task1 {
     companion object {
 
         fun solve(data: Data): Int {
+
+            fun isInMap(pos: Position) =
+                pos.y in 0 until data.height &&
+                pos.x in 0 until data.width
+
             return data.antennas.groupBy { it.type }
                 .map { it.value }
                 .flatMap { findAntinodes(it) }
-                .filter { isInMap(data.height, data.width, it) }
+                .filter { isInMap(it) }
                 .distinct()
                 .count()
         }
@@ -36,15 +41,13 @@ class Task1 {
         }
 
         private fun point1(a: Position, b: Position): Position {
-            return Position(a.y + (a.y-b.y), a.x + (a.x-b.x))
+            val delta = a - b
+            return a + delta
         }
 
         private fun point2(a: Position, b: Position): Position {
-            return Position(b.y - (a.y-b.y), b.x - (a.x-b.x))
+            val delta = a - b
+            return b - delta
         }
-
-        private fun isInMap(height: Int, width: Int,pos: Position) =
-            pos.y in 0 until height &&
-            pos.x in 0 until width
     }
 }

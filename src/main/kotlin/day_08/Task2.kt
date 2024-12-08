@@ -11,8 +11,8 @@ class Task2 {
                 pos.x in 0 until data.width
 
             fun genPoints1(a: Position, b: Position): List<Position> {
-                val delta = Position(a.y-b.y, a.x-b.x)
                 val positions = mutableListOf<Position>()
+                val delta = a - b
                 var curPos = a
                 do {
                     positions.add(curPos)
@@ -22,8 +22,8 @@ class Task2 {
             }
 
             fun genPoints2(a: Position, b: Position): List<Position> {
-                val delta = Position(a.y-b.y, a.x-b.x)
                 val positions = mutableListOf<Position>()
+                val delta = a - b
                 var curPos = b
                 do {
                     positions.add(curPos)

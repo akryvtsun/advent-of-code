@@ -1,6 +1,5 @@
 package day_08
 
-import day_06.Position
 import org.junit.jupiter.api.Test
 import java.io.File
 import kotlin.test.assertEquals
@@ -27,9 +26,11 @@ class Task1Test {
         assertEquals(14, Task1.solve(data))
     }
 
-    private fun transform(input: String): List<Antenna> {
-        return input.split("\n")
-            .flatMapIndexed() { i, line ->
+    private fun transform(input: String): Data {
+        val lines = input.split("\n")
+        val height = lines.size
+        val width = lines.first().length
+        val antennas = lines.flatMapIndexed() { i, line ->
                 val lineList = mutableListOf<Antenna>()
                 for (j in line.indices) {
                     if (line[j] != '.') {
@@ -38,12 +39,13 @@ class Task1Test {
                 }
                 lineList
             }
+        return Data(height, width, antennas)
     }
 
     @Test
     fun `should successfully solve the real task`() {
-        val input = File("src/test/resources/day_07/TaskData.txt").readText()
+        val input = File("src/test/resources/day_08/TaskData.txt").readText()
         val data = transform(input)
-        assertEquals(-1, Task1.solve(data))
+        assertEquals(376, Task1.solve(data))
     }
 }

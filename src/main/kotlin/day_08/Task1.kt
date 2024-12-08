@@ -1,6 +1,9 @@
 package day_08
 
-data class Position(val y: Int, val x: Int)
+data class Position(val y: Int, val x: Int) {
+    operator fun plus(pos: Position) = Position(y + pos.y, x + pos.x)
+    operator fun minus(pos: Position) = Position(y - pos.y, x - pos.x)
+}
 
 data class Antenna(val pos: Position, val type: Char)
 

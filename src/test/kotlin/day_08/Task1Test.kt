@@ -6,6 +6,24 @@ import kotlin.test.assertEquals
 
 class Task1Test {
 
+    companion object {
+        fun transform(input: String): Data {
+            val lines = input.split("\n")
+            val height = lines.size
+            val width = lines.first().length
+            val antennas = lines.flatMapIndexed { i, line ->
+                val lineList = mutableListOf<Antenna>()
+                for (j in line.indices) {
+                    if (line[j] != '.') {
+                        lineList += Antenna(Position(i, j), line[j])
+                    }
+                }
+                lineList
+            }
+            return Data(height, width, antennas)
+        }
+    }
+
     @Test
     fun `should successfully pass task example`() {
         val input =  """
@@ -24,22 +42,6 @@ class Task1Test {
         """.trimIndent()
         val data = transform(input)
         assertEquals(14, Task1.solve(data))
-    }
-
-    private fun transform(input: String): Data {
-        val lines = input.split("\n")
-        val height = lines.size
-        val width = lines.first().length
-        val antennas = lines.flatMapIndexed() { i, line ->
-                val lineList = mutableListOf<Antenna>()
-                for (j in line.indices) {
-                    if (line[j] != '.') {
-                        lineList += Antenna(Position(i, j), line[j])
-                    }
-                }
-                lineList
-            }
-        return Data(height, width, antennas)
     }
 
     @Test

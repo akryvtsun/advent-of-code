@@ -1,5 +1,7 @@
 package day_09
 
+import java.util.Collections
+
 class Task2 {
 
     companion object {
@@ -47,8 +49,9 @@ class Task2 {
                             while (buf[++left] == SPACE) ssize++
 
                             if (ssize >= fsize) {
-                                buf.move(sbegin, fbegin, fsize)
-                                buf.clean(fbegin, fsize)
+                                for (i in 0 until fsize) {
+                                    Collections.swap(buf, sbegin+i, fbegin+i)
+                                }
                                 break
                             }
                         } else
@@ -58,18 +61,6 @@ class Task2 {
                     right--
             }
             return buf
-        }
-
-        fun MutableList<Int>.move(to: Int, from: Int, size: Int) {
-            for (i in 0..size-1) {
-                this[to + i] = this[from + i]
-            }
-        }
-
-        fun MutableList<Int>.clean(begin: Int, size: Int) {
-            for (i in 0..size-1) {
-                this[begin + i] = SPACE
-            }
         }
 
         fun calcSum(data: List<Int>): Long {

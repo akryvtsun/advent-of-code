@@ -10,7 +10,7 @@ class Task2 {
             override fun apply(arg1: Long, arg2: Long) = arg1 * arg2
         },
         CONCAT {
-            override fun apply(arg1: Long, arg2: Long) = (arg1.toString() + arg2.toString()).toLong()
+            override fun apply(arg1: Long, arg2: Long) = "$arg1$arg2".toLong()
         };
 
         abstract fun apply(arg1: Long, arg2: Long): Long

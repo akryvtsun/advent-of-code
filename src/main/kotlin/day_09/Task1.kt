@@ -4,47 +4,47 @@ class Task1 {
 
     companion object {
 
+        const val SPACE = -1
+
         fun solve(input: String): Long {
             val viz = makeViz(input)
-            //println(viz)
             val packRez = pack(viz)
-            //println(packRez)
             val checksum = calcSum(packRez)
             return checksum
         }
 
-        fun makeViz(data: String): String {
-            var viz = StringBuilder()
+        fun makeViz(data: String): List<Int> {
+            var viz = mutableListOf<Int>()
             var id = 0
             data.forEachIndexed { i, c ->
-                val type = if (isFile(i)) (id++).toString() else "."
+                val type = if (isFile(i)) id++ else SPACE
                 val size = c.digitToInt()
-                viz.append(type.repeat(size))
+                viz += List(size) { type }
             }
-            return viz.toString()
+            return viz
         }
 
         private fun isFile(pos: Int): Boolean = pos % 2 == 0
 
-        fun pack(data: String): String {
+        fun pack(data: List<Int>): List<Int> {
             var begin = 0
-            var end = data.length-1
-            val buf = StringBuilder(data)
+            var end = data.size-1
+            val buf = data.toMutableList()
             while (true) {
-                while (buf[begin] in '0'..'9') begin++
-                while (buf[end] == '.') end--
+                while (buf[begin] != SPACE) begin++
+                while (buf[end] == SPACE) end--
                 if (begin >= end) break
                 buf[begin] = buf[end]
-                buf[end] = '.'
+                buf[end] = SPACE
             }
-            return buf.toString()
+            return buf
         }
 
-        fun calcSum(data: String): Long {
+        fun calcSum(data: List<Int>): Long {
             var sum = 0L
-            data.forEachIndexed { i, c ->
-                val digit = if (c == '.') 0 else c.digitToInt()
-                sum += i * digit
+            data.forEachIndexed { i, num ->
+                val value = if (num == SPACE) 0 else num
+                sum += i * value
             }
             return sum
         }

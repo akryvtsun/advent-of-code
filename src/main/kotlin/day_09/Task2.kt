@@ -2,80 +2,81 @@ package day_09
 
 class Task2 {
 
-    sealed class FsBlock(open val size: Int)
-    data class File(val id: Int, override val size: Int): FsBlock(size)
-    data class Space(override val size: Int): FsBlock(size)
-
     companion object {
+
+        const val SPACE = -1
 
         fun solve(input: String): Long {
             val viz = makeViz(input)
-            println(viz)
             val packRez = pack(viz)
-            println(packRez)
-            return calcSum(packRez)
+            val checksum = calcSum(packRez)
+            return checksum
         }
 
-        fun makeViz(data: String): List<FsBlock> {
-            var viz = mutableListOf<FsBlock>()
+        fun makeViz(data: String): List<Int> {
+            var viz = mutableListOf<Int>()
             var id = 0
             data.forEachIndexed { i, c ->
+                val type = if (isFile(i)) id++ else SPACE
                 val size = c.digitToInt()
-                val block = if (isFile(i)) File(id++, size) else Space(size)
-                viz += block
+                viz += List(size) { type }
             }
             return viz
         }
 
         private fun isFile(pos: Int): Boolean = pos % 2 == 0
 
-        fun pack(data: List<FsBlock>): List<FsBlock> {
+        fun pack(data: List<Int>): List<Int> {
             val buf = data.toMutableList()
-            var right = data.size-1
-            while (right > 0) {
-                while (buf[right] is Space) right--
-                val rightFile = buf[right]
-
-                var left = 0
-                while (left < right) {
-                    while (buf[left] !is Space) left++
-                    val leftSpace = buf[left]
-
-                    if (leftSpace.size >= rightFile.size) {
-                        buf[left++] = rightFile
-                        val newSpaceSize = leftSpace.size - rightFile.size
-                        if (newSpaceSize > 0) {
-                            buf.putSpace(left, newSpaceSize)
-                        }
-                        buf.putSpace(right--, rightFile.size)
-                        break
+            var right = buf.size-1
+            while (right >= 0) {
+                if (buf[right] != SPACE) {
+                    val id = buf[right]
+                    var fsize = 1
+                    while (buf[--right] == id) {
+                        fsize++
+                        if (right == 0) return buf
                     }
-                    left++
-                }
+                    val fbegin = right+1
+
+                    var left = 0
+                    while (left < right) {
+                        if (buf[left] == SPACE) {
+                            val sbegin = left
+                            var ssize = 1
+                            while (buf[++left] == SPACE) ssize++
+
+                            if (ssize >= fsize) {
+                                buf.move(sbegin, fbegin, fsize)
+                                buf.clean(fbegin, fsize)
+                                break
+                            }
+                        } else
+                            left++
+                    }
+                } else
+                    right--
             }
             return buf
         }
 
-        fun MutableList<FsBlock>.putSpace(pos: Int, size: Int) {
-            if (this[pos] is Space) {
-                this[pos] = Space(this[pos].size + size)
-            } else {
-                if (this[pos-1] is Space) {
-                    this[pos-1] = Space(this[pos-1].size + size)
-                    this.removeAt()
-                }
-                this.add(pos, Space(size))
+        fun MutableList<Int>.move(to: Int, from: Int, size: Int) {
+            for (i in 0..size-1) {
+                this[to + i] = this[from + i]
             }
         }
 
-        fun calcSum(data: List<FsBlock>): Long {
+        fun MutableList<Int>.clean(begin: Int, size: Int) {
+            for (i in 0..size-1) {
+                this[begin + i] = SPACE
+            }
+        }
+
+        fun calcSum(data: List<Int>): Long {
             var sum = 0L
-            var left = 0
-            data.forEach { block ->
-                for (i in 0 until block.size) {
-                    sum += (left+i) * if (block is File) block.id else 0
-                }
-                left += block.size
+            data.forEachIndexed { i, num ->
+                val value = if (num == SPACE) 0 else num
+                sum += i * value
             }
             return sum
         }

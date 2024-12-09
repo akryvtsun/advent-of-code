@@ -14,6 +14,6 @@ class Task2Test {
     @Test
     fun `should successfully solve the real task`() {
         val input = File("src/test/resources/day_09/TaskData.txt").readText()
-        assertEquals(-1, Task2.solve(input))
+        assertEquals(6423258376982, Task2.solve(input))
     }
 }

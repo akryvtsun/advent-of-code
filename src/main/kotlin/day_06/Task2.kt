@@ -1,5 +1,10 @@
 package day_06
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import java.util.concurrent.atomic.AtomicInteger
+
 enum class Direction(val dy: Int, val dx: Int) {
     UP(-1, 0),
     RIGHT(0, +1),
@@ -27,18 +32,16 @@ class Task2 {
     companion object {
 
         fun solve(
-            height: Int, width: Int, obstacles: List<Position>,
+            height: Int, width: Int, obs: List<Position>,
             initPos: Position, initDir: Direction): Int {
-            var count = 0
 
-            fun ifMakesLoop(
-                initPos: Position, initDir: Direction, obsPos: Position,
-                visited: MutableList<State>): Boolean {
+            fun hasLoop(obstacles: List<Position>): Boolean {
                 var curPos = initPos
                 var curDir = initDir
+                val visited = mutableSetOf(State(curPos, curDir))
                 while (curPos.y in 0 until height && curPos.x in 0 until width) {
                     val nextPos = curPos.move(curDir)
-                    if (nextPos in (obstacles + obsPos))
+                    if (nextPos in obstacles)
                         curDir = curDir.turnRight()
                     else
                         curPos = nextPos
@@ -48,21 +51,15 @@ class Task2 {
                 return false
             }
 
-            val visited = mutableListOf<State>()
-            var curPos = initPos
-            var curDir = initDir
-            visited += State(curPos, curDir)
-            while (curPos.y in 0 until height && curPos.x in 0 until width) {
-                val nextPos = curPos.move(curDir)
-                if (nextPos in obstacles) {
-                    curDir = curDir.turnRight()
-                } else {
-                    if (ifMakesLoop(curPos, curDir, nextPos, visited.toMutableList())) count++
-                    curPos = nextPos
+            val count = AtomicInteger(0)
+            runBlocking(Dispatchers.Default) {
+                for (obsY in 0 until height) {
+                    for (obsX in 0 until width) {
+                        launch { if (hasLoop(obs + Position(obsY, obsX))) count.incrementAndGet() }
+                    }
                 }
-                visited += State(curPos, curDir)
             }
-            return count
+            return count.get()
         }
     }
 }

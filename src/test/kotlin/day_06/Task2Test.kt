@@ -3,6 +3,7 @@ package day_06
 import org.junit.jupiter.api.Test
 import java.io.File
 import kotlin.test.assertEquals
+import kotlin.time.measureTimedValue
 
 class Task2Test {
 
@@ -28,7 +29,7 @@ class Task2Test {
     fun `should successfully solve the real task`() {
         val input = File("src/test/resources/day_06/TaskData.txt").readText()
 
-        doTest(-1, input)
+        doTest(1516, input)
     }
 
     private fun doTest(expected: Int, input: String) {
@@ -47,6 +48,8 @@ class Task2Test {
             width = line.length
         }
 
-        assertEquals(expected, Task2.solve(height, width!!, obstacles, initPos!!, Direction.UP))
+        val actual = measureTimedValue { Task2.solve(height, width!!, obstacles, initPos!!, Direction.UP) }
+        println("Execution time: ${actual.duration}")
+        assertEquals(expected, actual.value)
     }
 }

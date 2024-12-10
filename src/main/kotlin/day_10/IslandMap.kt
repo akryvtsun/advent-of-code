@@ -6,7 +6,7 @@ data class IslandMap(private val map: List<List<Int>>) {
 
     companion object {
         fun transform(input: String): IslandMap {
-            val lines = input.split("\n")
+            val lines = input.lines()
             val rows = lines.map { line ->
                 line.map { if (it == '.') BLOCK else it.digitToInt() }
             }

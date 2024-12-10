@@ -1,5 +1,7 @@
 package day_10
 
+const val BLOCK = -1
+
 class Task1 {
 
     data class IslandMap(private val map: List<List<Int>>) {
@@ -11,28 +13,31 @@ class Task1 {
         fun isStart(p: Point) = this[p] == 0
         fun isEnd(p: Point) = this[p] == 9
 
+        fun isRouteStep(current: Point, next: Point) = this[next] - this[current] == 1
+
         fun isInMap(p: Point) =
             p.y in 0 until height() &&
             p.x in 0 until width() &&
-            this[p] != -1
+            this[p] != BLOCK
 
         fun getScore(p: Point): Int {
             val riched = mutableSetOf<Point>()
-            getScoreImpl(p, riched)
-            return riched.size
-        }
 
-        private fun getScoreImpl(p: Point, riched: MutableSet<Point>) {
-            if (isEnd(p)) {
-                riched.add(p)
+            fun getScoreImpl(p: Point) {
+                if (isEnd(p)) {
+                    riched.add(p)
+                }
+                else {
+                    val newPs = Direction.entries
+                        .map { p + it }
+                        .filter { isInMap(it) }
+                        .filter { isRouteStep(p, it) }
+                    newPs.forEach { getScoreImpl(it) }
+                }
             }
-            else {
-                val newPs = Direction.entries
-                    .map { p + it }
-                    .filter { isInMap(it) }
-                    .filter { this[it] - this[p] == 1 }
-                newPs.forEach { getScoreImpl(it, riched) }
-            }
+
+            getScoreImpl(p)
+            return riched.size
         }
     }
 

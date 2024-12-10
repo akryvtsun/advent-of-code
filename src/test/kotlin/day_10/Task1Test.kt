@@ -10,7 +10,7 @@ class Task1Test {
         fun transform(input: String): Task1.IslandMap {
             val lines = input.split("\n")
             val rows = lines.map { line ->
-                line.map { if (it == '.') -1 else it.digitToInt() }
+                line.map { if (it == '.') BLOCK else it.digitToInt() }
             }
             return Task1.IslandMap(rows)
         }

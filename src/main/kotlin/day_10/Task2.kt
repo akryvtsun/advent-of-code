@@ -1,6 +1,5 @@
 package day_10
 
-import day_10.Task1.Direction
 import day_10.Task1.Point
 
 class Task2 {
@@ -14,10 +13,12 @@ class Task2 {
         fun isStart(p: Point) = this[p] == 0
         fun isEnd(p: Point) = this[p] == 9
 
+        fun isRouteStep(current: Point, next: Point) = this[next] - this[current] == 1
+
         fun isInMap(p: Point) =
             p.y in 0 until height() &&
             p.x in 0 until width() &&
-            this[p] != -1
+            this[p] != BLOCK
 
         fun getRate(p: Point): Int {
             val routs = mutableSetOf<List<Point>>()
@@ -31,7 +32,7 @@ class Task2 {
                     val newPs = Direction.entries
                         .map { p + it }
                         .filter { isInMap(it) }
-                        .filter { this[it] - this[p] == 1 }
+                        .filter { isRouteStep(p, it) }
                     newPs.forEach { getRateImpl(it, newRoute) }
                 }
             }

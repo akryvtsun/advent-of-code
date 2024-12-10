@@ -1,20 +1,12 @@
 package day_10
 
+import day_10.IslandMap.Companion.transform
+import day_10.Task1.Companion.getScore
 import org.junit.jupiter.api.Test
 import java.io.File
 import kotlin.test.assertEquals
 
 class Task1Test {
-
-    companion object {
-        fun transform(input: String): Task1.IslandMap {
-            val lines = input.split("\n")
-            val rows = lines.map { line ->
-                line.map { if (it == '.') BLOCK else it.digitToInt() }
-            }
-            return Task1.IslandMap(rows)
-        }
-    }
 
     @Test
     fun `check score function`(){
@@ -28,7 +20,7 @@ class Task1Test {
             9.....9
         """.trimIndent()
         val data = transform(input)
-        assertEquals(2, data.getScore(Task1.Point(0, 3)))
+        assertEquals(2, data.getScore(Point(0, 3)))
     }
 
     @Test
@@ -43,7 +35,7 @@ class Task1Test {
             987....
         """.trimIndent()
         val data = transform(input)
-        assertEquals(4, data.getScore(Task1.Point(0, 3)))
+        assertEquals(4, data.getScore(Point(0, 3)))
     }
 
     @Test
@@ -58,8 +50,8 @@ class Task1Test {
             .....01
         """.trimIndent()
         val data = transform(input)
-        assertEquals(1, data.getScore(Task1.Point(0, 1)))
-        assertEquals(2, data.getScore(Task1.Point(6, 5)))
+        assertEquals(1, data.getScore(Point(0, 1)))
+        assertEquals(2, data.getScore(Point(6, 5)))
     }
 
     @Test

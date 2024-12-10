@@ -1,20 +1,12 @@
 package day_10
 
+import day_10.IslandMap.Companion.transform
+import day_10.Task2.Companion.getRate
 import org.junit.jupiter.api.Test
 import java.io.File
 import kotlin.test.assertEquals
 
 class Task2Test {
-
-    companion object {
-        fun transform(input: String): Task2.IslandMap {
-            val lines = input.split("\n")
-            val rows = lines.map { line ->
-                line.map { if (it == '.') BLOCK else it.digitToInt() }
-            }
-            return Task2.IslandMap(rows)
-        }
-    }
 
     @Test
     fun `check rate function`(){
@@ -28,7 +20,7 @@ class Task2Test {
             ..9....
         """.trimIndent()
         val data = transform(input)
-        assertEquals(3, data.getRate(Task2.Point(0, 5)))
+        assertEquals(3, data.getRate(Point(0, 5)))
     }
 
     @Test
@@ -43,7 +35,7 @@ class Task2Test {
             987....
         """.trimIndent()
         val data = transform(input)
-        assertEquals(13, data.getRate(Task2.Point(0, 3)))
+        assertEquals(13, data.getRate(Point(0, 3)))
     }
 
     @Test
@@ -57,7 +49,7 @@ class Task2Test {
             56789.
         """.trimIndent()
         val data = transform(input)
-        assertEquals(227, data.getRate(Task2.Point(0, 0)))
+        assertEquals(227, data.getRate(Point(0, 0)))
     }
 
     @Test

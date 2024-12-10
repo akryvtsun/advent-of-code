@@ -1,5 +1,8 @@
 package day_10
 
+import day_10.Task1.Direction
+import day_10.Task1.Point
+
 class Task2 {
 
     data class IslandMap(private val map: List<List<Int>>) {
@@ -17,7 +20,24 @@ class Task2 {
             this[p] != -1
 
         fun getRate(p: Point): Int {
-            return 0
+            val routs = mutableSetOf<List<Point>>()
+
+            fun getRateImpl(p: Point, route: List<Point>) {
+                val newRoute = route + p
+                if (isEnd(p)) {
+                    routs += newRoute
+                }
+                else {
+                    val newPs = Direction.entries
+                        .map { p + it }
+                        .filter { isInMap(it) }
+                        .filter { this[it] - this[p] == 1 }
+                    newPs.forEach { getRateImpl(it, newRoute) }
+                }
+            }
+
+            getRateImpl(p, emptyList())
+            return routs.size
         }
     }
 

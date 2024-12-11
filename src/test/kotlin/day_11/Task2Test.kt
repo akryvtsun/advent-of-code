@@ -6,14 +6,24 @@ import kotlin.test.assertEquals
 
 class Task2Test {
 
-    companion object {
-        fun transform(input: String): List<Long> = input.split(" ").map { it.toLong() }
+    @Test
+    fun `should successfully pass task example`() {
+        val input = transform("125 17")
+        assertEquals(22, Task2.solve(input, 6))
+        assertEquals(55312, Task2.solve(input, 25))
+    }
+
+    @Test
+    fun `should successfully solve task 1`() {
+        val input = File("src/test/resources/day_11/TaskData.txt").readText()
+        val data = transform(input)
+        assertEquals(217812, Task2.solve(data, 25))
     }
 
     @Test
     fun `should successfully solve the real task`() {
         val input = File("src/test/resources/day_11/TaskData.txt").readText()
         val data = transform(input)
-        assertEquals(-1, Task1.solve(data, 75))
+        assertEquals(-1, Task2.solve(data, 75))
     }
 }

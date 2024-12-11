@@ -1,52 +1,33 @@
 package day_11
 
-import java.util.LinkedList
-
 class Task1 {
 
     companion object {
 
         fun solve(stones: List<Long>, blinks: Int): Int {
-            var state = LinkedList(stones)
+            var state = stones
             repeat(blinks) {
-                println("$it. size=${state.size}")
                 state = blink(state)
             }
             return state.size
         }
 
-        fun blink(stones: LinkedList<Long>): LinkedList<Long> {
-            val iter = stones.listIterator()
-            while (iter.hasNext()) {
-                val value = iter.next()
-                if (value == 0L) {
-                    iter.set(1)
+        fun blink(stones: List<Long>): List<Long> {
+            val newStones = mutableListOf<Long>()
+            for (stone in stones) {
+                if (stone == 0L) {
+                    newStones.add(1)
                 } else {
-                    var num = value
-                    var count = 0
-                    var mul = 1L
-                    // find middle of number
-                    do {
-                        mul *= 10
-                        num /= 10
-                        count++
-                    } while (num > mul)
-                    val left = num
-                    val right = value % mul
-                    // define number count of digits
-                    while (num > 0) {
-                        num /= 10
-                        count++
-                    }
-                    if (count % 2 == 0) {
-                        iter.set(left)
-                        iter.add(right)
+                    val strStone = stone.toString()
+                    if (strStone.length % 2 == 0) {
+                        newStones.add(strStone.substring(0..<strStone.length/2).toLong())
+                        newStones.add(strStone.substring(strStone.length/2..<strStone.length).toLong())
                     } else {
-                        iter.set(value * 2024)
+                        newStones.add(stone * 2024)
                     }
                 }
             }
-            return stones
+            return newStones
         }
     }
 }

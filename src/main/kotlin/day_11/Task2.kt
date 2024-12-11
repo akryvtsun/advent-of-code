@@ -4,81 +4,37 @@ class Task2 {
 
     companion object {
 
-        data class Elem(var value: Long, var next: Elem?)
-
-        data class MyList(val data: List<Long>) {
-
-            var tail: Elem? = null
-
-            init {
-                var next: Elem? = null
-                for (i in data.size-1  downTo 0) {
-                    next = Elem(data[i], next)
-                }
-                tail = next
-            }
-
-            fun size(): Int {
-                var count = 0
-                var next = tail
-                while (next != null) {
-                    count++
-                    next = next.next
-                }
-                return count
-            }
-        }
-
-        fun solve(stones: List<Long>, blinks: Int): Int {
-            var state = MyList(stones)
+        fun solve(stones: List<Long>, blinks: Int): Long {
+            var state = stones.groupingBy { it }.eachCount().map { it.key to it.value.toLong() }.toMap()
             repeat(blinks) {
-                println("$it. size=${state.size()}")
+                println("$it. size=${state.size}")
                 state = blink(state)
             }
-            return state.size()
+            return state.values.sumOf { it.toLong() }
         }
 
-        fun processElem(next: Elem) {
-            val value = next.value
-            if (value == 0L) {
-                next.value = 1
-            } else {
-                var num = value
-                var count = 0
-                var mul = 1L
-                // find middle of number
-                do {
-                    mul *= 10
-                    num /= 10
-                    count++
-                } while (num > mul)
-                val left = num
-                // define number count of digits
-                while (num > 0) {
-                    num /= 10
-                    count++
-                }
-                if (count % 2 == 0) {
-                    next.value = left
-                    val n = next.next
-                    val right = value % mul
-                    next.next = Elem(right, n)
+        fun blink(stones: Map<Long, Long>): Map<Long, Long> {
+            val newState = mutableMapOf<Long, Long>()
+            for (stone in stones) {
+                if (stone.key == 0L) {
+                    newState.add(1L,  stone.value)
                 } else {
-                    next.value = value * 2024
+                    val str = stone.key.toString()
+                    if (str.length % 2 == 0) {
+                        newState.add(str.substring(0..<str.length/2).toLong(), stone.value)
+                        newState.add(str.substring(str.length/2).toLong(), stone.value)
+                    }
+                    else {
+                        newState.add(stone.key * 2024L, stone.value)
+                    }
                 }
             }
+            return newState
         }
 
-        fun blink(stones: MyList): MyList {
-            var next: Elem? = stones.tail
-            /*runBlocking(Dispatchers.Default) {*/
-                while (next != null) {
-                    val oldNext = next
-                    next = next!!.next
-                    /*launch {*/ processElem(oldNext!!) /*}*/
-                }
-            /*}*/
-            return stones
+        fun MutableMap<Long, Long>.add(stone: Long, count: Long) {
+            val oldCount = this[stone] ?: 0
+            this[stone] = oldCount + count
         }
     }
 }

@@ -2,6 +2,7 @@ package day_11
 
 import org.junit.jupiter.api.Test
 import java.io.File
+import java.util.LinkedList
 import kotlin.test.assertEquals
 
 class Task1Test {
@@ -12,7 +13,7 @@ class Task1Test {
 
     @Test
     fun `test blink function`(){
-        assertEquals(listOf<Long>(1, 2024, 1, 0, 9, 9, 2021976), Task1.blink(mutableListOf(0, 1, 10, 99, 999)))
+        assertEquals(listOf<Long>(1, 2024, 1, 0, 9, 9, 2021976), Task1.blink(LinkedList(listOf(0, 1, 10, 99, 999))))
     }
 
     @Test

@@ -5,7 +5,9 @@ class Task2 {
     companion object {
 
         fun solve(stones: List<Long>, blinks: Int): Long {
-            var state = stones.groupingBy { it }.eachCount().map { it.key to it.value.toLong() }.toMap()
+            var state = stones.groupingBy { it }.eachCount()
+                .map { it.key to it.value.toLong() }
+                .toMap()
             repeat(blinks) {
                 state = blink(state)
             }

@@ -7,29 +7,34 @@ class Task2 {
         fun solve(stones: List<Long>, blinks: Int): Long {
             var state = stones.groupingBy { it }.eachCount().map { it.key to it.value.toLong() }.toMap()
             repeat(blinks) {
-                println("$it. size=${state.size}")
                 state = blink(state)
             }
-            return state.values.sumOf { it.toLong() }
+            return state.values.sumOf { it }
         }
 
         fun blink(stones: Map<Long, Long>): Map<Long, Long> {
-            val newState = mutableMapOf<Long, Long>()
-            for (stone in stones) {
-                if (stone.key == 0L) {
-                    newState.add(1L,  stone.value)
-                } else {
-                    val str = stone.key.toString()
-                    if (str.length % 2 == 0) {
-                        newState.add(str.substring(0..<str.length/2).toLong(), stone.value)
-                        newState.add(str.substring(str.length/2).toLong(), stone.value)
-                    }
-                    else {
-                        newState.add(stone.key * 2024L, stone.value)
+            return buildNonMaterializedList {
+                for (stone in stones) {
+                    if (stone.key == 0L) {
+                        add(1L,  stone.value)
+                    } else {
+                        val str = stone.key.toString()
+                        if (str.length % 2 == 0) {
+                            add(str.substring(0..<str.length/2).toLong(), stone.value)
+                            add(str.substring(str.length/2).toLong(), stone.value)
+                        }
+                        else {
+                            add(stone.key * 2024L, stone.value)
+                        }
                     }
                 }
             }
-            return newState
+        }
+
+        fun buildNonMaterializedList(builder: MutableMap<Long, Long>.() -> Unit): MutableMap<Long, Long> {
+            val map = mutableMapOf<Long, Long>()
+            map.builder()
+            return map
         }
 
         fun MutableMap<Long, Long>.add(stone: Long, count: Long) {

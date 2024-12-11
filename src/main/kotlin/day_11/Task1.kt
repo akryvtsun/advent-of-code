@@ -12,22 +12,20 @@ class Task1 {
             return state.size
         }
 
-        fun blink(stones: List<Long>): List<Long> {
-            val newStones = mutableListOf<Long>()
+        fun blink(stones: List<Long>) = buildList {
             for (stone in stones) {
                 if (stone == 0L) {
-                    newStones.add(1)
+                    add(1)
                 } else {
                     val strStone = stone.toString()
                     if (strStone.length % 2 == 0) {
-                        newStones.add(strStone.substring(0..<strStone.length/2).toLong())
-                        newStones.add(strStone.substring(strStone.length/2..<strStone.length).toLong())
+                        add(strStone.substring(0..<strStone.length/2).toLong())
+                        add(strStone.substring(strStone.length/2).toLong())
                     } else {
-                        newStones.add(stone * 2024)
+                        add(stone * 2024)
                     }
                 }
             }
-            return newStones
         }
     }
 }

@@ -38,9 +38,9 @@ class Task2 {
             do {
                 wasCompacted = false
                 outer@ for (i in 0..<result.size - 1) {
-                    val first = borders[i]
+                    val first = result[i]
                     for (j in i + 1 until result.size) {
-                        val second = borders[j]
+                        val second = result[j]
                         if (first.end == second.begin && (first.begin.y == second.end.y || first.begin.x == second.end.x)) {
                             result[i] = Line(first.begin, second.end)
                             result.removeAt(j)

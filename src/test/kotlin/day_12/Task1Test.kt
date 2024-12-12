@@ -21,10 +21,11 @@ class Task1Test {
     @Test
     fun `should successfully pass task example 2`() {
         val map = """
-            AAAA
-            BBCD
-            BBCC
-            EEEC
+            OOOOO
+            OXOXO
+            OOOOO
+            OXOXO
+            OOOOO
         """.trimIndent()
         val input = transform(map)
         assertEquals(772, Task1.solve(input))

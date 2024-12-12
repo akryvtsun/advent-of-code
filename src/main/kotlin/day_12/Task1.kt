@@ -29,7 +29,7 @@ class Task1 {
     companion object {
 
         fun solve(map: List<List<Char>>): Long {
-            val regions = mutableListOf<Region>()
+            val regions = mutableSetOf<Region>()
 
             fun findRegion(type: Char, point: Point): Region {
                 val visited = mutableSetOf(point)
@@ -39,6 +39,7 @@ class Task1 {
                         .map { cur.move(it) }
                         .filter { it.y in map.indices && it.x in map.first().indices }
                         .filter { !visited.contains(it) }
+                        .filter { map[it.y][it.x] == type }
                         .forEach { visited += it; findRegionImpl(it) }
                 }
 

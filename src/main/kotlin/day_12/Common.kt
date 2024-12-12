@@ -1,3 +1,14 @@
 package day_12
 
 fun transform(input: String) = input.lines(). map { it.toList() }
+
+enum class Direction(val dy: Int, val dx: Int) {
+    UP(-1, 0),
+    DOWN(1, 0),
+    LEFT(0, -1),
+    RIGHT(0, 1)
+}
+
+data class Point(val y: Int, val x: Int) {
+    fun move(dir: Direction) = Point(y + dir.dy, x + dir.dx)
+}

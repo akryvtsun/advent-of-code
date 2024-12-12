@@ -2,10 +2,6 @@ package day_12
 
 class Task1 {
 
-    data class Point(val y: Int, val x: Int) {
-        fun move(dir: Direction) = Point(y + dir.dy, x + dir.dx)
-    }
-
     data class Region(val type: Char, val fields: Set<Point>) {
         fun area() = fields.size
 
@@ -17,13 +13,6 @@ class Task1 {
         }
 
         fun contains(p: Point) = this.fields.contains(p)
-    }
-
-    enum class Direction(val dy: Int, val dx: Int) {
-        UP(-1, 0),
-        DOWN(1, 0),
-        LEFT(0, -1),
-        RIGHT(0, 1)
     }
 
     companion object {

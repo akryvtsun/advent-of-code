@@ -5,7 +5,7 @@ import day_12.Direction.*
 class Task2 {
 
     data class Region(val type: Char, val fields: Set<Point>) {
-        fun area() = fields.size
+        fun area() = fields.size.toLong()
 
         fun perimeter(): Long {
             val lines = genLines()
@@ -91,7 +91,9 @@ class Task2 {
                     }
                 }
             }
-            return regions.sumOf { it.area() * it.perimeter() }
+            return regions
+                .map { println("Region ${it.type}: ${it.area()} * ${it.perimeter()} = ${it.area() * it.perimeter()}"); it }
+                .sumOf { it.area() * it.perimeter() }
         }
     }
 }

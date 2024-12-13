@@ -12,14 +12,14 @@ class Task2 {
             return compact(lines).size.toLong()
         }
 
-        fun contains(p: Point) = this.fields.contains(p)
+        operator fun contains(p: Point) = this.fields.contains(p)
 
         fun genLines(): List<Line> {
             val result = mutableListOf<Line>()
             for (f in fields) {
                 for (d in Direction.entries) {
                     val next = f.move(d)
-                    if (!fields.contains(next)) {
+                    if (!contains(next)) {
                         val begin = next
                         val end = when (d) {
                             UP, DOWN -> Point(next.y, next.x + 1)
@@ -86,7 +86,7 @@ class Task2 {
                 for (x in map.first().indices) {
                     val cur = Point(y, x)
                     val type = map[y][x]
-                    if (regions.none { it.contains(cur) }) {
+                    if (regions.none { cur in it }) {
                         regions += findRegion(type, cur)
                     }
                 }

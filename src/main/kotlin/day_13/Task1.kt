@@ -4,14 +4,14 @@ class Task1 {
 
     companion object {
 
-        fun solve(slots: List<SlotMachine>): Int {
+        fun solve(slots: List<SlotMachine>): Long {
             return slots.sumOf {
                 val (a, b) = getMinCoins(it)
                 3*a + b
             }
         }
 
-        private fun getMinCoins(slot: SlotMachine): Pair<Int, Int> {
+        private fun getMinCoins(slot: SlotMachine): Pair<Long, Long> {
             with(slot) {
                 val b = (dA.x * prize.y - dA.y * prize.x) / (dA.x * dB.y - dA.y * dB.x)
                 val a = (prize.y - dB.y * b) / dA.y

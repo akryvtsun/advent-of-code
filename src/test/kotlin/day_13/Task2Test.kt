@@ -26,13 +26,13 @@ class Task2Test {
             Prize: X=10000000018641, Y=10000000010279
         """.trimIndent()
         val input = transform(config)
-        assertEquals(480, Task2.solve(input))
+        assertEquals(875318608908, Task2.solve(input))
     }
 
     @Test
     fun `should successfully solve the real task`() {
         val map = File("src/test/resources/day_13/TaskData.txt").readText()
-        val input = transform(map)
-        assertEquals(-1, Task2.solve(input))
+        val input = transform(map, 10000000000000)
+        assertEquals(108394825772874, Task2.solve(input))
     }
 }

@@ -30,6 +30,6 @@ class Task1Test {
     fun `should successfully solve the real task`() {
         val map = File("src/test/resources/day_14/TaskData.txt").readText()
         val input = transform(map)
-        assertEquals(-1, Task1.solve(103, 101, input))
+        assertEquals(230461440, Task1.solve(103, 101, input))
     }
 }

@@ -1,5 +1,7 @@
 package day_15
 
+import day_15.Command.*
+
 class Task2 {
 
     data class Box(val left: Point, val right: Point) {
@@ -22,8 +24,8 @@ class Task2 {
             val data = map.lines()
             for (y in data.indices) {
                 for (x in data.first().indices) {
-                    val left = Point(y, x*2)
-                    val right = Point(y, x*2+1)
+                    val left = Point(y, x * 2)
+                    val right = Point(y, x * 2 + 1)
                     when (data[y][x]) {
                         '#' -> obstacles += listOf(left, right)
                         'O' -> boxes += Box(left, right)
@@ -40,31 +42,36 @@ class Task2 {
             val obstacles = data.obstacles.toList()
             val boxes = data.boxes
             var cur = data.robot!!
-            for (cmd in commands) {
-                val next = cur + cmd.delta
-                if (next in obstacles) {
-                    continue    // skip move
+
+            outer@ for (cmd in commands) {
+                val setForMove = mutableSetOf<Box>()
+                var edge = setOf(cur)
+                while (true) {
+                    var nextEdge = edge.map { it + cmd.delta }.toSet()
+                    if (nextEdge.any { it in obstacles }) {
+                        continue@outer   // edge faced to obstacle -> skip move
+                    }
+                    val nextBoxes = nextEdge.map { edge -> boxes.firstOrNull { edge in it } }.filterNotNull().toSet()
+                    if (nextBoxes.isNotEmpty()) {
+                        setForMove += nextBoxes
+                        nextEdge = nextBoxes.flatMap {
+                            when (cmd) {
+                                UP, DOWN -> listOf(it.left, it.right)
+                                LEFT -> listOf(it.left)
+                                RIGHT -> listOf(it.right)
+                            }
+                        }.toSet()  // recalc edge line
+                    } else
+                        break
+                    edge = nextEdge
                 }
-                val b = boxes.firstOrNull { next in it }
-                if (b != null) {
-                    val bSet = mutableSetOf(b)
-                    var nextPos = next
-                    while (true) {
-                        nextPos += cmd.delta
-                        val nb = boxes.firstOrNull { nextPos in it }
-                        if (nb == null) break
-                        bSet += nb
-                    }
-                    if (nextPos in obstacles) {
-                        continue // boxes close to obstacle in cmd direction - skip move
-                    }
-                    else {  // move boxes set
-                        boxes -= bSet
-                        boxes += bSet.map { it + cmd.delta }
-                    }
+                if (setForMove.isNotEmpty()) {
+                    boxes -= setForMove
+                    boxes += setForMove.map { it + cmd.delta }
+                    cur += cmd.delta
                 }
-                cur = next // move robot to new position in cmd direction
             }
+
             return boxes.sumOf { it.left.y * 100 + it.left.x }
         }
     }

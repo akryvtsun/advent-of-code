@@ -41,11 +41,11 @@ class Task2 {
         fun solve(data: Warehouse, commands: List<Command>): Int {
             val obstacles = data.obstacles.toList()
             val boxes = data.boxes
-            var cur = data.robot!!
+            var robotPos = data.robot!!
 
             outer@ for (cmd in commands) {
-                val setForMove = mutableSetOf<Box>()
-                var edge = setOf(cur)
+                val boxesForMove = mutableSetOf<Box>()
+                var edge = setOf(robotPos)
                 while (true) {
                     var nextEdge = edge.map { it + cmd.delta }.toSet()
                     if (nextEdge.any { it in obstacles }) {
@@ -53,7 +53,7 @@ class Task2 {
                     }
                     val nextBoxes = nextEdge.map { edge -> boxes.firstOrNull { edge in it } }.filterNotNull().toSet()
                     if (nextBoxes.isNotEmpty()) {
-                        setForMove += nextBoxes
+                        boxesForMove += nextBoxes
                         nextEdge = nextBoxes.flatMap {
                             when (cmd) {
                                 UP, DOWN -> listOf(it.left, it.right)
@@ -65,11 +65,11 @@ class Task2 {
                         break
                     edge = nextEdge
                 }
-                if (setForMove.isNotEmpty()) {
-                    boxes -= setForMove
-                    boxes += setForMove.map { it + cmd.delta }
-                    cur += cmd.delta
+                if (boxesForMove.isNotEmpty()) {
+                    boxes -= boxesForMove
+                    boxes += boxesForMove.map { it + cmd.delta }
                 }
+                robotPos += cmd.delta
             }
 
             return boxes.sumOf { it.left.y * 100 + it.left.x }

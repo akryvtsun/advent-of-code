@@ -1,6 +1,10 @@
 package day_15
 
-data class Point(val y: Int, val x: Int)
+data class Point(val y: Int, val x: Int) {
+    operator fun plus(other: Point): Point {
+        return Point(y + other.y, x + other.x)
+    }
+}
 
 class Warehouse(map: String) {
 
@@ -23,11 +27,11 @@ class Warehouse(map: String) {
     }
 }
 
-enum class Command(val c: Char) {
-    UP('^'),
-    DOWN('v'),
-    LEFT('<'),
-    RIGHT('>');
+enum class Command(val c: Char, val delta: Point) {
+    UP('^', Point(-1, 0)),
+    DOWN('v', Point(1, 0)),
+    LEFT('<', Point(0, -1)),
+    RIGHT('>', Point(0, 1));
 }
 
 fun transform(input: String): Pair<Warehouse, List<Command>> {

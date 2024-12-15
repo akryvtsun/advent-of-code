@@ -6,6 +6,15 @@ import kotlin.test.assertEquals
 
 class Task1Test {
 
+    fun transform(input: String): Pair<Task1.Warehouse, List<Command>> {
+        val blocks = input.split("\n\n")
+        val wrhs = Task1.Warehouse(blocks[0])
+        val cmds = blocks[1]
+            .filter { it != '\n' }
+            .map { c -> Command.entries.first { it.c == c } }
+        return wrhs to cmds
+    }
+
     @Test
     fun `should successfully pass small task example`() {
         val config = """

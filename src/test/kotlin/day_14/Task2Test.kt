@@ -10,6 +10,6 @@ class Task2Test {
     fun `should successfully solve the real task`() {
         val map = File("src/test/resources/day_14/TaskData.txt").readText()
         val input = transform(map)
-        assertEquals(-1, Task2.solve(103, 101, input))
+        assertEquals(6668, Task2.solve(103, 101, input))
     }
 }

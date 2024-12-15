@@ -9,7 +9,7 @@ class Task2 {
             return if (newValue < 0) border + newValue else newValue
         }
 
-        fun solve(height: Int, width: Int, robots: List<Robot>): Long {
+        fun solve(height: Int, width: Int, robots: List<Robot>): Int {
 
             fun Robot.doStep(): Robot {
                 var newY = roundMove(this.coord.y, this.delta.y, height)
@@ -17,26 +17,33 @@ class Task2 {
                 return Robot(Point(newY, newX), this.delta)
             }
 
-            fun printTree(step: Int, robots: List<Robot>) {
-                println(">>>>>>>>>>>>>>>>> STEP: $step >>>>>>>>>>>>>>>>>")
+            fun checkTree(robots: List<Robot>): Boolean {
                 for (y in 0..height) {
+                    var line = StringBuilder()
                     for (x in 0..width) {
-                        if (robots.any { it.coord == Point(y, x) }) {
-                            print("#")
-                        } else {
-                            print(" ")
-                        }
+                        val char = if (robots.any { it.coord == Point(y, x) }) '#' else ' '
+                        line.append(char)
                     }
-                    println()
+                    val found = line.indexOf("########") != -1
+                    if (found) return true
                 }
+                return false
             }
 
-            var curRobots = robots
-            repeat(100) {
-                printTree(it, curRobots)
-                curRobots = curRobots.map { it.doStep() }
+            val treeState = generateSequence(0 to robots) { state ->
+                state.first + 1 to state.second.map { it.doStep() }
             }
-            return 0
+                .first { checkTree(it.second) }
+            println(">>>>>>>>>>>>>>>>> STEP: ${treeState.first} >>>>>>>>>>>>>>>>>")
+            for (y in 0..height) {
+                var line = StringBuilder()
+                for (x in 0..width) {
+                    val char = if (treeState.second.any { it.coord == Point(y, x) }) '#' else ' '
+                    line.append(char)
+                }
+                println(line)
+            }
+            return treeState.first
         }
     }
 }

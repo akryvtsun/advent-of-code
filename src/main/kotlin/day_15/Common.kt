@@ -2,19 +2,42 @@ package day_15
 
 data class Point(val y: Int, val x: Int)
 
-data class Robot(val coord: Point, val delta: Point)
+class Warehouse(map: String) {
 
-fun transform(input: String) = input.lines()
-    .map { line ->
-        val (c, d) = line.split(" ")
-        val coord = getPoint(c).let { Point(it.second, it.first) }
-        val delta = getPoint(d).let { Point(it.second, it.first) }
-        Robot(coord, delta)
+    val obstacles = mutableListOf<Point>()
+    val boxes = mutableListOf<Point>()
+    var robot: Point? = null
+
+    init {
+        val data = map.lines()
+        for (y in data.indices) {
+            for (x in data.first().indices) {
+                val point = Point(y, x)
+                when (data[y][x]) {
+                    '#' -> obstacles += point
+                    'O' -> boxes += point
+                    '@' -> robot = point
+                }
+            }
+        }
     }
-
-private fun getPoint(data: String): Pair<Int, Int> {
-    val (x, y) = """[pv]=(.+),(.+)""".toRegex().find(data)!!.destructured
-    return x.toInt() to y.toInt()
 }
+
+enum class Command(val c: Char) {
+    UP('^'),
+    DOWN('v'),
+    LEFT('<'),
+    RIGHT('>');
+}
+
+fun transform(input: String): Pair<Warehouse, List<Command>> {
+    val blocks = input.split("\n\n")
+    val wrhs = Warehouse(blocks[0])
+    val cmds = blocks[1]
+        .filter { it != '\n' }
+        .map { c -> Command.entries.first { it.c == c } }
+    return wrhs to cmds
+}
+
 
 

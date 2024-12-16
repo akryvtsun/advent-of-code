@@ -9,17 +9,17 @@ class Task1 {
     companion object {
 
         fun solve(config: Labyrinth): Int {
-            val init = Step(config.start, Direction.RIGHT)
-            val pq = PriorityQueue<Pair<Step, Int>>(compareBy { it.second })
-            pq.add(init to 0)
+            val initPos = Step(config.start, Direction.RIGHT)
+            val unvisited = PriorityQueue<Pair<Step, Int>>(compareBy { it.second })
+            unvisited.add(initPos to 0)
             val visited = mutableSetOf<Step>()
-            while (pq.isNotEmpty()) {
-                val path = pq.poll().also { visited += it.first }
+            while (unvisited.isNotEmpty()) {
+                val path = unvisited.poll().also { visited += it.first }
                 val curStep = path.first
                 if (curStep.pos == config.end) {
                     return path.second
                 } else {
-                    listOf(-1, 0, 1)
+                    unvisited += listOf(-1, 0, 1)
                         .map {
                             var newPos = curStep.pos
                             val newDir =
@@ -36,7 +36,6 @@ class Task1 {
                         }
                         .filter { it.first.pos !in config.obstacles }
                         .filter { it.first !in visited }
-                        .forEach { pq.add(it) }
                 }
             }
             return -1

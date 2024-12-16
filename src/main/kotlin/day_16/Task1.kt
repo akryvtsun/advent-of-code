@@ -7,7 +7,7 @@ class Task1 {
     companion object {
 
         fun evaluate(path: List<Step>): Long {
-            val steps = path.size-1
+            val steps = path.size - 1
             var turns = 0L
             path.zipWithNext()
                 .forEach { (a, b) -> if (a.dir != b.dir) turns++ }
@@ -15,26 +15,26 @@ class Task1 {
         }
 
         fun solve(config: Labyrinth): Long {
-            val pathList = mutableListOf<List<Step>>()
-
             val init = listOf(Step(config.start, Direction.RIGHT))
             val pq = ArrayDeque<List<Step>>()
             pq.add(init)
-            while (pq.isNotEmpty()) {
-                val path = pq.removeFirst()
-                val curPos = path.last()
-                if (curPos.pos == config.end) {
-                    pathList.add(path)
-                }
-                else {
-                    Direction.entries
-                        .map { Step(curPos.pos + it.delta, it) }
-                        .filter { it !in path }
-                        .forEach { pq.addLast(path + it) }
+            return sequence {
+                while (pq.isNotEmpty()) {
+                    val path = pq.removeFirst()
+                    val curPos = path.last()
+                    if (curPos.pos == config.end) {
+                        yield(path)
+                    } else {
+                        val steps = path.map { it.pos }.toSet()
+                        Direction.entries
+                            .map { Step(curPos.pos + it.delta, it) }
+                            .filter { it.pos !in config.obstacles }                 // check obstacles bump
+                            .filter { it.pos !in steps }                            // check for path loops
+                            .forEach { pq.addLast(path + it) }
+                    }
                 }
             }
-
-            return pathList.minOf { evaluate(it) }
+                .minOf { evaluate(it) }
         }
     }
 }

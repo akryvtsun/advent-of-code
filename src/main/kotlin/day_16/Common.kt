@@ -13,12 +13,12 @@ enum class Direction(val delta: Point) {
     RIGHT(Point(0, 1));
 }
 
-data class Labyrinth(val start: Point, val end: Point, val obstacles: List<Point>)
+data class Labyrinth(val start: Point, val end: Point, val obstacles: Set<Point>)
 
 fun transform(input: String): Labyrinth {
     var start: Point? = null
     var end: Point? = null
-    val obstacles = mutableListOf<Point>()
+    val obstacles = mutableSetOf<Point>()
     val lines = input.lines()
     for (y in lines.indices) {
         for (x in lines.first().indices) {

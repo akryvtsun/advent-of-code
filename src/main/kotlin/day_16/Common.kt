@@ -8,9 +8,9 @@ data class Point(val y: Int, val x: Int) {
 
 enum class Direction(val delta: Point) {
     UP(Point(-1, 0)),
+    RIGHT(Point(0, 1)),
     DOWN(Point(1, 0)),
-    LEFT(Point(0, -1)),
-    RIGHT(Point(0, 1));
+    LEFT(Point(0, -1));
 }
 
 data class Labyrinth(val start: Point, val end: Point, val obstacles: Set<Point>)

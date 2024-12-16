@@ -10,7 +10,7 @@ class Task1 {
             var steps = 0L
             var turns = 0L
             path.zipWithNext()
-                .forEach { (a, b) -> if (a.dir == b.dir) steps++ else turns++ }
+                .forEach { (a, b) -> if (a.dir != b.dir) turns++; steps++ }
             return turns * 1000 + steps
         }
 

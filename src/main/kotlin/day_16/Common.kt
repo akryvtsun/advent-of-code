@@ -13,6 +13,8 @@ enum class Direction(val delta: Point) {
     LEFT(Point(0, -1));
 }
 
+data class Step(val pos: Point, val dir: Direction)
+
 data class Labyrinth(val start: Point, val end: Point, val obstacles: Set<Point>)
 
 fun transform(input: String): Labyrinth {

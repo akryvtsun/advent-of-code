@@ -4,8 +4,6 @@ import java.util.PriorityQueue
 
 class Task2 {
 
-    data class Step(val pos: Point, val dir: Direction)
-
     companion object {
 
         fun solve(config: Labyrinth): Int {
@@ -14,8 +12,9 @@ class Task2 {
             unvisited.add(listOf(initPos) to 0)
             var best: Int? = null
             val res = mutableSetOf<Point>()
+            val visited = mutableSetOf<Step>()
             while (unvisited.isNotEmpty()) {
-                val path = unvisited.poll()
+                val path = unvisited.poll().also { visited += it.first }
                 val curStep = path.first.last()
                 if (curStep.pos == config.end) {
                     if (best == null) {
@@ -42,7 +41,7 @@ class Task2 {
                                 newStep to newCount
                             }
                             .filter { it.first.pos !in config.obstacles }
-                            .filter { it.first !in path.first }
+                            .filter { it.first !in visited }
                             .map { (path.first + it.first) to it.second }
                     }
                 }

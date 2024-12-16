@@ -4,8 +4,6 @@ import java.util.PriorityQueue
 
 class Task1 {
 
-    data class Step(val pos: Point, val dir: Direction)
-
     companion object {
 
         fun solve(config: Labyrinth): Int {

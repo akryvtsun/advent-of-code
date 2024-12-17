@@ -9,14 +9,14 @@ class Task2Test {
     @Test
     fun `should successfully pass task example`() {
         val config = """
-            Register A: 729
+            Register A: 117440
             Register B: 0
             Register C: 0
             
-            Program: 0,1,5,4,3,0
+            Program: 0,3,5,4,3,0
         """.trimIndent()
         val input = transform(config)
-        assertEquals("4,6,3,5,6,3,5,2,1,0", Task2.solve(input).second)
+        assertEquals("0,3,5,4,3,0", Task2.solve(input).second)
     }
 
     @Test

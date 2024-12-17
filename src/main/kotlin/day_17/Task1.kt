@@ -5,16 +5,16 @@ class Task1 {
     companion object {
 
         fun solve(config: Computer): String {
-            var output = mutableListOf<Int>()
+            val output = mutableListOf<Int>()
 
             var A = config.A
             var B = config.B
             var C = config.C
             var i = 0
 
-            fun getOperand(oper: Int): Int =
-                when (oper) {
-                    in 0..3 -> oper
+            fun getValue(operand: Int): Int =
+                when (operand) {
+                    in 0..3 -> operand
                     4 -> A
                     5 -> B
                     6 -> C
@@ -23,33 +23,34 @@ class Task1 {
 
             while (i < config.program.size) {
                 val opcode = config.program[i++]
-                val operand = getOperand(config.program[i++])
+                val operand = config.program[i++]
+                val value = getValue(operand)
                 when (opcode) {
                     0 -> { // adv
-                        A /= (2 shl operand)
+                        A /= (2 shl value)
                     }
                     1 -> { // bxl
-                        B = B xor operand
+                        B = B xor value
                     }
                     2 -> { // bst
-                        B = operand and 0b111
+                        B = value and 0b111
                     }
                     3 -> { // jnz
                         if (A != 0) {
-                            i = operand
+                            i = value
                         }
                     }
                     4 -> { // bxc
                         B = B xor C
                     }
                     5 -> { // out
-                        output += operand and 0b111
+                        output += value and 0b111
                     }
                     6 -> { // bdv
-                        B = A / (2 shl operand)
+                        B = A / (2 shl value)
                     }
                     7 -> { // cdv
-                        C = A / (2 shl operand)
+                        C = A / (2 shl value)
                     }
                     else -> throw IllegalArgumentException("Invalid operation")
                 }

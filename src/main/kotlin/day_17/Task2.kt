@@ -31,9 +31,7 @@ class Task2 {
                         B = getCombo(operand) and 0b111
                     }
                     3 -> { // jnz
-//                        if (A != 0) {
-//                            i = operand
-//                        }
+                        // IGNORE
                     }
                     4 -> { // bxc
                         B = B xor C

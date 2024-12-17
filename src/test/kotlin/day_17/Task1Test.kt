@@ -20,6 +20,19 @@ class Task1Test {
     }
 
     @Test
+    fun `should successfully pass task 2 example`() {
+        val config = """
+            Register A: 117440
+            Register B: 0
+            Register C: 0
+            
+            Program: 0,3,5,4,3,0
+        """.trimIndent()
+        val input = transform(config)
+        assertEquals("0,3,5,4,3,0", Task1.solve(input).second)
+    }
+
+    @Test
     fun `test case 1`() {
         assertEquals(1, Task1.solve(Computer(0, 0, 9, listOf(2, 6))).first.B)
     }

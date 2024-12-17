@@ -18,7 +18,7 @@ class Task1 {
                     4 -> A
                     5 -> B
                     6 -> C
-                    else -> throw IllegalArgumentException("Invalid operation")
+                    else -> throw IllegalArgumentException("Invalid operand")
                 }
 
             while (i < config.program.size) {
@@ -27,7 +27,7 @@ class Task1 {
                 val value = getValue(operand)
                 when (opcode) {
                     0 -> { // adv
-                        A /= (2 shl value)
+                        A /= (1 shl value)
                     }
                     1 -> { // bxl
                         B = B xor value
@@ -47,10 +47,10 @@ class Task1 {
                         output += value and 0b111
                     }
                     6 -> { // bdv
-                        B = A / (2 shl value)
+                        B = A / (1 shl value)
                     }
                     7 -> { // cdv
-                        C = A / (2 shl value)
+                        C = A / (1 shl value)
                     }
                     else -> throw IllegalArgumentException("Invalid operation")
                 }

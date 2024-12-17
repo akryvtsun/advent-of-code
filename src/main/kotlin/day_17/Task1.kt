@@ -4,7 +4,7 @@ class Task1 {
 
     companion object {
 
-        fun solve(config: Computer): String {
+        fun solve(config: Computer): Pair<Computer, String> {
             val output = mutableListOf<Int>()
 
             var A = config.A
@@ -12,7 +12,7 @@ class Task1 {
             var C = config.C
             var i = 0
 
-            fun getValue(operand: Int): Int =
+            fun getCombo(operand: Int): Int =
                 when (operand) {
                     in 0..3 -> operand
                     4 -> A
@@ -24,39 +24,38 @@ class Task1 {
             while (i < config.program.size) {
                 val opcode = config.program[i++]
                 val operand = config.program[i++]
-                val value = getValue(operand)
                 when (opcode) {
                     0 -> { // adv
-                        A /= (1 shl value)
+                        A /= (1 shl getCombo(operand))
                     }
                     1 -> { // bxl
-                        B = B xor value
+                        B = B xor operand
                     }
                     2 -> { // bst
-                        B = value and 0b111
+                        B = getCombo(operand) and 0b111
                     }
                     3 -> { // jnz
                         if (A != 0) {
-                            i = value
+                            i = operand
                         }
                     }
                     4 -> { // bxc
                         B = B xor C
                     }
                     5 -> { // out
-                        output += value and 0b111
+                        output += getCombo(operand) and 0b111
                     }
                     6 -> { // bdv
-                        B = A / (1 shl value)
+                        B = A / (1 shl getCombo(operand))
                     }
                     7 -> { // cdv
-                        C = A / (1 shl value)
+                        C = A / (1 shl getCombo(operand))
                     }
                     else -> throw IllegalArgumentException("Invalid operation")
                 }
             }
 
-            return output.joinToString(separator = ",")
+            return Computer(A, B, C, config.program) to output.joinToString(separator = ",")
         }
     }
 }

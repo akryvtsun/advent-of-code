@@ -30,15 +30,20 @@ class Task2 {
                 }
             }
 
-            var length = 1
-            while (true) {
-                val brokenCells = bytes.take(length).toSet()
-                if (!isExitReachable(brokenCells)) {
-                    val finalCell = bytes[length-1]
-                    return Point(finalCell.x, finalCell.y)
+            val resultIndex = (1..bytes.size)
+                .map { bytes.take(it) }
+                .binarySearch {
+                    if (isExitReachable(it.toSet()))
+                        -1
+                    else {
+                        val previousList = it.subList(0, it.size - 1)
+                        if (isExitReachable(previousList.toSet()))
+                            0
+                        else
+                            1
+                    }
                 }
-                length++
-            }
+            return bytes[resultIndex].let { (y, x) -> Point(x, y) }
         }
     }
 }

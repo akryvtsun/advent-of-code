@@ -53,15 +53,14 @@ class Task2 {
             pq.add(Pair(0, emptyList()))
 
             while (true) {
-                val result = pq.removeFirst()
-                val potentialA = result.first
-                if (result.second == program) return potentialA
+                val (potentialA, output) = pq.removeFirst()
+                if (output == program) return potentialA
 
                 val left = potentialA * 8
                 val right = (potentialA+1) * 8 - 1
                 for (num in left..right) {
                     A = num
-                    out = result.second.toMutableList()
+                    out = output.toMutableList()
                     program.windowed(2,2).forEach { execute(it[0], it[1]) }
                     if (num != 0L && out == program.subList(program.size - out.size, program.size)) {
                         pq.addLast(num to out)

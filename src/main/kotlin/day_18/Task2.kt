@@ -1,6 +1,7 @@
 package day_18
 
 import java.util.PriorityQueue
+import kotlin.math.absoluteValue
 
 class Task2 {
 
@@ -30,20 +31,13 @@ class Task2 {
                 }
             }
 
-            val resultIndex = (1..bytes.size)
-                .map { bytes.take(it) }
+            return (1..bytes.size)
+                .map(bytes::take)
                 .binarySearch {
-                    if (isExitReachable(it.toSet()))
-                        -1
-                    else {
-                        val previousList = it.subList(0, it.size - 1)
-                        if (isExitReachable(previousList.toSet()))
-                            0
-                        else
-                            1
-                    }
+                    if (isExitReachable(it.toSet())) -1 else 1
                 }
-            return bytes[resultIndex].let { (y, x) -> Point(x, y) }
+                .let { bytes[it.absoluteValue - 1] }
+                .let { (y, x) -> Point(x, y) }
         }
     }
 }

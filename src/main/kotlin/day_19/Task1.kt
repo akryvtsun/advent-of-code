@@ -23,7 +23,7 @@ class Task1 {
                 }
                 candidate.isTerminal = true
             }
-            return designs.count { d -> isPossible(d, root).also { println("$d=$it") } }
+            return designs.count { isPossible(it, root) }
         }
 
         private fun isPossible(design: String, root: Node): Boolean {

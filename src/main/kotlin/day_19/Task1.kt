@@ -1,7 +1,5 @@
 package day_19
 
-import java.util.PriorityQueue
-
 data class Node(var isTerminal: Boolean = false, var next: MutableMap<Char, Node>? = null)
 
 class Task1 {
@@ -29,10 +27,10 @@ class Task1 {
         }
 
         private fun isPossible(design: String, root: Node): Boolean {
-            val queue = PriorityQueue<Int>(Comparator.reverseOrder()).also { it.add(0) }
+            val queue = LinkedHashSet(listOf(0))
             while (true) {
                 if (queue.isEmpty()) return false
-                val tail = queue.poll()
+                val tail = queue.removeFirst()
                 val newTails = findTails(design, root, tail)
                 if (newTails.any { it == design.length }) return true
                 queue.addAll(newTails)

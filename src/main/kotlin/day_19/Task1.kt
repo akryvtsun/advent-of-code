@@ -1,5 +1,7 @@
 package day_19
 
+import java.util.PriorityQueue
+
 class Task1 {
 
     companion object {
@@ -9,10 +11,10 @@ class Task1 {
         }
 
         private fun isPossible(design: String, patterns: List<String>): Boolean {
-            val queue = ArrayDeque(listOf(design))
+            val queue = PriorityQueue<String>(compareBy { it.length }).also { it.add(design) }
             while (true) {
                 if (queue.isEmpty()) return false
-                val tail = queue.removeFirst()
+                val tail = queue.poll()
                 val newTails = patterns
                     .filter { tail.startsWith(it) }
                     .map { tail.removePrefix(it) }

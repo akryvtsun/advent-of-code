@@ -5,54 +5,21 @@ class Task2 {
     companion object {
 
         fun solve(patterns: List<String>, designs: List<String>): Int {
-            // build prefix tree
-            val root = Node()
-            for (pattern in patterns) {
-                var candidate = root
-                for (c in pattern) {
-                    if (candidate.next == null) {
-                        candidate.next = mutableMapOf()
-                    }
-                    val probe = candidate.next!![c]
-                    if (probe == null) {
-                        candidate.next!![c] = Node()
-                    }
-                    candidate = candidate.next!![c]!!
-                }
-                candidate.isTerminal = true
-            }
-            return designs.count { isPossible(it, root) }
+            return designs.sumOf { variants(it, patterns) }
         }
 
-        private fun isPossible(design: String, root: Node): Boolean {
-            val queue = LinkedHashSet(listOf(0))
+        private fun variants(design: String, patterns: List<String>): Int {
+            var count = 0
+            val queue = ArrayDeque(listOf(design))
             while (true) {
-                if (queue.isEmpty()) return false
+                if (queue.isEmpty()) return count
                 val tail = queue.removeFirst()
-                val newTails = findTails(design, root, tail)
-                if (newTails.any { it == design.length }) return true
-                queue.addAll(newTails)
+                val newTails = patterns
+                    .filter { tail.startsWith(it) }
+                    .map { tail.removePrefix(it) }
+                count += newTails.count { it.isEmpty() }
+                queue.addAll(newTails.filter { it.isNotEmpty() })
             }
-        }
-
-        private fun findTails(design: String, root: Node, tail: Int) : List<Int> {
-            val newTails = mutableListOf<Int>()
-            var i = tail
-            var node = root
-
-            while (true) {
-                if (node.next == null || i == design.length) break
-                val c = design[i]
-                val candidate = node.next!![c]
-                if (candidate != null && candidate.isTerminal) {
-                    newTails += i + 1
-                }
-                if (candidate == null) break
-                node = candidate
-                i++
-            }
-
-            return newTails
         }
     }
 }

@@ -2,6 +2,8 @@ package day_22
 
 class Task2 {
 
+    data class Seq(val d1: Long, val d2: Long, val d3: Long, val d4: Long)
+
     companion object {
 
         fun nextSecret(num: Long): Long {
@@ -15,16 +17,38 @@ class Task2 {
 
         private inline fun prune(num: Long) = num and 0xFFFFFF
 
-        private fun nextSecret2000(num: Long): Long {
+        private fun secrets2000(num: Long) = sequence {
             var secret = num
+            yield(secret)
             for (i in 1 .. 2000) {
                 secret = nextSecret(secret)
+                yield(secret)
             }
-            return secret
+        }
+
+        private fun createBuyerModel(secret: Long): Map<Seq, Long> {
+            val model = mutableMapOf<Seq, Long>()
+            val inter = secrets2000(secret)
+                .map { it % 10 }
+                .zipWithNext()
+                .map { it.second - it.first to it.second }
+            inter.windowed(4, 1)
+                .map { (d1, d2, d3, d4) -> Seq(d1.first, d2.first, d3.first, d4.first) to d4.second }
+                .forEach { if (model[it.first] == null) model[it.first] = it.second }
+            return model
+        }
+
+        private fun seqBananasValue(model: List<Map<Seq, Long>>, seq: Seq): Long {
+            return model.sumOf { it[seq] ?: 0 }
         }
 
         fun solve(buyers: List<Long>): Long {
-            return buyers.maxOf { nextSecret2000(it) }
+            val model = buyers.map { createBuyerModel(it) }
+            val allSeqs = model
+                .flatMap { it.keys }
+                .toSet()
+            return allSeqs
+                .maxOf { seq -> seqBananasValue(model, seq) }
         }
     }
 }

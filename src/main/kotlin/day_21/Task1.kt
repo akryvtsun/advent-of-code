@@ -4,7 +4,7 @@ class Task1 {
 
     companion object {
 
-        private fun shortestPath(pad: String) = ""
+        fun shortestPath(pad: String) = ""
 
         private fun complexity(pad: String, seq: String) =
             pad.substringBefore('A').toInt() * seq.length

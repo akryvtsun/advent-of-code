@@ -1,6 +1,6 @@
 package day_22
 
-class Task1 {
+class Task2 {
 
     companion object {
 
@@ -15,16 +15,16 @@ class Task1 {
 
         private inline fun prune(num: Long) = num and 0xFFFFFF
 
-        fun solve(buyers: List<Long>): Long {
-            return buyers.sumOf { nextSecret2000(it) }
-        }
-
         private fun nextSecret2000(num: Long): Long {
             var secret = num
             for (i in 1 .. 2000) {
                 secret = nextSecret(secret)
             }
             return secret
+        }
+
+        fun solve(buyers: List<Long>): Long {
+            return buyers.maxOf { nextSecret2000(it) }
         }
     }
 }

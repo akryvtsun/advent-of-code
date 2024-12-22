@@ -12,7 +12,7 @@ class Task1 {
             return doIt(secret) { it shl 11 }
         }
 
-        private fun doIt(num: Long, op: (Long) -> Long) : Long =
+        private inline fun doIt(num: Long, op: (Long) -> Long) : Long =
             prune(op(num) xor num)
 
         private inline fun prune(num: Long) = num and 0xFFFFFF

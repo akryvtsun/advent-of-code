@@ -15,14 +15,10 @@ class Task1 {
         private fun doIt(num: Long, op: (Long) -> Long) : Long =
             prune(op(num) xor num)
 
-        private fun prune(num: Long) =
-            num % 16777216
+        private inline fun prune(num: Long) = num and 0xFFFFFF
 
         fun solve(buyers: List<Long>): Long {
-            return buyers
-                .map { nextSecret2000(it) }
-                //.also { println(it) }
-                .sum()
+            return buyers.sumOf { nextSecret2000(it) }
         }
 
         private fun nextSecret2000(num: Long): Long {

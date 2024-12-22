@@ -7,6 +7,11 @@ import kotlin.test.assertEquals
 class Task1Test {
 
     @Test
+    fun `should successfully find path`() {
+        assertEquals("<A^A^^>AvvvA", Task1.numKeypadPaths("029A"))
+    }
+
+    @Test
     fun `should successfully find shortest paths`() {
         assertEquals("<vA<AA>>^AvAA<^A>A<v<A>>^AvA^A<vA>^A<v<A>^A>AAvA^A<v<A>A>^AAAvA<^A>A", Task1.shortestPath("029A"))
         assertEquals("<v<A>>^AAAvA^A<vA<AA>>^AvAA<^A>A<v<A>A>^AAAvA<^A>A<vA>^A<A>A", Task1.shortestPath("980A"))

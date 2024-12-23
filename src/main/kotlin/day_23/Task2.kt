@@ -4,17 +4,15 @@ class Task2 {
 
     companion object {
 
-        private fun addPair(model: MutableMap<String, MutableSet<String>>, p: Pair<String, String>) {
-            model.computeIfAbsent(p.first) { mutableSetOf() }.add(p.second)
-            model.computeIfAbsent(p.second) { mutableSetOf() }.add(p.first)
+        private fun MutableMap<String, MutableSet<String>>.addPair(p: Pair<String, String>) {
+            computeIfAbsent(p.first) { mutableSetOf() }.add(p.second)
+            computeIfAbsent(p.second) { mutableSetOf() }.add(p.first)
         }
 
         fun solve(links: List<Pair<String, String>>): String {
             // build model
             val model = mutableMapOf<String, MutableSet<String>>()
-            for (link in links) {
-                addPair(model, link)
-            }
+            links.forEach { model.addPair(it) }
             // find max party
             val maxParty = buildSet {
                 for (key in model.keys) {

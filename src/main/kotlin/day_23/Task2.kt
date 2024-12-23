@@ -4,11 +4,6 @@ class Task2 {
 
     companion object {
 
-        private fun MutableMap<String, MutableSet<String>>.addPair(p: Pair<String, String>) {
-            computeIfAbsent(p.first) { mutableSetOf() }.add(p.second)
-            computeIfAbsent(p.second) { mutableSetOf() }.add(p.first)
-        }
-
         fun solve(links: List<Pair<String, String>>): String {
             // build model
             val model = mutableMapOf<String, MutableSet<String>>()

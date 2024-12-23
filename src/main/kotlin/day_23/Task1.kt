@@ -10,10 +10,10 @@ class Task1 {
         }
 
         fun solve(links: List<Pair<String, String>>): Int {
+            // build model
             val model = mutableMapOf<String, MutableSet<String>>()
-            for (link in links) {
-                addPair(model, link)
-            }
+            links.forEach { model.addPair(it) }
+            // find 't'-triples
             return model.keys
                 .flatMap { first ->
                     val set = model[first]!!

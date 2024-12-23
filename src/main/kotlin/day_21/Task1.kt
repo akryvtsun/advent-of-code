@@ -4,19 +4,6 @@ import kotlin.math.absoluteValue
 
 class Task1 {
 
-//    data class Point(val y: Int, val x: Int) {
-//        operator fun plus(other: Point): Point {
-//            return Point(y + other.y, x + other.x)
-//        }
-//    }
-//
-//    enum class Direction(val delta: Point) {
-//        UP(Point(-1, 0)),
-//        RIGHT(Point(0, 1)),
-//        DOWN(Point(1, 0)),
-//        LEFT(Point(0, -1));
-//    }
-
     companion object {
 
         private fun moveVis(delta: Int, negative: Char, positive: Char): String {
@@ -49,7 +36,7 @@ class Task1 {
                 .joinToString(separator = "")
         }
 
-        private fun dirKeypadPaths(pad: String): String {
+        fun dirKeypadPaths(pad: String): String {
 
             val moveMap = buildMap {
                 put(('A' to 'A'), Pair(0, 0))
@@ -82,7 +69,7 @@ class Task1 {
                 put(('<' to 'v'), Pair(0, 1))
                 put(('<' to '<'), Pair(0, 0))
             }
-
+println(">>> pad="+pad)
             return "A$pad"
                 .zipWithNext()
                 .flatMap { (start, stop) ->
@@ -91,15 +78,15 @@ class Task1 {
                         moveVis(dy, 'v', '^'),
                         moveVis(dx, '<', '>'),
                         "A"
-                    )
+                    ).also { println(it) }
                 }
-                .joinToString(separator = "")
+                .joinToString(separator = "").also { println(">>>>> "+it) }
         }
 
         fun shortestPath(pad: String): String {
-            val path1 = numKeypadPaths(pad)
-            val path2 = dirKeypadPaths(path1)
-            return dirKeypadPaths(path2)
+            val path1 = numKeypadPaths(pad).also { println("$it=${it.length}") }
+            val path2 = dirKeypadPaths(path1).also { println("$it=${it.length}") }
+            return dirKeypadPaths(path2).also { println("$it=${it.length}") }
         }
 
         private fun complexity(pad: String, seq: String) =

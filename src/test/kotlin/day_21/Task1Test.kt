@@ -1,40 +1,47 @@
 package day_21
 
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.MethodSource
 import java.io.File
 import kotlin.test.assertEquals
 
 class Task1Test {
+
+    companion object {
+        @JvmStatic
+        fun paths() = listOf(
+            Arguments.of("029A", "<vA<AA>>^AvAA<^A>A<v<A>>^AvA^A<vA>^A<v<A>^A>AAvA^A<v<A>A>^AAAvA<^A>A"),
+            Arguments.of("980A", "<v<A>>^AAAvA^A<vA<AA>>^AvAA<^A>A<v<A>A>^AAAvA<^A>A<vA>^A<A>A"),
+            Arguments.of("179A", "<v<A>>^A<vA<A>>^AAvAA<^A>A<v<A>>^AAvA^A<vA>^AA<A>A<v<A>A>^AAAvA<^A>A"),
+            Arguments.of("456A", "<v<A>>^AA<vA<A>>^AAvAA<^A>A<vA>^A<A>A<vA>^A<A>A<v<A>A>^AAvA<^A>A"),
+            Arguments.of("379A", "<v<A>>^AvA^A<vA<AA>>^AAvA<^A>AAvA^A<vA>^AA<A>A<v<A>A>^AAAvA<^A>A"),
+        )
+    }
 
     @Test
     fun `should successfully find path for 029A`() {
         val path1 = "<A^A>^^AvvvA"
         assertEquals(
             path1.length,   // 12
-            Task1.numKeypadPaths("029A").length)
+            Task1.keypadPath("029A", Task1.numericKeypad).length)
 
         val path2 = "v<<A>>^A<A>AvA<^AA>A<vAAA>^A"
         assertEquals(
             path2.length,   // 28
-            Task1.dirKeypadPaths(path1).length)
+            Task1.keypadPath(path1, Task1.directionalKeypad).length)
 
         val path3 = "<vA<AA>>^AvAA<^A>A<v<A>>^AvA^A<vA>^A<v<A>^A>AAvA^A<v<A>A>^AAAvA<^A>A"
         assertEquals(
             path3.length,   // 68
-            Task1.dirKeypadPaths(path2).length)
+            Task1.keypadPath(path2, Task1.directionalKeypad).length)
     }
 
-    @Test
-    fun `should successfully find shortest paths`() {
-        val path = "<vA<AA>>^AvAA<^A>A<v<A>>^AvA^A<vA>^A<v<A>^A>AAvA^A<v<A>A>^AAAvA<^A>A"
-        assertEquals(
-            path.length,    // 68
-            Task1.shortestPath("029A").length
-        )
-//        assertEquals("<v<A>>^AAAvA^A<vA<AA>>^AvAA<^A>A<v<A>A>^AAAvA<^A>A<vA>^A<A>A".length, Task1.shortestPath("980A").length)
-//        assertEquals("<v<A>>^A<vA<A>>^AAvAA<^A>A<v<A>>^AAvA^A<vA>^AA<A>A<v<A>A>^AAAvA<^A>A".length, Task1.shortestPath("179A").length)
-//        assertEquals("<v<A>>^AA<vA<A>>^AAvAA<^A>A<vA>^A<A>A<vA>^A<A>A<v<A>A>^AAvA<^A>A".length, Task1.shortestPath("456A").length)
-//        assertEquals("<v<A>>^AvA^A<vA<AA>>^AAvA<^A>AAvA^A<vA>^AA<A>A<v<A>A>^AAAvA<^A>A".length, Task1.shortestPath("379A").length)
+    @ParameterizedTest
+    @MethodSource("paths")
+    fun `should successfully find shortest path`(code: String, path: String) {
+        assertEquals(path.length, Task1.shortestPath(code).length)
     }
 
     @Test

@@ -39,48 +39,42 @@ class Task1 {
         fun dirKeypadPaths(pad: String): String {
 
             val moveMap = buildMap {
-                put(('A' to 'A'), Pair(0, 0))
-                put(('A' to '^'), Pair(0, -1))
-                put(('A' to '>'), Pair(1, 0))
-                put(('A' to 'v'), Pair(1, -1))
-                put(('A' to '<'), Pair(1, -2))
+                put(('A' to 'A'), "")
+                put(('A' to '^'), "<")
+                put(('A' to '>'), "v")
+                put(('A' to 'v'), "<v")
+                put(('A' to '<'), "<v<")
 
-                put(('^' to 'A'), Pair(0, 1))
-                put(('^' to '^'), Pair(0, 0))
-                put(('^' to '>'), Pair(1, 1))
-                put(('^' to 'v'), Pair(1, 0))
-                put(('^' to '<'), Pair(1, -1))
+                put(('^' to 'A'), ">")
+                put(('^' to '^'), "")
+                put(('^' to '>'), ">v")
+                put(('^' to 'v'), "v")
+                put(('^' to '<'), "v<")
 
-                put(('>' to 'A'), Pair(-1, 0))
-                put(('>' to '^'), Pair(-1, -1))
-                put(('>' to '>'), Pair(0, 0))
-                put(('>' to 'v'), Pair(0, -1))
-                put(('>' to '<'), Pair(0, -2))
+                put(('>' to 'A'), "^")
+                put(('>' to '^'), "<^")
+                put(('>' to '>'), "")
+                put(('>' to 'v'), "<")
+                put(('>' to '<'), "<<")
 
-                put(('v' to 'A'), Pair(-1, 1))
-                put(('v' to '^'), Pair(-1, 0))
-                put(('v' to '>'), Pair(0, 1))
-                put(('v' to 'v'), Pair(0, 0))
-                put(('v' to '<'), Pair(0, -1))
+                put(('v' to 'A'), "^>")
+                put(('v' to '^'), "^")
+                put(('v' to '>'), ">")
+                put(('v' to 'v'), "")
+                put(('v' to '<'), "<")
 
-                put(('<' to 'A'), Pair(-1, 2))
-                put(('<' to '^'), Pair(-1, 1))
-                put(('<' to '>'), Pair(0, 2))
-                put(('<' to 'v'), Pair(0, 1))
-                put(('<' to '<'), Pair(0, 0))
+                put(('<' to 'A'), ">>^")
+                put(('<' to '^'), ">^")
+                put(('<' to '>'), ">>")
+                put(('<' to 'v'), ">")
+                put(('<' to '<'), "")
             }
-println(">>> pad="+pad)
+
             return "A$pad"
                 .zipWithNext()
-                .flatMap { (start, stop) ->
-                    val (dy, dx) = moveMap[start to stop]!!
-                    listOf(
-                        moveVis(dy, 'v', '^'),
-                        moveVis(dx, '<', '>'),
-                        "A"
-                    ).also { println(it) }
-                }
-                .joinToString(separator = "").also { println(">>>>> "+it) }
+                .map { (start, stop) -> "${moveMap[start to stop]!!}A" }
+                .also { println(it) }
+                .joinToString(separator = "")
         }
 
         fun shortestPath(pad: String): String {

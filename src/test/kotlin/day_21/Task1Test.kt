@@ -10,21 +10,25 @@ class Task1Test {
     fun `should successfully find path for 029A`() {
         val path1 = "<A^A>^^AvvvA"
         assertEquals(
-            path1.length,
+            path1.length,   // 12
             Task1.numKeypadPaths("029A").length)
+
         val path2 = "v<<A>>^A<A>AvA<^AA>A<vAAA>^A"
         assertEquals(
-            path2.length,
+            path2.length,   // 28
             Task1.dirKeypadPaths(path1).length)
+
+        val path3 = "<vA<AA>>^AvAA<^A>A<v<A>>^AvA^A<vA>^A<v<A>^A>AAvA^A<v<A>A>^AAAvA<^A>A"
         assertEquals(
-            "<vA<AA>>^AvAA<^A>A<v<A>>^AvA^A<vA>^A<v<A>^A>AAvA^A<v<A>A>^AAAvA<^A>A".length,
+            path3.length,   // 68
             Task1.dirKeypadPaths(path2).length)
     }
 
     @Test
     fun `should successfully find shortest paths`() {
+        val path = "<vA<AA>>^AvAA<^A>A<v<A>>^AvA^A<vA>^A<v<A>^A>AAvA^A<v<A>A>^AAAvA<^A>A"
         assertEquals(
-            "<vA<AA>>^AvAA<^A>A<v<A>>^AvA^A<vA>^A<v<A>^A>AAvA^A<v<A>A>^AAAvA<^A>A".length,
+            path.length,    // 68
             Task1.shortestPath("029A").length
         )
 //        assertEquals("<v<A>>^AAAvA^A<vA<AA>>^AvAA<^A>A<v<A>A>^AAAvA<^A>A<vA>^A<A>A".length, Task1.shortestPath("980A").length)

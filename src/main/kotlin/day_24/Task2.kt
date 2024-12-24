@@ -19,6 +19,21 @@ class Task2 {
             return getSchema(blocks[1])
         }
 
+        /*
+            Solution:
+            x11 AND y11 -> z11
+            sbs XOR vbj -> vkq
+
+            qvs XOR kmc -> mmk
+            pwp  OR cwc -> z24
+
+            x28 XOR y28 -> qdq
+            y28 AND x28 -> pvb
+
+            vsb AND dkp -> z38
+            dkp XOR vsb -> hqh
+         */
+
         fun solve(gates: Map<MatOp, String>): String {
             val links = mutableSetOf<String>()
 

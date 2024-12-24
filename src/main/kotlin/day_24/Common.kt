@@ -1,13 +1,20 @@
 package day_24
 
-typealias State = Map<String, Boolean>
+typealias State = MutableMap<String, Boolean>
 typealias Schema = List<Element>
 
-data class Element(var in1: String, val in2: String, val out: String, val op: (Boolean, Boolean) -> Boolean)
+data class Element(var in1: String, val in2: String, val out: String, val op: (Boolean, Boolean) -> Boolean) {
+
+    fun execute(memory: State) {
+        val op1 = memory[in1]!!
+        val op2 = memory[in2]!!
+        memory[out] = op(op1, op2)
+    }
+}
 
 fun transform(input: String): Pair<State, Schema> {
     val blocks = input.split("\n\n")
-    return getInit(blocks[0]) to getSchema(blocks[1])
+    return getInit(blocks[0]).toMutableMap() to getSchema(blocks[1])
 }
 
 private fun getInit(input: String) =

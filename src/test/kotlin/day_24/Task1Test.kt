@@ -20,7 +20,7 @@ class Task1Test {
             x01 XOR y01 -> z01
             x02 OR y02 -> z02
         """.trimIndent()
-        val (init, links) = transform(input)
+        val (init, links) = Task1.transform(input)
         assertEquals(4, Task1.solve(init, links))
     }
 
@@ -75,14 +75,14 @@ class Task1Test {
             tgd XOR rvg -> z12
             tnw OR pbm -> gnj
         """.trimIndent()
-        val (init, links) = transform(input)
+        val (init, links) = Task1.transform(input)
         assertEquals(2024, Task1.solve(init, links))
     }
 
     @Test
     fun `should successfully solve the real task`() {
         val input = File("src/test/resources/day_24/TaskData.txt").readText()
-        val (init, links) = transform(input)
+        val (init, links) = Task1.transform(input)
         assertEquals(48063513640678, Task1.solve(init, links))
     }
 }

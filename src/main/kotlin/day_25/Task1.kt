@@ -20,23 +20,14 @@ class Task1 {
             return signature
         }
 
-        private fun isLock(block: String) =
-            block.substringBefore('\n').all { it == '#' }
-
         fun transform(input: String): Pair<List<Lock>, List<Key>> {
-            val locks = mutableListOf<Lock>()
-            val keys = mutableListOf<Key>()
-
             val blocks = input.split("\n\n")
-            blocks.forEach { block ->
-                val signature = getSignature(block)
-                if (isLock(block))
-                    locks += signature
-                else
-                    keys += signature
-            }
 
-            return Pair(locks, keys)
+            val (lBlocks, kBlocks) = blocks.partition { it[0] == '#' }
+            val locks = lBlocks.map(::getSignature)
+            val keys = kBlocks.map(::getSignature)
+
+            return locks to keys
         }
 
         private fun match(key: Key, lock: Lock): Boolean {

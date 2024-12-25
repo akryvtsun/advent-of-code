@@ -38,34 +38,62 @@ class Task1 {
         fun <K, V> Map<K, V>.getKey(value: V) =
             entries.firstOrNull { it.value == value }?.key
 
-        fun keypadPath(code: String, keypad: Map<Char, Point>): String {
-            return "A$code"
+        private fun findPaths(begin: Point, end: Point, keypad: Map<Char, Point>): Set<String> {
+            val paths = mutableSetOf<String>()
+            var minLength = Int.MAX_VALUE
+
+            val queue = PriorityQueue<Pair<Point, String>>(compareBy { it.second.length })
+            queue.add(begin to "")
+            while (true) {
+                val (pos, path) = queue.remove()
+                if (pos == end) {
+                    if (minLength >= path.length) {
+                        minLength = path.length
+                        paths += path + 'A'
+                    }
+                    else
+                        return paths
+                }
+                val next = Direction.entries
+                    .map { pos + it.delta to path + it.c }
+                    .filter { (nextPos, _) -> keypad.getKey(nextPos) != null }
+                queue.addAll(next)
+            }
+        }
+
+        private fun cartesian(lists: List<Set<String>>): Set<List<String>> {
+            if (lists.isEmpty()) return emptySet()  // Handle empty input
+
+            return lists.fold(setOf(listOf())) { acc, set ->
+                acc.flatMap { combination ->
+                    set.map { element -> combination + element }
+                }.toSet()
+            }
+        }
+
+        private fun keypadPaths(code: String, keypad: Map<Char, Point>): Set<String> {
+            val paths = "A$code"
                 .zipWithNext()
                 .map { (start, stop) ->
                     val begin = keypad[start]!!
                     val end = keypad[stop]!!
-
-                    val queue = PriorityQueue<Pair<String, Point>>(compareBy { it.first.length })
-                    queue.add("" to begin)
-
-                    while (true) {
-                        val (path, curPos) = queue.remove()
-                        if (curPos == end) return@map "${path}A"
-                        val next = Direction.entries
-                            .map { path + it.c to curPos + it.delta }
-                            .filter { (_, nextPos) -> keypad.getKey(nextPos) != null }
-                        queue.addAll(next)
-                    }
+                    findPaths(begin, end, keypad)
                 }
-                .joinToString(separator = "")
+            return cartesian(paths).map { it.joinToString(separator = "") }.toSet()
+        }
+
+        fun keypadPaths(codes: Set<String>, keypad: Map<Char, Point>): Set<String> {
+            val pq = PriorityQueue<String>(compareBy { it.length })
+            pq.addAll(codes.flatMap { keypadPaths(it, keypad) })
+            val minPathLength = pq.element().length
+            return pq.filter { it.length == minPathLength }.toSet()
         }
 
         fun shortestPath(code: String): String {
-            println("code=$code")
-            val path1 = keypadPath(code, numericKeypad).also { println("1. $it=${it.length} A=${it.count { it == 'A' }}") }
-            val path2 = keypadPath(path1, directionalKeypad).also { println("2. $it=${it.length} A=${it.count { it == 'A' }}") }
-            val path3 = keypadPath(path2, directionalKeypad).also { println("3. $it=${it.length} A=${it.count { it == 'A' }}") }
-            return path3
+            val paths1 = keypadPaths(setOf(code), numericKeypad)
+            val paths2 = keypadPaths(paths1, directionalKeypad)
+            val paths3 = keypadPaths(paths2, directionalKeypad)
+            return paths3.first()
         }
 
         private fun complexity(pad: String, seq: String) =

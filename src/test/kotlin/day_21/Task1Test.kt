@@ -14,17 +14,17 @@ class Task1Test {
         val path1 = "<A^A>^^AvvvA"
         assertEquals(
             path1.length,   // 12
-            Task1.keypadPath("029A", Task1.numericKeypad).length)
+            Task1.keypadPaths(setOf("029A"), Task1.numericKeypad).first().length)
 
         val path2 = "v<<A>>^A<A>AvA<^AA>A<vAAA>^A"
         assertEquals(
             path2.length,   // 28
-            Task1.keypadPath(path1, Task1.directionalKeypad).length)
+            Task1.keypadPaths(setOf(path1), Task1.directionalKeypad).first().length)
 
         val path3 = "<vA<AA>>^AvAA<^A>A<v<A>>^AvA^A<vA>^A<v<A>^A>AAvA^A<v<A>A>^AAAvA<^A>A"
         assertEquals(
             path3.length,   // 68
-            Task1.keypadPath(path2, Task1.directionalKeypad).length)
+            Task1.keypadPaths(setOf(path2), Task1.directionalKeypad).first().length)
     }
 
     companion object {
@@ -61,6 +61,6 @@ class Task1Test {
     fun `should successfully solve the real task`() {
         val input = File("src/test/resources/day_21/TaskData.txt").readText()
         val data = input.lines()
-        assertEquals(-1, Task1.solve(data))
+        assertEquals(203814, Task1.solve(data))
     }
 }

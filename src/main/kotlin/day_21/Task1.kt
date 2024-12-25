@@ -44,14 +44,16 @@ class Task1 {
                 .map { (start, stop) ->
                     val begin = keypad[start]!!
                     val end = keypad[stop]!!
+
                     val queue = PriorityQueue<Pair<String, Point>>(compareBy { it.first.length })
                     queue.add("" to begin)
+
                     while (true) {
-                        val cur = queue.remove()
-                        if (cur.second == end) return@map "${cur.first}A"
+                        val (path, curPos) = queue.remove()
+                        if (curPos == end) return@map "${path}A"
                         val next = Direction.entries
-                            .map { cur.first + it.c to cur.second + it.delta }
-                            .filter { keypad.getKey(it.second) != null }
+                            .map { path + it.c to curPos + it.delta }
+                            .filter { (_, nextPos) -> keypad.getKey(nextPos) != null }
                         queue.addAll(next)
                     }
                 }

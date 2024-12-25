@@ -39,8 +39,12 @@ class Task1 {
             return Pair(locks, keys)
         }
 
-        fun solve(locks: List<Lock>, keys: List<Key>): Long {
-            return 0
+        private fun match(key: Key, lock: Lock): Boolean {
+            return (key zip lock).all { it.first + it.second <= 5 }
+        }
+
+        fun solve(locks: List<Lock>, keys: List<Key>): Int {
+            return locks.sumOf { l -> keys.count { k -> match(k, l) } }
         }
     }
 }

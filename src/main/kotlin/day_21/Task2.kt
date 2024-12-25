@@ -2,7 +2,7 @@ package day_21
 
 import java.util.PriorityQueue
 
-class Task1 {
+class Task2 {
 
     companion object {
 
@@ -65,8 +65,9 @@ class Task1 {
         }
 
         fun shortestPath(code: String): String {
-            var paths = keypadPaths(setOf(code), numericKeypad)
-            repeat(2) {
+            var paths = Task1.keypadPaths(setOf(code), numericKeypad)
+            repeat(25) {
+                println("$it. size=${paths.size}")
                 paths = keypadPaths(paths, directionalKeypad)
             }
             return paths.first()

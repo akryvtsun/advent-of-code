@@ -14,17 +14,17 @@ class Task1Test {
         val path1 = "<A^A>^^AvvvA"
         assertEquals(
             path1.length,   // 12
-            Task1.keypadPaths(setOf("029A"), Task1.numericKeypad).first().length)
+            Task1.keypadPaths(setOf("029A"), numericKeypad).first().length)
 
         val path2 = "v<<A>>^A<A>AvA<^AA>A<vAAA>^A"
         assertEquals(
             path2.length,   // 28
-            Task1.keypadPaths(setOf(path1), Task1.directionalKeypad).first().length)
+            Task1.keypadPaths(setOf(path1), directionalKeypad).first().length)
 
         val path3 = "<vA<AA>>^AvAA<^A>A<v<A>>^AvA^A<vA>^A<v<A>^A>AAvA^A<v<A>A>^AAAvA<^A>A"
         assertEquals(
             path3.length,   // 68
-            Task1.keypadPaths(setOf(path2), Task1.directionalKeypad).first().length)
+            Task1.keypadPaths(setOf(path2), directionalKeypad).first().length)
     }
 
     companion object {

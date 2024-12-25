@@ -40,7 +40,7 @@ class Task1 {
         }
 
         private fun match(key: Key, lock: Lock): Boolean {
-            return (key zip lock).all { it.first + it.second <= 5 }
+            return (key zip lock).all { (keyPin, lockPin) -> keyPin + lockPin <= 5 }
         }
 
         fun solve(locks: List<Lock>, keys: List<Key>): Int {

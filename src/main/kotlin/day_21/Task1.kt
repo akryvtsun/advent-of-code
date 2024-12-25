@@ -36,13 +36,13 @@ class Task1 {
             }
         }
 
-        private fun cartesian(lists: List<Set<String>>): Set<List<String>> {
-            if (lists.isEmpty()) return emptySet()  // Handle empty input
+        private fun cartesian(lists: List<Set<String>>): List<List<String>> {
+            if (lists.isEmpty()) return emptyList()  // Handle empty input
 
-            return lists.fold(setOf(listOf())) { acc, set ->
+            return lists.fold(listOf(listOf())) { acc, set ->
                 acc.flatMap { combination ->
                     set.map { element -> combination + element }
-                }.toSet()
+                }
             }
         }
 

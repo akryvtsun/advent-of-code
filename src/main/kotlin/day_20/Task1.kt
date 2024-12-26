@@ -1,6 +1,10 @@
 package day_20
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.util.PriorityQueue
+import java.util.concurrent.atomic.AtomicInteger
 
 class Task1 {
 
@@ -66,12 +70,23 @@ class Task1 {
             // pass map without cheating, calc reference min time, collect all walls nearby
             val wallsNearby = mutableSetOf<Point>()
             val referenceTime = passBoard(begin!!, end!!, walls) { cur -> wallsNearby += walls.findWalls(cur) }
-            return wallsNearby
-                .filter { it.y in 1..<height-1 && it.x in 1..<width-1}
-                // remove each of nearby walls and calc new min times
-                .map { passBoard(begin!!, end!!, walls - it) }
-                // count if current min time - reference min time >= threshold
-                .count { referenceTime - it >= threshold }
+
+            val count = AtomicInteger(0)
+            runBlocking(Dispatchers.Default) {
+                wallsNearby
+                    .filter { it.y in 1..<height-1 && it.x in 1..<width-1}
+                    .forEach {
+                        launch {
+                            // remove each of nearby walls and calc new min times
+                            val time = passBoard(begin!!, end!!, walls - it)
+                            // count if current min time - reference min time >= threshold
+                            if (referenceTime - time >= threshold) {
+                                count.incrementAndGet()
+                            }
+                        }
+                    }
+            }
+            return count.get()
         }
     }
 }

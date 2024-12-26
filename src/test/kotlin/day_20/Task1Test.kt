@@ -25,12 +25,12 @@ class Task1Test {
             #...#...#...###
             ###############
         """.trimIndent()
-        assertEquals(4, Task1.solve(input, 25))
+        assertEquals(5, Task1.solve(input, 20))
     }
 
     @Test
     fun `should successfully solve the real task`() {
         val input = File("src/test/resources/day_20/TaskData.txt").readText()
-        assertEquals(-1, Task1.solve(input, 100))
+        assertEquals(1358, Task1.solve(input, 100))
     }
 }

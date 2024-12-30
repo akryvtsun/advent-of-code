@@ -44,7 +44,7 @@ class Task2 {
                         for (dx in -cheatLen..cheatLen) {
                             launch {
                                 if (!(dy == 0 && dx == 0)) {
-                                    val radius = abs(dy + dx)
+                                    val radius = abs(dy) + abs(dx)
                                     if (radius <= cheatLen) {
                                         val cheatEndPos = cheatStartPos + Point(dy, dx)
                                         if (isInField(cheatEndPos) && cheatEndPos !in walls) {

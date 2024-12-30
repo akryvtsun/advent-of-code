@@ -17,8 +17,9 @@ enum class Direction(val delta: Point) {
 
 fun passBoard(begin: Point, end: Point, walls: Set<Point>, processStep: (Point) -> Unit = {}): Int {
     val queue = PriorityQueue<Pair<Point, Int>>(compareBy { (_, time) -> time })
+    processStep(begin)
+    val visited = mutableSetOf(begin)
     queue.add(begin to 0)
-    val visited = mutableSetOf<Point>()
     while (true) {
         val (cur, time) = queue.remove()
         if (cur == end) return time

@@ -3,6 +3,7 @@ package day_20
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.math.abs
 
@@ -37,6 +38,9 @@ class Task2 {
             fun isInField(pos: Point) = pos.y in 0..<height && pos.x in 0..<width
 
             val count = AtomicInteger(0)
+            // hash map for memoization intermediate results
+            val memo = ConcurrentHashMap<Point, Int>()
+
             runBlocking(Dispatchers.Default) {
                 for (i in referencePath.indices) {
                     val cheatStartPos = referencePath[i]
@@ -48,7 +52,7 @@ class Task2 {
                                     if (radius <= cheatLen) {
                                         val cheatEndPos = cheatStartPos + Point(dy, dx)
                                         if (isInField(cheatEndPos) && cheatEndPos !in walls) {
-                                            val time = passBoard(cheatEndPos, end!!, walls)
+                                            val time = memo.computeIfAbsent(cheatEndPos) { passBoard(cheatEndPos, end!!, walls) }
                                             if (referenceTime - (i + radius + time) >= threshold) {
                                                 count.incrementAndGet()
                                             }

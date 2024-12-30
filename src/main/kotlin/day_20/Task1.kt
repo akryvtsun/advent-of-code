@@ -3,7 +3,6 @@ package day_20
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import java.util.PriorityQueue
 import java.util.concurrent.atomic.AtomicInteger
 
 class Task1 {
@@ -16,23 +15,6 @@ class Task1 {
                     .map { cur + it.delta }
                     .filter { it in this@findWalls }
                     .forEach { add(it) }
-            }
-        }
-
-        private fun passBoard(begin: Point, end: Point, walls: Set<Point>, processStep: (Point) -> Unit = {}): Int {
-            val queue = PriorityQueue<Pair<Point, Int>>(compareBy { (_, time) -> time })
-            queue.add(begin to 0)
-            val visited = mutableSetOf<Point>()
-            while (true) {
-                val (cur, time) = queue.remove()
-                if (cur == end) return time
-                val next = Direction.entries
-                    .map { cur + it.delta }
-                    .filter { it !in walls }
-                    .filter { it !in visited }
-                next.forEach { processStep(it) }
-                visited += next
-                queue += next.map { it to time + 1 }
             }
         }
 
@@ -61,7 +43,7 @@ class Task1 {
             val count = AtomicInteger(0)
             runBlocking(Dispatchers.Default) {
                 wallsNearby
-                    .filter { it.y in 1..<height-1 && it.x in 1..<width-1}
+                    .filter { it.y in 1..<height - 1 && it.x in 1..<width - 1 }
                     .forEach {
                         launch {
                             // remove each of nearby walls and calc new min times

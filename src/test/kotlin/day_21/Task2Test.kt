@@ -1,14 +1,14 @@
 package day_21
 
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.io.File
-import kotlin.test.Ignore
 import kotlin.test.assertEquals
 
 class Task2Test {
 
     @Test
-    @Ignore
+    @Disabled("Couldn't fetch result - needs time optimization")
     fun `should successfully solve the real task`() {
         val input = File("src/test/resources/day_21/TaskData.txt").readText()
         val data = input.lines()

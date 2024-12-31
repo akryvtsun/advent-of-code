@@ -47,6 +47,7 @@ class Task2Test {
     }
 
     @Test
+    // My algorithm returns incorrect result
     fun `should successfully solve the real task`() {
         val input = File("src/test/resources/day_23/TaskData.txt").readText()
         val data = transform(input)

@@ -6,13 +6,6 @@ class Task1 {
 
     companion object {
 
-        /**
-         * Returns the first key corresponding to the given [value], or `null`
-         * if such a value is not present in the map.
-         */
-        fun <K, V> Map<K, V>.getKey(value: V) =
-            entries.firstOrNull { it.value == value }?.key
-
         private fun findPaths(begin: Point, end: Point, keypad: Map<Char, Point>): Set<String> {
             val paths = mutableSetOf<String>()
             var minLength = Int.MAX_VALUE
@@ -31,7 +24,7 @@ class Task1 {
                 }
                 val next = Direction.entries
                     .map { pos + it.delta to path + it.c }
-                    .filter { (nextPos, _) -> keypad.getKey(nextPos) != null }
+                    .filter { (nextPos, _) -> keypad.containsValue(nextPos) }
                 queue.addAll(next)
             }
         }
@@ -74,8 +67,7 @@ class Task1 {
             pad.substringBefore('A').toInt() * seq.length
 
         fun solve(pads: List<String>): Int {
-            return pads
-                .sumOf { complexity(it, shortestPath(it)) }
+            return pads.sumOf { complexity(it, shortestPath(it)) }
         }
     }
 }

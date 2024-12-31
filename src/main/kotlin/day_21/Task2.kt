@@ -6,13 +6,6 @@ class Task2 {
 
     companion object {
 
-        /**
-         * Returns the first key corresponding to the given [value], or `null`
-         * if such a value is not present in the map.
-         */
-        fun <K, V> Map<K, V>.getKey(value: V) =
-            entries.firstOrNull { it.value == value }?.key
-
         private fun findPaths(begin: Point, end: Point, keypad: Map<Char, Point>): Set<String> {
             val paths = mutableSetOf<String>()
             var minLength = Int.MAX_VALUE
@@ -31,7 +24,7 @@ class Task2 {
                 }
                 val next = Direction.entries
                     .map { pos + it.delta to path + it.c }
-                    .filter { (nextPos, _) -> keypad.getKey(nextPos) != null }
+                    .filter { (nextPos, _) -> keypad.containsValue(nextPos) }
                 queue.addAll(next)
             }
         }
@@ -63,9 +56,11 @@ class Task2 {
         }
 
         fun shortestPath(code: String): String {
-            var paths = Task1.keypadPaths(setOf(code), numericKeypad)
+            var paths = keypadPaths(setOf(code), numericKeypad)
+            println("\t$code")
             repeat(25) {
-                println("$it. size=${paths.size}")
+                println("${it+1}. size=${paths.size}")
+                println("\t$paths")
                 paths = keypadPaths(paths, directionalKeypad)
             }
             return paths.first()
@@ -75,8 +70,7 @@ class Task2 {
             pad.substringBefore('A').toInt() * seq.length
 
         fun solve(pads: List<String>): Int {
-            return pads
-                .sumOf { complexity(it, shortestPath(it)) }
+            return pads.sumOf { complexity(it, shortestPath(it)) }
         }
     }
 }

@@ -1,13 +1,21 @@
 package day_21
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.runBlocking
 import java.util.PriorityQueue
+import java.util.concurrent.ConcurrentHashMap
+
+typealias PathSet = List<List<Any>>
 
 class Task2 {
 
     companion object {
 
-        private fun findPaths(begin: Point, end: Point, keypad: Map<Char, Point>): Set<String> {
-            val paths = mutableSetOf<String>()
+        private fun findPaths(begin: Point, end: Point, keypad: Map<Char, Point>): List<String> {
+            val paths = mutableListOf<String>()
             var minLength = Int.MAX_VALUE
 
             val queue = PriorityQueue<Pair<Point, String>>(compareBy { it.second.length })
@@ -29,48 +37,61 @@ class Task2 {
             }
         }
 
-        private fun cartesian(lists: List<Set<String>>): List<List<String>> {
-            return lists.fold(listOf(listOf())) { acc, set ->
-                acc.flatMap { combination ->
-                    set.map { element -> combination + element }
-                }
-            }
-        }
+        val memo = ConcurrentHashMap<Pair<Char, Char>, List<String>>()
 
-        private fun keypadPaths(code: String, keypad: Map<Char, Point>): Set<String> {
-            val paths = "A$code"
+        private fun extendPath(code: String, keypad: Map<Char, Point>): PathSet {
+            return "A$code"
                 .zipWithNext()
-                .map { (start, stop) ->
-                    val begin = keypad[start]!!
-                    val end = keypad[stop]!!
-                    findPaths(begin, end, keypad)
+                .map { move ->
+                    memo.computeIfAbsent(move) { key ->
+                        val begin = keypad[key.first]!!
+                        val end = keypad[key.second]!!
+                        findPaths(begin, end, keypad)
+                    }
                 }
-            return cartesian(paths).map { it.joinToString(separator = "") }.toSet()
         }
 
-        fun keypadPaths(codes: Set<String>, keypad: Map<Char, Point>): Set<String> {
-            val pq = PriorityQueue<String>(compareBy { it.length })
-            pq.addAll(codes.flatMap { keypadPaths(it, keypad) })
-            val minPathLength = pq.element().length
-            return pq.filter { it.length == minPathLength }.toSet()
+        // TODO keep only shortest paths and give away others
+        suspend fun keypadPath(paths: PathSet, keypad: Map<Char, Point>): PathSet = coroutineScope {
+            paths.map { segment ->
+                async {
+                    segment.map { element ->
+                        when (element) {
+                            is String -> extendPath(element, keypad)
+                            is List<*> -> keypadPath(element as PathSet, keypad)
+                            else -> throw IllegalStateException()
+                        }
+                    }
+                }
+            }.awaitAll()
         }
 
-        fun shortestPath(code: String): String {
-            var paths = keypadPaths(setOf(code), numericKeypad)
-            println("\t$code")
-            repeat(25) {
-                println("${it+1}. size=${paths.size}")
-                println("\t$paths")
-                paths = keypadPaths(paths, directionalKeypad)
+        fun shortestPathLength(code: String): Int =
+            runBlocking(Dispatchers.Default) {
+                var paths = keypadPath(listOf(listOf(code)), numericKeypad).first().first() as PathSet
+                repeat(25) {
+                    println(it)
+                    paths = keypadPath(paths, directionalKeypad)
+                }
+                paths.length()
             }
-            return paths.first()
+
+        // TODO calc length only shortest paths?
+        fun PathSet.length(): Int = sumOf { segment ->
+            segment.sumOf { element ->
+                when (element) {
+                    is String -> element.length
+                    is List<*> -> (element as PathSet).length()
+                    else -> throw IllegalStateException()
+                }
+            }
         }
 
-        private fun complexity(pad: String, seq: String) =
-            pad.substringBefore('A').toInt() * seq.length
+        private fun complexity(pad: String, minLength: Int) =
+            pad.substringBefore('A').toInt() * minLength
 
         fun solve(pads: List<String>): Int {
-            return pads.sumOf { complexity(it, shortestPath(it)) }
+            return pads.sumOf { complexity(it, shortestPathLength(it)) }
         }
     }
 }

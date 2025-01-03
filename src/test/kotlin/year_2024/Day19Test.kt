@@ -24,7 +24,7 @@ class Day19Test {
         bbrgwb
     """.trimIndent()
 
-    fun transform(input: String): Pair<List<String>, List<String>> {
+    private fun transform(input: String): Pair<List<String>, List<String>> {
         val (patterns, designs) = input.split("\n\n")
         return patterns.split(", ") to designs.lines()
     }

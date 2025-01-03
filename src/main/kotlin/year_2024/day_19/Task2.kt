@@ -8,7 +8,7 @@ class Task2 {
 
         fun solve(patterns: List<String>, designs: List<String>): Long {
             val root = buildPrefixTree(patterns)
-            return designs.sumOf { d -> variants(d, root).also { println("$d=$it") } }
+            return designs.sumOf { variants(it, root) }
         }
 
         private fun variants(design: String, root: Node): Long {

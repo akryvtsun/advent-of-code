@@ -10,7 +10,7 @@ fun buildPrefixTree(patterns: List<String>): Node {
             if (candidate.next == null) {
                 candidate.next = mutableMapOf()
             }
-            candidate = candidate.next!!.computeIfAbsent(c) { Node() }
+            candidate = candidate.next!!.getOrPut(c) { Node() }
         }
         candidate.isTerminal = true
     }

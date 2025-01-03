@@ -10,23 +10,18 @@ class Task2 {
         }
 
         private fun variants(design: String, root: Node): Long {
-          //  var count = 0
-            val queue = mutableMapOf(0 to 1L)
+            val lengthMap = mutableMapOf(0 to 1L)
             while (true) {
-                if (queue.isEmpty()) return 0
-                val tail = queue.entries.take(1).first()
-                val tCount = tail.value
-                queue.remove(tail.key)
-                if (tail.key == design.length) return tCount
-//                val newTails = patterns
-//                    .filter { tail.startsWith(it) }
-//                    .map { tail.removePrefix(it) }
-                val newTails = findTails(design, root, tail.key)
-            //    count += newTails.count { it == design.length }
-                newTails //.filter { it < design.length }
+                if (lengthMap.isEmpty()) return 0
+                val (tIndex, tCount) = lengthMap.entries.first()
+                lengthMap.remove(tIndex)
+                if (tIndex == design.length) return tCount
+                val newTails = findTails(design, root, tIndex)
+                newTails
+                    .filter { it <= design.length }
                     .forEach { t ->
-                        val value = queue.computeIfAbsent(t) { _ -> 0 }
-                        queue[t] = value + tCount
+                        val value = lengthMap.getOrPut(t) { 0 }
+                        lengthMap[t] = value + tCount
                     }
             }
         }

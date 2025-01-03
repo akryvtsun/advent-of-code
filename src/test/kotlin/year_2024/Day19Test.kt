@@ -59,7 +59,7 @@ class Day19Test {
         fun `Actual answer`() {
             val input = File("src/test/resources/year_2024/day_19/TaskData.txt").readText()
             val (patterns, designs) = transform(input)
-            assertEquals(-1, Task2.solve(patterns, designs))
+            assertEquals(841533074412361, Task2.solve(patterns, designs))
         }
     }
 }

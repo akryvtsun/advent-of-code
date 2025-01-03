@@ -1,5 +1,7 @@
 package year_2024.day_19
 
+import java.util.PriorityQueue
+
 class Task2 {
 
     companion object {
@@ -10,18 +12,22 @@ class Task2 {
         }
 
         private fun variants(design: String, root: Node): Long {
-            val lengthMap = mutableMapOf(0 to 1L)
+            val queue = PriorityQueue<Pair<Int, Long>>(compareBy { it.first })
+            queue.add(0 to 1L)
             while (true) {
-                if (lengthMap.isEmpty()) return 0
-                val (tIndex, tCount) = lengthMap.entries.first()
-                lengthMap.remove(tIndex)
+                if (queue.isEmpty()) return 0
+                val (tIndex, tCount) = queue.remove()
                 if (tIndex == design.length) return tCount
                 val newTails = findTails(design, root, tIndex)
                 newTails
-                    .filter { it <= design.length }
                     .forEach { t ->
-                        val value = lengthMap.getOrPut(t) { 0 }
-                        lengthMap[t] = value + tCount
+                        var pair = queue.firstOrNull { it.first == t }
+                        if (pair != null) {
+                            queue.remove(pair)
+                        } else {
+                            pair = t to 0L
+                        }
+                        queue.add(t to pair.second + tCount)
                     }
             }
         }

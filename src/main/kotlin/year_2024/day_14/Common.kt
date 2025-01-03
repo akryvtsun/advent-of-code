@@ -1,6 +1,6 @@
 package year_2024.day_14
 
-data class Point(val y: Int, val x: Int)
+import year_2024.Point
 
 data class Robot(val coord: Point, val delta: Point)
 

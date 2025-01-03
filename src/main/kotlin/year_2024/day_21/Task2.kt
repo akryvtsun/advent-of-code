@@ -5,6 +5,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.runBlocking
+import year_2024.Point
 import java.util.PriorityQueue
 import java.util.concurrent.ConcurrentHashMap
 

@@ -1,5 +1,6 @@
 package year_2024.day_15
 
+import year_2024.Point
 import year_2024.day_15.Command.*
 
 class Task2 {

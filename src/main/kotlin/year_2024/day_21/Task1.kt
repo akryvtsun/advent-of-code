@@ -1,5 +1,6 @@
 package year_2024.day_21
 
+import year_2024.Point
 import java.util.PriorityQueue
 
 class Task1 {

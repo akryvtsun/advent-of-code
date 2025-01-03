@@ -1,6 +1,7 @@
 package year_2024.day_18
 
 import org.junit.jupiter.api.Test
+import year_2024.Point
 import java.io.File
 import kotlin.test.assertEquals
 

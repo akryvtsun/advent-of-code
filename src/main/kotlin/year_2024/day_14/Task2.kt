@@ -1,5 +1,7 @@
 package year_2024.day_14
 
+import year_2024.Point
+
 class Task2 {
 
     companion object {

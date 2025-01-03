@@ -5,22 +5,7 @@ class Task2 {
     companion object {
 
         fun solve(patterns: List<String>, designs: List<String>): Long {
-            // build prefix tree
-            val root = Node()
-            for (pattern in patterns) {
-                var candidate = root
-                for (c in pattern) {
-                    if (candidate.next == null) {
-                        candidate.next = mutableMapOf()
-                    }
-                    val probe = candidate.next!![c]
-                    if (probe == null) {
-                        candidate.next!![c] = Node()
-                    }
-                    candidate = candidate.next!![c]!!
-                }
-                candidate.isTerminal = true
-            }
+            val root = buildPrefixTree(patterns)
             return designs.sumOf { d -> variants(d, root).also { println("$d=$it") } }
         }
 
@@ -44,26 +29,6 @@ class Task2 {
                         queue[t] = value + tCount
                     }
             }
-        }
-
-        private fun findTails(design: String, root: Node, tail: Int) : List<Int> {
-            val newTails = mutableListOf<Int>()
-            var i = tail
-            var node = root
-
-            while (true) {
-                if (node.next == null || i == design.length) break
-                val c = design[i]
-                val candidate = node.next!![c]
-                if (candidate != null && candidate.isTerminal) {
-                    newTails += i + 1
-                }
-                if (candidate == null) break
-                node = candidate
-                i++
-            }
-
-            return newTails
         }
     }
 }

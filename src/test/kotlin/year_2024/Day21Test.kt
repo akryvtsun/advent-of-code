@@ -77,12 +77,11 @@ class Day21Test {
     @Nested
     @DisplayName("Part 2")
     inner class Part2 {
-       // @Disabled("Couldn't fetch result - needs time optimization")
         @Test
         fun `Actual answer`() {
             val input = readTaskData(2024, 21)
             val data = input.lines()
-            assertEquals(-1, Task2.solve(data))
+            assertEquals(248566068436630, Task2.solve(data))
         }
     }
 }

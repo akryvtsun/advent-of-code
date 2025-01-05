@@ -68,7 +68,7 @@ class Day21Test {
 
         @Test
         fun `Actual answer`() {
-            val input = readTaskData(2024, 21)
+            val input = taskData(2024, 21).readText()
             val data = input.lines()
             assertEquals(203814, Task1.solve(data))
         }
@@ -79,7 +79,7 @@ class Day21Test {
     inner class Part2 {
         @Test
         fun `Actual answer`() {
-            val input = readTaskData(2024, 21)
+            val input = taskData(2024, 21).readText()
             val data = input.lines()
             assertEquals(248566068436630, Task2.solve(data))
         }

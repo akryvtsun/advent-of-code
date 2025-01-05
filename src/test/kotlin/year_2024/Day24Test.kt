@@ -89,7 +89,7 @@ class Day24Test {
 
         @Test
         fun `Actual answer`() {
-            val input = readTaskData(2024, 24)
+            val input = taskData(2024, 24).readText()
             val (init, links) = Task1.transform(input)
             assertEquals(48063513640678, Task1.solve(init, links))
         }
@@ -101,7 +101,7 @@ class Day24Test {
         @Disabled("Correct result was obtained in semi-manual mode")
         @Test
         fun `Actual answer`() {
-            val input = readTaskData(2024, 24)
+            val input = taskData(2024, 24).readText()
             val gates = Task2.transform(input)
             assertEquals("hqh,mmk,pvb,qdq,vkq,z11,z24,z38", Task2.solve(gates))
         }

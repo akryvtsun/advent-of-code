@@ -41,7 +41,7 @@ class Day01Test {
 
         @Test
         fun `Actual answer`() {
-            val input = readTaskData(2024, 1)
+            val input = taskData(2024, 1).readText()
             val (list1, list2) = transform(input)
             assertEquals(2378066, Task1.solve(list1, list2))
         }
@@ -58,7 +58,7 @@ class Day01Test {
 
         @Test
         fun `Actual answer`() {
-            val input = readTaskData(2024, 1)
+            val input = taskData(2024, 1).readText()
             val (list1, list2) = transform(input)
             assertEquals(18934359, Task2.solve(list1, list2))
         }

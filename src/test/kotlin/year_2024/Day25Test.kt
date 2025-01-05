@@ -61,7 +61,7 @@ class Day25Test {
 
         @Test
         fun `Actual answer`() {
-            val input = readTaskData(2024, 25)
+            val input = taskData(2024, 25).readText()
             val (locks, keys) = Task1.transform(input)
             assertEquals(3077, Task1.solve(locks, keys))
         }

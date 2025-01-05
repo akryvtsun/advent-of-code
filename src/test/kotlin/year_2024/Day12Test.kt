@@ -60,7 +60,7 @@ class Day12Test {
 
         @Test
         fun `Actual answer`() {
-            val map = readTaskData(2024, 12)
+            val map = taskData(2024, 12).readText()
             val input = transform(map)
             assertEquals(1457298, Task1.solve(input))
         }
@@ -141,7 +141,7 @@ class Day12Test {
 
         @Test
         fun `Actual answer`() {
-            val map = readTaskData(2024, 12)
+            val map = taskData(2024, 12).readText()
             val input = transform(map)
             assertEquals(921636, Task2.solve(input))
         }

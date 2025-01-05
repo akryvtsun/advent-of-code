@@ -34,7 +34,7 @@ class Day02Test {
 
         @Test
         fun `Actual answer`() {
-            val input = readTaskData(2024, 2)
+            val input = taskData(2024, 2).readText()
             val paths = transform(input)
             assertEquals(510, Task1.solve(paths))
         }
@@ -51,7 +51,7 @@ class Day02Test {
 
         @Test
         fun `Actual answer`() {
-            val input = readTaskData(2024, 2)
+            val input = taskData(2024, 2).readText()
             val paths = transform(input)
             assertEquals(553, Task2.solve(paths))
         }

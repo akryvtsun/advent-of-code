@@ -45,7 +45,7 @@ class Day14Test {
 
         @Test
         fun `Actual answer`() {
-            val map = readTaskData(2024, 14)
+            val map = taskData(2024, 14).readText()
             val input = transform(map)
             assertEquals(230461440, Task1.solve(103, 101, input))
         }
@@ -56,7 +56,7 @@ class Day14Test {
     inner class Part2 {
         @Test
         fun `Actual answer`() {
-            val map =  readTaskData(2024, 14)
+            val map = taskData(2024, 14).readText()
             val input = transform(map)
             assertEquals(6668, Task2.solve(103, 101, input))
         }

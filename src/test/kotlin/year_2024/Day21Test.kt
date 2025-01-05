@@ -1,6 +1,5 @@
 package year_2024
 
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.params.ParameterizedTest
@@ -10,7 +9,6 @@ import year_2024.day_21.Task1
 import year_2024.day_21.Task2
 import year_2024.day_21.directionalKeypad
 import year_2024.day_21.numericKeypad
-import java.io.File
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -70,7 +68,7 @@ class Day21Test {
 
         @Test
         fun `Actual answer`() {
-            val input = File("src/test/resources/year_2024/day_21/TaskData.txt").readText()
+            val input = readTaskData(2024, 21)
             val data = input.lines()
             assertEquals(203814, Task1.solve(data))
         }
@@ -79,10 +77,10 @@ class Day21Test {
     @Nested
     @DisplayName("Part 2")
     inner class Part2 {
-        @Disabled("Couldn't fetch result - needs time optimization")
+       // @Disabled("Couldn't fetch result - needs time optimization")
         @Test
         fun `Actual answer`() {
-            val input = File("src/test/resources/year_2024/day_21/TaskData.txt").readText()
+            val input = readTaskData(2024, 21)
             val data = input.lines()
             assertEquals(-1, Task2.solve(data))
         }

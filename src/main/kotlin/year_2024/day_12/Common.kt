@@ -1,6 +1,6 @@
 package year_2024.day_12
 
-fun transform(input: String) = input.lines(). map { it.toList() }
+
 
 enum class Direction(val dy: Int, val dx: Int) {
     UP(-1, 0),

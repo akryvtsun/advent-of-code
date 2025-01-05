@@ -10,7 +10,7 @@ import kotlin.test.assertEquals
 @DisplayName("Day 12: Garden Groups")
 class Day12Test {
 
-    fun transform(input: String) = input.lines(). map { it.toList() }
+    private fun transform(input: String) = input.lines(). map { it.toList() }
 
     @Nested
     @DisplayName("Part 1")

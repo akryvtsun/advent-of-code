@@ -3,7 +3,7 @@ package year_2024
 import java.io.File
 
 fun readTaskData(year: Int, task: Int) =
-    File("src/test/resources/year_$year/day_$task/TaskData.txt").readText()
+    File("src/test/resources/year_$year/day_${String.format("%02d", task)}/TaskData.txt").readText()
 
 data class Point(val y: Int, val x: Int) {
     operator fun plus(other: Point): Point {

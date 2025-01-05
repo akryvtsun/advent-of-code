@@ -82,7 +82,7 @@ class Day23Test {
 
         @Test
         fun `Actual answer`() {
-            val input = File("src/test/resources/year_2024/day_23/TaskData.txt").readText()
+            val input = readTaskData(2024, 23)
             val data = transform(input)
             assertEquals("bu,fq,fz,pn,rr,st,sv,tr,un,uy,zf,zi,zy", Task2.solve(data))
         }

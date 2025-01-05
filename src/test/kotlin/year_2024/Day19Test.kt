@@ -4,7 +4,6 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import year_2024.day_19.Task1
 import year_2024.day_19.Task2
-import java.io.File
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -40,7 +39,7 @@ class Day19Test {
 
         @Test
         fun `Actual answer`() {
-            val input = File("src/test/resources/year_2024/day_19/TaskData.txt").readText()
+            val input = readTaskData(2024, 19)
             val (patterns, designs) = transform(input)
             assertEquals(338, Task1.solve(patterns, designs))
         }
@@ -57,7 +56,7 @@ class Day19Test {
 
         @Test
         fun `Actual answer`() {
-            val input = File("src/test/resources/year_2024/day_19/TaskData.txt").readText()
+            val input = readTaskData(2024, 19)
             val (patterns, designs) = transform(input)
             assertEquals(841533074412361, Task2.solve(patterns, designs))
         }

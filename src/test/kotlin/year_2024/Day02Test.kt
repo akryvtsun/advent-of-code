@@ -10,7 +10,7 @@ import kotlin.test.assertEquals
 @DisplayName("Day 2: Red-Nosed Reports")
 class Day02Test {
 
-    private val input = """
+    val input = """
         7 6 4 2 1
         1 2 7 8 9
         9 7 6 2 1
@@ -19,7 +19,7 @@ class Day02Test {
         1 3 6 7 9
     """.trimIndent()
 
-    private fun transform(input: String) =
+    fun transform(input: String) =
         input.lines()
             .map { it.split(" ").map(String::toInt) }
 

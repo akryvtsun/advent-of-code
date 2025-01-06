@@ -11,7 +11,7 @@ import kotlin.test.assertEquals
 @DisplayName("Day 23: LAN Party")
 class Day23Test {
 
-    private val input = """
+    val input = """
         kh-tc
         qp-kh
         de-cg
@@ -46,7 +46,7 @@ class Day23Test {
         td-yn
     """.trimIndent()
 
-    private fun transform(input: String): List<Pair<String, String>> {
+    fun transform(input: String): List<Pair<String, String>> {
         return input.lines()
             .map { link ->
                 val (left, right) = link.split("-")

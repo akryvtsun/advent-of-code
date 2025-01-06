@@ -10,7 +10,7 @@ import kotlin.test.assertEquals
 @DisplayName("Day 1: Historian Hysteria")
 class Day01Test {
 
-    private val input = """
+    val input = """
         3   4
         4   3
         2   5
@@ -19,7 +19,7 @@ class Day01Test {
         3   3
     """.trimIndent()
 
-    private fun transform(input: String): Pair<List<Long>, List<Long>> {
+    fun transform(input: String): Pair<List<Long>, List<Long>> {
         val left = mutableListOf<Long>()
         val right = mutableListOf<Long>()
         input.lines().forEach { line ->

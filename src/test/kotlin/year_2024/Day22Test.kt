@@ -10,7 +10,7 @@ import kotlin.test.assertEquals
 @DisplayName("Day 22: Monkey Market")
 class Day22Test {
 
-    private fun transform(input: String): List<Long> {
+    fun transform(input: String): List<Long> {
         return input.lines().map(String::toLong)
     }
 

@@ -11,7 +11,7 @@ import kotlin.test.assertEquals
 @DisplayName("Day 16: Reindeer Maze")
 class Day16Test {
 
-    private val input1 = """
+    val input1 = """
         ###############
         #.......#....E#
         #.#.###.#.###.#
@@ -29,7 +29,7 @@ class Day16Test {
         ###############
     """.trimIndent()
 
-    private val input2 = """
+    val input2 = """
         #################
         #...#...#...#..E#
         #.#.#.#.#.#.#.#.#
@@ -49,7 +49,7 @@ class Day16Test {
         #################
     """.trimIndent()
 
-    private fun transform(input: String): Labyrinth {
+    fun transform(input: String): Labyrinth {
         var start: Point? = null
         var end: Point? = null
         val obstacles = mutableSetOf<Point>()

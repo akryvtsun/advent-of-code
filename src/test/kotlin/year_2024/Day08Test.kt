@@ -13,7 +13,7 @@ import kotlin.test.assertEquals
 @DisplayName("Day 8: Resonant Collinearity")
 class Day08Test {
 
-    private val input = """
+    val input = """
         ............
         ........0...
         .....0......
@@ -28,7 +28,7 @@ class Day08Test {
         ............
     """.trimIndent()
 
-    private fun transform(input: String): Data {
+    fun transform(input: String): Data {
         val lines = input.split("\n")
         val height = lines.size
         val width = lines.first().length

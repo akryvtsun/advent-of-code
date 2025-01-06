@@ -12,7 +12,7 @@ import kotlin.test.assertEquals
 @DisplayName("Day 14: Restroom Redoubt")
 class Day14Test {
 
-    private fun transform(input: String) = input.lines()
+    fun transform(input: String) = input.lines()
         .map { line ->
             val (c, d) = line.split(" ")
             val coord = getPoint(c).let { Point(it.second, it.first) }

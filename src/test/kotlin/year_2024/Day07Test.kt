@@ -11,7 +11,7 @@ import kotlin.test.assertEquals
 @DisplayName("Day 7: Bridge Repair")
 class Day07Test {
 
-    private val input = """
+    val input = """
         190: 10 19
         3267: 81 40 27
         83: 17 5
@@ -23,7 +23,7 @@ class Day07Test {
         292: 11 6 16 20
     """.trimIndent()
 
-    private fun transform(input: String): List<Equation> {
+    fun transform(input: String): List<Equation> {
         return input.split("\n")
             .map { line ->
                 val test = line.substringBefore(':').toLong()

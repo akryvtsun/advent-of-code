@@ -10,7 +10,7 @@ import kotlin.test.assertEquals
 @DisplayName("Day 19: Linen Layout")
 class Day19Test {
 
-    private val input = """
+    val input = """
         r, wr, b, g, bwu, rb, gb, br
         
         brwrr
@@ -23,7 +23,7 @@ class Day19Test {
         bbrgwb
     """.trimIndent()
 
-    private fun transform(input: String): Pair<List<String>, List<String>> {
+    fun transform(input: String): Pair<List<String>, List<String>> {
         val (patterns, designs) = input.split("\n\n")
         return patterns.split(", ") to designs.lines()
     }

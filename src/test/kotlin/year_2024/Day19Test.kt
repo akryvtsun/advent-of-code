@@ -10,7 +10,7 @@ import kotlin.test.assertEquals
 @DisplayName("Day 19: Linen Layout")
 class Day19Test {
 
-    val input = """
+    private val input = """
         r, wr, b, g, bwu, rb, gb, br
         
         brwrr

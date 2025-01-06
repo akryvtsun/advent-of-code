@@ -11,7 +11,7 @@ import kotlin.test.assertEquals
 @DisplayName("Day 16: Reindeer Maze")
 class Day16Test {
 
-    val input1 = """
+    private val input1 = """
         ###############
         #.......#....E#
         #.#.###.#.###.#
@@ -29,7 +29,7 @@ class Day16Test {
         ###############
     """.trimIndent()
 
-    val input2 = """
+    private val input2 = """
         #################
         #...#...#...#..E#
         #.#.#.#.#.#.#.#.#

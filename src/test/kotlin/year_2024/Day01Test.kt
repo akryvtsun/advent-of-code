@@ -10,7 +10,7 @@ import kotlin.test.assertEquals
 @DisplayName("Day 1: Historian Hysteria")
 class Day01Test {
 
-    val input = """
+    private val input = """
         3   4
         4   3
         2   5

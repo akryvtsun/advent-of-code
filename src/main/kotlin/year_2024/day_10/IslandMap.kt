@@ -4,16 +4,6 @@ const val BLOCK = -1
 
 data class IslandMap(private val map: List<List<Int>>) {
 
-    companion object {
-        fun transform(input: String): IslandMap {
-            val lines = input.lines()
-            val rows = lines.map { line ->
-                line.map { if (it == '.') BLOCK else it.digitToInt() }
-            }
-            return IslandMap(rows)
-        }
-    }
-
     operator fun get(p: Point) = map[p.y][p.x]
 
     fun height() = map.size

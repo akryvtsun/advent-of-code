@@ -1,16 +1,12 @@
 package year_2024.day_12
 
-enum class Direction(val dy: Int, val dx: Int) {
-    UP(-1, 0),
-    DOWN(1, 0),
-    LEFT(0, -1),
-    RIGHT(0, 1)
-}
+import year_2024.Point
 
-data class Point(val y: Int, val x: Int) {
-    operator fun plus(other: Point) = Point(y + other.y, x + other.x)
-
-    fun move(dir: Direction) = Point(y + dir.dy, x + dir.dx)
+enum class Direction(val delta: Point) {
+    UP(Point(-1, 0)),
+    DOWN(Point(1, 0)),
+    LEFT(Point(0, -1)),
+    RIGHT(Point(0, 1))
 }
 
 data class Region(val type: Char, val fields: Set<Point>) {
@@ -27,7 +23,7 @@ fun findRegions(map: List<List<Char>>): Set<Region> {
 
         fun findRegionImpl(cur: Point) {
             Direction.entries
-                .map { cur.move(it) }
+                .map { cur + it.delta }
                 .filter { it.y in map.indices && it.x in map.first().indices }
                 .filter { it !in visited }
                 .filter { map[it.y][it.x] == type }

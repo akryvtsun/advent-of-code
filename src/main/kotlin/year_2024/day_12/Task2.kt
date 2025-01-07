@@ -1,5 +1,7 @@
 package year_2024.day_12
 
+import year_2024.Point
+
 class Task2 {
 
     data class Line(val begin: Point, val end: Point)
@@ -13,11 +15,11 @@ class Task2 {
 
         private fun Region.genBorders(): List<Pair<Line, Direction>> =
             buildList {
-                for (f in fields) {
-                    for (d in Direction.entries) {
-                        val next = f.move(d)
+                for (field in fields) {
+                    for (dir in Direction.entries) {
+                        val next = field + dir.delta
                         if (next !in this@genBorders) {
-                            add(Line(f, f) to d)
+                            add(Line(field, field) to dir)
                         }
                     }
                 }

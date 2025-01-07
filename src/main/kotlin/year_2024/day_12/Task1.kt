@@ -6,7 +6,7 @@ class Task1 {
 
         fun perimeter(r: Region): Long {
             return r.fields
-                .flatMap { p -> Direction.entries.map { p.move(it) } }
+                .flatMap { p -> Direction.entries.map { p + it.delta } }
                 .count { it !in r}
                 .toLong()
         }

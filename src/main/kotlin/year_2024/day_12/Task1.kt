@@ -8,11 +8,11 @@ class Task1 {
         fun perimeter(): Long {
             return fields
                 .flatMap { p -> Direction.entries.map { p.move(it) } }
-                .count { !fields.contains(it) }
+                .count { it !in this}
                 .toLong()
         }
 
-        fun contains(p: Point) = this.fields.contains(p)
+        operator fun contains(p: Point) = fields.contains(p)
     }
 
     companion object {
@@ -27,7 +27,7 @@ class Task1 {
                     Direction.entries
                         .map { cur.move(it) }
                         .filter { it.y in map.indices && it.x in map.first().indices }
-                        .filter { !visited.contains(it) }
+                        .filter { it !in visited }
                         .filter { map[it.y][it.x] == type }
                         .forEach { visited += it; findRegionImpl(it) }
                 }
@@ -40,7 +40,7 @@ class Task1 {
                 for (x in map.first().indices) {
                     val cur = Point(y, x)
                     val type = map[y][x]
-                    if (regions.none { it.contains(cur) }) {
+                    if (regions.none { cur in it }) {
                         regions += findRegion(type, cur)
                     }
                 }

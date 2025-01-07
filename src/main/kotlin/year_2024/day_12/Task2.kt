@@ -1,7 +1,5 @@
 package year_2024.day_12
 
-import year_2024.day_12.Direction.*
-
 class Task2 {
 
     data class Line(val begin: Point, val end: Point)
@@ -9,47 +7,58 @@ class Task2 {
     companion object {
 
         fun perimeter(r: Region): Long {
-            val lines = r.genLines()
-            return compact(lines).size.toLong()
+            val points = r.genBorders()
+            return compact(points).size.toLong()
         }
 
-        private fun Region.genLines(): List<Line> {
-            val result = mutableListOf<Line>()
-            for (f in fields) {
-                for (d in Direction.entries) {
-                    val next = f.move(d)
-                    if (next !in this) {
-                        val begin = next
-                        val end = when (d) {
-                            UP, DOWN -> Point(next.y, next.x + 1)
-                            LEFT, RIGHT -> Point(next.y + 1, next.x)
+        private fun Region.genBorders(): List<Pair<Line, Direction>> =
+            buildList {
+                for (f in fields) {
+                    for (d in Direction.entries) {
+                        val next = f.move(d)
+                        if (next !in this@genBorders) {
+                            add(Line(f, f) to d)
                         }
-                        result += Line(begin, end)
                     }
                 }
             }
-            return result
-        }
 
-        private fun compact(borders: List<Line>): List<Line> {
+        private fun compact(borders: List<Pair<Line, Direction>>): List<Pair<Line, Direction>> {
             val result = borders.toMutableList()
             var wasCompacted: Boolean
             do {
                 wasCompacted = false
                 outer@ for (i in 0..<result.size - 1) {
-                    val first = result[i]
+                    val (p1, d1) = result[i]
                     for (j in i + 1 until result.size) {
-                        val second = result[j]
-                        if (first.end == second.begin && (first.begin.y == second.end.y || first.begin.x == second.end.x)) {
-                            result[i] = Line(first.begin, second.end)
-                            result.removeAt(j)
-                            wasCompacted = true
-                            break@outer
-                        } else if (second.end == first.begin && (second.begin.y == first.end.y || second.begin.x == first.end.x)) {
-                            result[i] = Line(second.begin, first.end)
-                            result.removeAt(j)
-                            wasCompacted = true
-                            break@outer
+                        val (p2, d2) = result[j]
+                        if (d1 == d2) {
+                            when (d1) {
+                                Direction.LEFT, Direction.RIGHT ->
+                                    if (p1.end + Point(1, 0) == p2.begin) {
+                                        result[i] = Line(p1.begin, p2.end) to d1
+                                        result.removeAt(j)
+                                        wasCompacted = true
+                                        break@outer
+                                    } else if (p2.end + Point(1, 0) == p1.begin) {
+                                        result[j] = Line(p2.begin, p1.end) to d2
+                                        result.removeAt(i)
+                                        wasCompacted = true
+                                        break@outer
+                                    }
+                                Direction.UP, Direction.DOWN ->
+                                    if (p1.end + Point(0, 1) == p2.begin) {
+                                        result[i] = Line(p1.begin, p2.end) to d1
+                                        result.removeAt(j)
+                                        wasCompacted = true
+                                        break@outer
+                                    } else if (p2.end + Point(0, 1) == p1.begin) {
+                                        result[j] = Line(p2.begin, p1.end) to d2
+                                        result.removeAt(i)
+                                        wasCompacted = true
+                                        break@outer
+                                    }
+                            }
                         }
                     }
                 }
@@ -58,10 +67,7 @@ class Task2 {
         }
 
         fun solve(map: List<List<Char>>): Long {
-            val regions = findRegions(map)
-            return regions
-                .map { println("Region ${it.type}: ${it.area()} * ${perimeter(it)} = ${it.area() * perimeter(it)}"); it }
-                .sumOf { it.area() * perimeter(it) }
+            return findRegions(map).sumOf { it.area() * perimeter(it) }
         }
     }
 }

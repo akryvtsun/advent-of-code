@@ -8,6 +8,8 @@ enum class Direction(val dy: Int, val dx: Int) {
 }
 
 data class Point(val y: Int, val x: Int) {
+    operator fun plus(other: Point) = Point(y + other.y, x + other.x)
+
     fun move(dir: Direction) = Point(y + dir.dy, x + dir.dx)
 }
 

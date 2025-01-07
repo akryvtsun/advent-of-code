@@ -12,8 +12,7 @@ class Task1 {
         }
 
         fun solve(map: List<List<Char>>): Long {
-            val regions = findRegions(map)
-            return regions.sumOf { it.area() * perimeter(it) }
+            return findRegions(map).sumOf { it.area() * perimeter(it) }
         }
     }
 }

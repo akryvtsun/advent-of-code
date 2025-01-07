@@ -4,22 +4,21 @@ import year_2024.day_12.Direction.*
 
 class Task2 {
 
-    data class Region(val type: Char, val fields: Set<Point>) {
-        fun area() = fields.size.toLong()
+    data class Line(val begin: Point, val end: Point)
 
-        fun perimeter(): Long {
-            val lines = genLines()
+    companion object {
+
+        fun perimeter(r: Region): Long {
+            val lines = r.genLines()
             return compact(lines).size.toLong()
         }
 
-        operator fun contains(p: Point) = this.fields.contains(p)
-
-        fun genLines(): List<Line> {
+        private fun Region.genLines(): List<Line> {
             val result = mutableListOf<Line>()
             for (f in fields) {
                 for (d in Direction.entries) {
                     val next = f.move(d)
-                    if (!contains(next)) {
+                    if (next !in this) {
                         val begin = next
                         val end = when (d) {
                             UP, DOWN -> Point(next.y, next.x + 1)
@@ -57,43 +56,12 @@ class Task2 {
             } while (wasCompacted)
             return result
         }
-    }
-
-    data class Line(val begin: Point, val end: Point)
-
-    companion object {
 
         fun solve(map: List<List<Char>>): Long {
-            val regions = mutableSetOf<Region>()
-
-            fun findRegion(type: Char, point: Point): Region {
-                val visited = mutableSetOf(point)
-
-                fun findRegionImpl(cur: Point) {
-                    Direction.entries
-                        .map { cur.move(it) }
-                        .filter { it.y in map.indices && it.x in map.first().indices }
-                        .filter { !visited.contains(it) }
-                        .filter { map[it.y][it.x] == type }
-                        .forEach { visited += it; findRegionImpl(it) }
-                }
-
-                findRegionImpl(point)
-                return Region(type, visited)
-            }
-
-            for (y in map.indices) {
-                for (x in map.first().indices) {
-                    val cur = Point(y, x)
-                    val type = map[y][x]
-                    if (regions.none { cur in it }) {
-                        regions += findRegion(type, cur)
-                    }
-                }
-            }
+            val regions = findRegions(map)
             return regions
-                .map { println("Region ${it.type}: ${it.area()} * ${it.perimeter()} = ${it.area() * it.perimeter()}"); it }
-                .sumOf { it.area() * it.perimeter() }
+                .map { println("Region ${it.type}: ${it.area()} * ${perimeter(it)} = ${it.area() * perimeter(it)}"); it }
+                .sumOf { it.area() * perimeter(it) }
         }
     }
 }

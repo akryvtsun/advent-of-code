@@ -2,6 +2,7 @@ package year_2024
 
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
+import taskData
 import year_2024.day_13.Point
 import year_2024.day_13.SlotMachine
 import year_2024.day_13.Task1

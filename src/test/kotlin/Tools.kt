@@ -1,5 +1,3 @@
-package year_2024
-
 import java.io.File
 
 fun taskData(year: Int, task: Int) =

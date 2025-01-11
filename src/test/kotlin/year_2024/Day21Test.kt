@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
+import taskData
 import year_2024.day_21.Task1
 import year_2024.day_21.Task2
 import year_2024.day_21.directionalKeypad

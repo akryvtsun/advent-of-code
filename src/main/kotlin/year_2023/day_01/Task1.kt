@@ -1,6 +1,5 @@
 package year_2023.day_01
 
-
 class Task1 {
     companion object {
 

@@ -3,7 +3,7 @@ package year_2023.day_01
 class Task2 {
     companion object {
         val PATTERN =
-            """(0|1|2|3|4|5|6|7|8|9|one|two|three|four|five|six|seven|eight|nine|zero)""".toRegex()
+            """[0-9]|zero|one|two|three|four|five|six|seven|eight|nine""".toRegex()
 
         private fun toDigit(input: String) = when (input) {
             "one", "1" -> 1
@@ -22,19 +22,11 @@ class Task2 {
         fun solve(input: String): Int {
             return input.lines()
                 .map { line ->
-                    var first: String? = null
-                    var last: String? = null
-                    for (m in PATTERN.findAll(line)) {
-                        if (first == null) {
-                            first = m.value
-                            last = m.value
-                        } else {
-                            last = m.value
-                        }
-                    }
-                    "${toDigit(first!!)}${toDigit(last!!)}"
+                    val matches = PATTERN.findAll(line)
+                    val first = matches.first().value
+                    val last = matches.last().value
+                    "${toDigit(first)}${toDigit(last)}"
                 }
-                .also { println(it) }
                 .sumOf { it.toInt() }
         }
     }

@@ -9,7 +9,7 @@ import year_2024.day_24.Task2
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-@DisplayName("Day 19: Linen Layout")
+@DisplayName("Day 24: Crossed Wires")
 class Day24Test {
 
     @Nested

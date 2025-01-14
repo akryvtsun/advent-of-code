@@ -2,32 +2,43 @@ package year_2023.day_01
 
 class Task2 {
     companion object {
-        val PATTERN =
-            """[0-9]|zero|one|two|three|four|five|six|seven|eight|nine""".toRegex()
 
-        private fun toDigit(input: String) = when (input) {
-            "one", "1" -> 1
-            "two", "2" -> 2
-            "three", "3" -> 3
-            "four", "4" -> 4
-            "five", "5" -> 5
-            "six", "6" -> 6
-            "seven", "7" -> 7
-            "eight", "8" -> 8
-            "nine", "9" -> 9
-            "zero", "0" -> 0
-            else -> error("Invalid digit: $input")
+        val digiMap = mapOf(
+            "zero" to 0,
+            "one" to 1,
+            "two" to 2,
+            "three" to 3,
+            "four" to 4,
+            "five" to 5,
+            "six" to 6,
+            "seven" to 7,
+            "eight" to 8,
+            "nine" to 9,
+        )
+
+        fun numbers(line: String) = buildList {
+            for (i in line.indices) {
+                if (line[i].isDigit()) {
+                    add(line[i].digitToInt())
+                } else {
+                    for (e in digiMap.entries) {
+                        if (line.startsWith(e.key, i)) {
+                            add(e.value)
+                            break
+                        }
+                    }
+                }
+            }
         }
 
         fun solve(input: String): Int {
             return input.lines()
-                .map { line ->
-                    val matches = PATTERN.findAll(line)
-                    val first = matches.first().value
-                    val last = matches.last().value
-                    "${toDigit(first)}${toDigit(last)}"
+                .sumOf { line ->
+                    val nums = numbers(line)
+                    val first = nums.first()
+                    val last = nums.last()
+                    first * 10 + last
                 }
-                .sumOf { it.toInt() }
         }
     }
 }

@@ -1,9 +1,9 @@
 package year_2025
 
+import TaskData
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
-import taskData
 import kotlin.test.Test
 
 @DisplayName("Day 1")
@@ -23,14 +23,16 @@ class Day01Test {
     inner class Part1 {
         @Test
         fun `Matches example`() {
-            val answer = Day01(input).solvePart1()
-            assertThat(answer).isEqualTo(11)
+            assertThat(
+                Day01(input).solvePart1()
+            ).isEqualTo(11)
         }
 
         @Test
         fun `Actual answer`() {
-            val input = taskData(2025, 1).readText()
-            val answer = Day01(input).solvePart1()
+            val answer = Day01(
+                TaskData(2025, 1).asString()
+            ).solvePart1()
             assertThat(answer).isEqualTo(2378066)
         }
     }

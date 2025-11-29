@@ -4,7 +4,7 @@ import kotlin.math.abs
 
 class Day01(private val input: String) {
 
-    fun transform(input: String): Pair<List<Long>, List<Long>> {
+    private fun transform(input: String): Pair<List<Long>, List<Long>> {
         val left = mutableListOf<Long>()
         val right = mutableListOf<Long>()
         input.lines().forEach { line ->

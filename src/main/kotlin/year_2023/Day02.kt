@@ -11,6 +11,15 @@ class Day02(private val input: List<String>) {
             }
     }
 
+    fun solvePart2(): Int {
+        return input
+            .sumOf { game ->
+                val number = game.substringBefore(":").substringAfter(" ").toInt()
+                val turns = game.substringAfter(":").split(";")
+                if (turns.all { it.isPossible() }) number else 0
+            }
+    }
+
     val setup = mapOf(
         "red" to 12,
         "green" to 13,

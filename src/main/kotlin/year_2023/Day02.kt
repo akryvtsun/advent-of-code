@@ -16,10 +16,9 @@ class Day02(private val input: List<String>) {
                     "green" to 0,
                     "blue" to 0,
                 )
-                game.turns()
-                    .forEach { turn ->
-                        turn.turnOp { count, color -> minSetup[color] = maxOf(minSetup[color]!!, count) }
-                    }
+                game.turns().forEach {
+                    it.turnOp { count, color -> minSetup[color] = maxOf(minSetup[color]!!, count) }
+                }
                 minSetup.values.reduce { acc, count -> acc * count }
             }
 

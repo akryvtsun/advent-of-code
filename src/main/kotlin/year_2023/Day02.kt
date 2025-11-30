@@ -2,47 +2,67 @@ package year_2023
 
 class Day02(private val input: List<String>) {
 
-    fun solvePart1() =
-        input
-            .sumOf { game ->
-                if (game.turns().all { it.isPossible() }) game.number() else 0
-            }
-
-    fun solvePart2() =
-        input
-            .sumOf { game ->
-                val minSetup = mutableMapOf(
-                    "red" to 0,
-                    "green" to 0,
-                    "blue" to 0,
-                )
-                game.turns().forEach {
-                    it.turnOp { count, color -> minSetup[color] = maxOf(minSetup[color]!!, count) }
-                }
-                minSetup.values.reduce { acc, count -> acc * count }
-            }
-
-    private fun String.number() = substringBefore(":").substringAfter(" ").toInt()
-
-    private fun String.turns() = substringAfter(":").split(";")
-
-    val setup = mapOf(
+    private val limits = mapOf(
         "red" to 12,
         "green" to 13,
         "blue" to 14,
     )
 
-    private fun String.isPossible(): Boolean {
-        var flag = true
-        turnOp { count, color -> if (setup[color]!! < count) flag = false }
-        return flag
-    }
+    fun solvePart1(): Int =
+        input.sumOf { line ->
+            val (gameId, turns) = line.parseGame()
 
-    private fun String.turnOp(operation: (Int, String) -> Unit) {
-        val colors = this.split(",")
-        colors.forEach {
-            val (count, color) = it.trim().split(" ")
-            operation(count.toInt(), color)
+            val possible = turns.all { turn ->
+                // every color count must be ≤ allowed limit
+                turn.all { (color, count) ->
+                    count <= limits.getValue(color)
+                }
+            }
+
+            if (possible) gameId else 0
         }
+
+    fun solvePart2(): Int =
+        input.sumOf { line ->
+            val (_, turns) = line.parseGame()
+
+            // find max count per color across all turns
+            val maxByColor = mutableMapOf(
+                "red" to 0,
+                "green" to 0,
+                "blue" to 0,
+            )
+
+            turns.forEach { turn ->
+                turn.forEach { (color, count) ->
+                    maxByColor[color] = maxOf(maxByColor.getValue(color), count)
+                }
+            }
+
+            // power = product of max red * max green * max blue
+            maxByColor.values.reduce(Int::times)
+        }
+
+    /**
+     * Parses a line into:
+     *  - game id (Int)
+     *  - list of turns; each turn is Map<color, count>
+     */
+    private fun String.parseGame(): Pair<Int, List<Map<String, Int>>> {
+        val id = substringAfter("Game ")
+            .substringBefore(":")
+            .toInt()
+
+        val turns = substringAfter(":")
+            .split(";")
+            .map { turn ->
+                turn.split(",")
+                    .associate { part ->
+                        val (count, color) = part.trim().split(" ")
+                        color to count.toInt()
+                    }
+            }
+
+        return id to turns
     }
 }

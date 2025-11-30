@@ -5,30 +5,27 @@ class Day02(private val input: List<String>) {
     fun solvePart1() =
         input
             .sumOf { game ->
-                val number = game.substringBefore(":").substringAfter(" ").toInt()
-                val turns = game.substringAfter(":").split(";")
-                if (turns.all { it.isPossible() }) number else 0
+                if (game.turns().all { it.isPossible() }) game.number() else 0
             }
 
-    fun solvePart2(): Int {
-        return input
+    fun solvePart2() =
+        input
             .sumOf { game ->
                 val minSetup = mutableMapOf(
                     "red" to 0,
                     "green" to 0,
                     "blue" to 0,
                 )
-                val turns = game.substringAfter(":").split(";")
-                turns.forEach { turn ->
-                    val colors = turn.split(",")
-                    colors.forEach { color ->
-                        val (count, color) = color.trim().split(" ")
-                        minSetup[color] = maxOf(minSetup[color]!!, count.toInt())
+                game.turns()
+                    .forEach { turn ->
+                        turn.turnOp { count, color -> minSetup[color] = maxOf(minSetup[color]!!, count) }
                     }
-                }
-                minSetup.values.reduce { acc, set -> acc * set }
+                minSetup.values.reduce { acc, count -> acc * count }
             }
-    }
+
+    private fun String.number() = substringBefore(":").substringAfter(" ").toInt()
+
+    private fun String.turns() = substringAfter(":").split(";")
 
     val setup = mapOf(
         "red" to 12,
@@ -37,10 +34,16 @@ class Day02(private val input: List<String>) {
     )
 
     private fun String.isPossible(): Boolean {
+        var flag = true
+        turnOp { count, color -> if (setup[color]!! < count) flag = false }
+        return flag
+    }
+
+    private fun String.turnOp(operation: (Int, String) -> Unit) {
         val colors = this.split(",")
-        return colors.all {
+        colors.forEach {
             val (count, color) = it.trim().split(" ")
-            setup[color]!! >= count.toInt()
+            operation(count.toInt(), color)
         }
     }
 }

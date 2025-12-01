@@ -6,16 +6,20 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import kotlin.test.Test
 
-@DisplayName("Day 1")
+@DisplayName("Day 1: Secret Entrance")
 class Day01Test {
 
     val input = """
-        3   4
-        4   3
-        2   5
-        1   3
-        3   9
-        3   3
+        L68
+        L30
+        R48
+        L5
+        R60
+        L55
+        L1
+        L99
+        R14
+        L82
     """.trimIndent()
 
     @Nested
@@ -24,16 +28,16 @@ class Day01Test {
         @Test
         fun `Matches example`() {
             assertThat(
-                Day01(input).solvePart1()
-            ).isEqualTo(11)
+                Day01(input.lines()).solvePart1()
+            ).isEqualTo(3)
         }
 
         @Test
         fun `Actual answer`() {
             val answer = Day01(
-                TaskData(2025, 1).asString()
+                TaskData(2025, 1).asLines()
             ).solvePart1()
-            assertThat(answer).isEqualTo(2378066)
+            assertThat(answer).isEqualTo(-1)
         }
     }
 

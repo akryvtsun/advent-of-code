@@ -37,7 +37,7 @@ class Day01Test {
             val answer = Day01(
                 TaskData(2025, 1).asLines()
             ).solvePart1()
-            assertThat(answer).isEqualTo(-1)
+            assertThat(answer).isEqualTo(1081)
         }
     }
 

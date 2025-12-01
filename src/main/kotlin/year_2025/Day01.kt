@@ -29,11 +29,11 @@ class Day01(private val input: List<String>) {
             when (it.dir) {
                 Direction.LEFT -> {
                     position -= it.value
-                    if (position < 0) position += 100
+                    if (position < 0) position = (position + 100) % 100
                 }
                 Direction.RIGHT -> {
                     position += it.value
-                    if (position > 99) position -= 100
+                    if (position > 99) position %= 100
                 }
             }
             if (position == 0) count++

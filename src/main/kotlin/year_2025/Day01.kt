@@ -14,7 +14,7 @@ class Day01(private val input: List<String>) {
         }
     }
 
-    data class Rotation(val dir: Direction, val value: Int)
+    data class Rotation(val dir: Direction, val count: Int)
 
     private fun transform(input: List<String>): List<Rotation> =
         input
@@ -28,11 +28,11 @@ class Day01(private val input: List<String>) {
         rotations.forEach {
             when (it.dir) {
                 Direction.LEFT -> {
-                    position -= it.value
+                    position -= it.count
                     if (position < 0) position = (position + 100) % 100
                 }
                 Direction.RIGHT -> {
-                    position += it.value
+                    position += it.count
                     if (position > 99) position %= 100
                 }
             }
@@ -41,6 +41,7 @@ class Day01(private val input: List<String>) {
         return count
     }
 
+    // password method 0x434C49434B
     fun solvePart2(): Int {
         val rotations = transform(input)
         var position = 50
@@ -48,15 +49,20 @@ class Day01(private val input: List<String>) {
         rotations.forEach {
             when (it.dir) {
                 Direction.LEFT -> {
-                    position -= it.value
-                    if (position < 0) position = (position + 100) % 100
+                    for (i in 1..it.count) {
+                        position -= 1
+                        if (position == 0) count++
+                        if (position == -1) position = 99
+                    }
                 }
                 Direction.RIGHT -> {
-                    position += it.value
-                    if (position > 99) position %= 100
+                    for (i in 1..it.count) {
+                        position += 1
+                        if (position == 100) position = 0
+                        if (position == 0) count++
+                    }
                 }
             }
-            if (position == 0) count++
         }
         return count
     }

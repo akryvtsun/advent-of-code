@@ -1,1 +1,0 @@
-val UNKNOWN_VALUE = -1

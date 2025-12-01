@@ -31,6 +31,7 @@ class Day01(private val input: List<String>) {
                     position -= it.count
                     if (position < 0) position = (position + 100) % 100
                 }
+
                 Direction.RIGHT -> {
                     position += it.count
                     if (position > 99) position %= 100
@@ -46,22 +47,12 @@ class Day01(private val input: List<String>) {
         val rotations = transform(input)
         var position = 50
         var count = 0
-        rotations.forEach {
-            when (it.dir) {
-                Direction.LEFT -> {
-                    for (i in 1..it.count) {
-                        position -= 1
-                        if (position == 0) count++
-                        if (position == -1) position = 99
-                    }
-                }
-                Direction.RIGHT -> {
-                    for (i in 1..it.count) {
-                        position += 1
-                        if (position == 100) position = 0
-                        if (position == 0) count++
-                    }
-                }
+        rotations.forEach { r ->
+            repeat(r.count) {
+                position += if (r.dir == Direction.LEFT) -1 else 1
+                if (position == -1) position = 99
+                if (position == 100) position = 0
+                if (position == 0) count++
             }
         }
         return count

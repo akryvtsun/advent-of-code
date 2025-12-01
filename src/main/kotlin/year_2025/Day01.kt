@@ -25,6 +25,8 @@ class Day01(private val input: List<String>) {
         val rotations = transform(input)
         var position = 50
         var count = 0
+        // it's possible to use here solution from part 2
+        // but only move count calculation outside of repeat cycle
         rotations.forEach {
             when (it.dir) {
                 Direction.LEFT -> {
@@ -44,12 +46,13 @@ class Day01(private val input: List<String>) {
 
     // password method 0x434C49434B
     fun solvePart2(): Int {
-        val rotations = transform(input)
         var position = 50
         var count = 0
-        rotations.forEach { r ->
-            repeat(r.count) {
-                position += if (r.dir == Direction.LEFT) -1 else 1
+        // no input transformation not data classes - the simplest solution
+        input.forEach { r ->
+            val times = r.substring(1).toInt()
+            repeat(times) {
+                position += if (r[0] == 'L') -1 else 1
                 if (position == -1) position = 99
                 if (position == 100) position = 0
                 if (position == 0) count++

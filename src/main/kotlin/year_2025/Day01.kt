@@ -40,5 +40,25 @@ class Day01(private val input: List<String>) {
         }
         return count
     }
+
+    fun solvePart2(): Int {
+        val rotations = transform(input)
+        var position = 50
+        var count = 0
+        rotations.forEach {
+            when (it.dir) {
+                Direction.LEFT -> {
+                    position -= it.value
+                    if (position < 0) position = (position + 100) % 100
+                }
+                Direction.RIGHT -> {
+                    position += it.value
+                    if (position > 99) position %= 100
+                }
+            }
+            if (position == 0) count++
+        }
+        return count
+    }
 }
 

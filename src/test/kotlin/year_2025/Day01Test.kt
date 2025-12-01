@@ -46,10 +46,17 @@ class Day01Test {
     inner class Part2 {
         @Test
         fun `Matches example`() {
+            assertThat(
+                Day01(input.lines()).solvePart2()
+            ).isEqualTo(6)
         }
 
         @Test
         fun `Actual answer`() {
+            val answer = Day01(
+                TaskData(2025, 1).asLines()
+            ).solvePart2()
+            assertThat(answer).isEqualTo(-1)
         }
     }
 }

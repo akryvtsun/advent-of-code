@@ -1,12 +1,10 @@
 package year_2024
 
+import TaskData
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
-import taskData
-import year_2024.day_02.Task1
-import year_2024.day_02.Task2
 import kotlin.test.Test
-import kotlin.test.assertEquals
 
 @DisplayName("Day 2: Red-Nosed Reports")
 class Day02Test {
@@ -20,24 +18,23 @@ class Day02Test {
         1 3 6 7 9
     """.trimIndent()
 
-    fun transform(input: String) =
-        input.lines()
-            .map { it.split(" ").map(String::toInt) }
-
     @Nested
     @DisplayName("Part 1")
     inner class Part1 {
         @Test
         fun `Matches example`() {
-            val paths = transform(input)
-            assertEquals(2, Task1.solve(paths))
+            assertThat(
+                Day02(input).solvePart1()
+            ).isEqualTo(2)
         }
 
         @Test
         fun `Actual answer`() {
-            val input = taskData(2024, 2).readText()
-            val paths = transform(input)
-            assertEquals(510, Task1.solve(paths))
+            assertThat(
+                Day02(
+                    TaskData(2024, 2).asString()
+                ).solvePart1()
+            ).isEqualTo(510)
         }
     }
 
@@ -46,15 +43,18 @@ class Day02Test {
     inner class Part2 {
         @Test
         fun `Matches example`() {
-            val paths = transform(input)
-            assertEquals(4, Task2.solve(paths))
+            assertThat(
+                Day02(input).solvePart2()
+            ).isEqualTo(4)
         }
 
         @Test
         fun `Actual answer`() {
-            val input = taskData(2024, 2).readText()
-            val paths = transform(input)
-            assertEquals(553, Task2.solve(paths))
+            assertThat(
+                Day02(
+                    TaskData(2024, 2).asString()
+                ).solvePart2()
+            ).isEqualTo(553)
         }
     }
 }

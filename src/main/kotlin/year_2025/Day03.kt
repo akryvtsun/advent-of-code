@@ -20,17 +20,27 @@ class Day03(private val input: String) {
     fun solvePart2(): Long {
         val banks = input.lines()
         return banks.sumOf { bank ->
-            var tempBank = bank
-            buildString {
-                repeat(12) { i ->
-                    val count = 12 - i
-                    val window = if (count == 1) tempBank else tempBank.take(tempBank.length - count + 1)
-                    val d = window.max()
-                    append(d)
-                    tempBank = tempBank.drop(tempBank.indexOf(d) + 1)
-                }
-            }.toLong()
+//            var tempBank = bank
+//            buildString {
+//                repeat(12) { i ->
+//                    val count = 12 - i
+//                    val window = if (count == 1) tempBank else tempBank.take(tempBank.length - count + 1)
+//                    val maxDigit = window.withIndex().maxBy { it.value }
+//                    append(maxDigit.value)
+//                    tempBank = tempBank.drop(maxDigit.index + 1)
+//                }
+//            }.toLong()
+            findMaxJoltage(12, bank).toLong()
         }
     }
+
+    private tailrec fun findMaxJoltage(count: Int, bank: String): String =
+        if (count == 1) {
+            bank.max().toString()
+        } else {
+            val window = bank.take(bank.length - count + 1)
+            val maxDigit = window.withIndex().maxBy { it.value }
+            maxDigit.value + findMaxJoltage(count - 1, bank.drop(maxDigit.index + 1))
+        }
 }
 

@@ -1,7 +1,5 @@
 package year_2025
 
-import java.math.BigInteger
-
 class Day03(private val input: String) {
 
     fun solvePart1(): Int {
@@ -19,7 +17,7 @@ class Day03(private val input: String) {
         }
     }
 
-    fun solvePart2(): BigInteger {
+    fun solvePart2(): Long {
         val banks = input.lines()
         return banks.sumOf { bank ->
             var tempBank = bank
@@ -31,9 +29,7 @@ class Day03(private val input: String) {
                     append(d)
                     tempBank = tempBank.drop(tempBank.indexOf(d) + 1)
                 }
-            }
-                //.also { println(it) }
-                .toBigInteger()
+            }.toLong()
         }
     }
 }

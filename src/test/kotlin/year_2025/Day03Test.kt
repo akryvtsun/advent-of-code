@@ -6,7 +6,6 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments.arguments
 import org.junit.jupiter.params.provider.MethodSource
-import java.math.BigInteger
 
 @DisplayName("Day 3: Lobby")
 class Day03Test {
@@ -28,8 +27,8 @@ class Day03Test {
 
         @JvmStatic
         fun part2Data() = listOf(
-            arguments(testInput, BigInteger.valueOf(3121910778619)),
-            arguments(realInput, BigInteger.valueOf(167523425665348))
+            arguments(testInput, 3121910778619),
+            arguments(realInput, 167523425665348)
         )
     }
 
@@ -43,7 +42,7 @@ class Day03Test {
 
     @ParameterizedTest
     @MethodSource("part2Data")
-    fun part2Test(input: String, result: BigInteger) {
+    fun part2Test(input: String, result: Long) {
         assertThat(
             Day03(input).solvePart2()
         ).isEqualTo(result)

@@ -1,46 +1,24 @@
 package year_2025
 
-class Day03(private val input: String) {
+class Day03(input: String) {
 
-    fun solvePart1(): Int {
-        val banks = input.lines()
-        return banks.sumOf { bank ->
-            val bats = sequence {
-                for (f in 0 until (bank.length - 1)) {
-                    for (s in f + 1 until bank.length) {
-                        val joltage = (bank[f].toString() + bank[s].toString()).toInt()
-                        yield(joltage)
-                    }
-                }
-            }
-            bats.max()
-        }
+    private val banks = input.lines()
+
+    fun solvePart1() = banks.sumOf {
+        findMaxJoltage(it, 2).toInt()
     }
 
-    fun solvePart2(): Long {
-        val banks = input.lines()
-        return banks.sumOf { bank ->
-//            var tempBank = bank
-//            buildString {
-//                repeat(12) { i ->
-//                    val count = 12 - i
-//                    val window = if (count == 1) tempBank else tempBank.take(tempBank.length - count + 1)
-//                    val maxDigit = window.withIndex().maxBy { it.value }
-//                    append(maxDigit.value)
-//                    tempBank = tempBank.drop(maxDigit.index + 1)
-//                }
-//            }.toLong()
-            findMaxJoltage(12, bank).toLong()
-        }
+    fun solvePart2() = banks.sumOf {
+        findMaxJoltage(it, 12).toLong()
     }
 
-    private tailrec fun findMaxJoltage(count: Int, bank: String): String =
+    private tailrec fun findMaxJoltage(bank: String, count: Int, acc: String = ""): String =
         if (count == 1) {
-            bank.max().toString()
+            acc + bank.max()
         } else {
-            val window = bank.take(bank.length - count + 1)
+            val window = bank.dropLast(count - 1)
             val maxDigit = window.withIndex().maxBy { it.value }
-            maxDigit.value + findMaxJoltage(count - 1, bank.drop(maxDigit.index + 1))
+            findMaxJoltage(bank.drop(maxDigit.index + 1), count - 1, acc + maxDigit.value)
         }
 }
 

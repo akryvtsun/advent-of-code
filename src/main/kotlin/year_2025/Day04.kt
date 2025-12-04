@@ -9,7 +9,7 @@ class Day04(input: String) {
     data class Point(val y: Int, val x: Int)
 
     fun Surface.rolls() = buildSet {
-        for (y in map.indices) {
+        for (y in this@rolls.indices) {
             for (x in this@rolls[y].indices) {
                 if (this@rolls[y][x] == '@') {
                     add(Point(y, x))
@@ -32,20 +32,21 @@ class Day04(input: String) {
     }
 
     fun solvePart1(): Int {
-        val r = map.rolls()
-        return r.count { r.isAccessible(it) }
+        val rolls = map.rolls()
+        return rolls.count { rolls.isAccessible(it) }
     }
 
     fun solvePart2(): Int {
-        var count = 0
-        val temp = map.rolls().toMutableSet()
-        while (true) {
-            val isAcc = temp.filter { temp.isAccessible(it) }.toSet()
-            if (isAcc.isEmpty()) break
-            count += isAcc.size
-            temp -= isAcc
+        tailrec fun count(rolls: Set<Point>, acc: Int = 0): Int {
+            val accessible = rolls.filter { rolls.isAccessible(it) }.toSet()
+            return if (accessible.isEmpty()) {
+                acc
+            } else {
+                count(rolls - accessible, acc + accessible.size)
+            }
         }
-        return count
+
+        return count(map.rolls())
     }
 }
 

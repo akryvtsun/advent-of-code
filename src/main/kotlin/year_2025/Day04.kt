@@ -1,12 +1,20 @@
 package year_2025
 
-import UNKNOWN_VALUE
-
 class Day04(input: String) {
 
     private val map = input.lines()
 
     data class Point(val y: Int, val x: Int)
+
+    private val rolls = sequence {
+        for (y in map.indices) {
+            for (x in map[y].indices) {
+                if (map[y][x] == '@') {
+                    yield(Point(y, x))
+                }
+            }
+        }
+    }
 
     private fun isAccessible(candidate: Point): Boolean {
         val places = sequence {
@@ -22,18 +30,11 @@ class Day04(input: String) {
     }
 
     fun solvePart1(): Int {
-        val rolls = sequence {
-            for (y in map.indices) {
-                for (x in map[y].indices) {
-                    if (map[y][x] == '@') {
-                        yield(Point(y, x))
-                    }
-                }
-            }
-        }
         return rolls.count { isAccessible(it) }
     }
 
-    fun solvePart2() = UNKNOWN_VALUE
+    fun solvePart2(): Int {
+        return rolls.count { isAccessible(it) }
+    }
 }
 

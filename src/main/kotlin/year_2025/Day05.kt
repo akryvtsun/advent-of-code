@@ -1,7 +1,5 @@
 package year_2025
 
-import UNKNOWN_VALUE
-
 class Day05(input: String) {
 
     val idRanges = input.substringBefore("\n\n").lines()
@@ -20,6 +18,13 @@ class Day05(input: String) {
     }
 
     fun solvePart2(): Int {
-        return UNKNOWN_VALUE
+        return idRanges.fold(mutableSetOf<Long>())
+        { acc, e ->
+            acc.addAll(e.iterator().asSequence().toSet())
+            acc
+        }.size
+//
+//        return idRanges
+//            .sumOf { it.last - it.first + 1 }
     }
 }

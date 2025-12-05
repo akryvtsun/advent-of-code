@@ -8,18 +8,29 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments.arguments
 import org.junit.jupiter.params.provider.MethodSource
 
-@DisplayName("")
+@DisplayName("Day 5: Cafeteria")
 class Day05Test {
     companion object {
         val testInput = """
+            3-5
+            10-14
+            16-20
+            12-18
+
+            1
+            5
+            8
+            11
+            17
+            32
         """.trimIndent()
 
         val realInput = TaskData(2025, 5).asString()
 
         @JvmStatic
         fun part1Data() = listOf(
-            arguments(testInput, UNKNOWN_VALUE),
-            arguments(realInput, UNKNOWN_VALUE)
+            arguments(testInput, 3),
+            arguments(realInput, 640)
         )
 
         @JvmStatic

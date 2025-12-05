@@ -2,45 +2,35 @@ package year_2025
 
 class Day05(input: String) {
 
-    val idRanges = input.substringBefore("\n\n").lines().map {
+    val ranges = input.substringBefore("\n\n").lines().map {
             val range = it.trim().split("-")
             range[0].toLong()..range[1].toLong()
         }
 
     val ids = input.substringAfter("\n\n").lines().map(String::toLong)
 
-    fun solvePart1(): Int {
-        return ids.count { id ->
-            idRanges.any { it.contains(id) }
-        }
-    }
+    fun solvePart1(): Int = ids.count { id -> ranges.any { id in it } }
 
     fun solvePart2(): Long {
-        tailrec fun merge(ranges: List<LongRange>) : List<LongRange> {
-            var changed = false
-            val newRanges = ranges.fold(mutableListOf<LongRange>()) { acc, e ->
-                if (acc.isEmpty()) {
-                    acc.add(e)
-                    acc
+        fun List<LongRange>.compact() = sequence {
+            if (isEmpty()) return@sequence
+
+            var optimized = first()
+            for (current in drop(1)) {
+                if (current.first <= optimized.last) {
+                    optimized = optimized.first..maxOf(optimized.last, current.last)
                 } else {
-                    val newAcc = mutableListOf<LongRange>()
-                    var wasMerged = false
-                    for (ae in acc) {
-                        if (ae.last < e.first || e.last < ae.first) {
-                            newAcc.add(ae)
-                            continue
-                        }
-                        newAcc.add(minOf(ae.first, e.first)..maxOf(ae.last, e.last))
-                        wasMerged = true
-                        changed = true
-                    }
-                    if (!wasMerged) newAcc.add(e)
-                    newAcc
+                    yield(optimized)
+                    optimized = current
                 }
             }
-            return if (changed) merge(newRanges) else newRanges
+            yield(optimized)
         }
-        return merge(idRanges)
-            .sumOf { it.last - it.first + 1 }
+
+        fun LongRange.length(): Long = last - first + 1
+
+        return ranges.sortedBy { it.first }
+            .compact()
+            .sumOf { it.length() }
     }
 }

@@ -16,17 +16,17 @@ class Day05(input: String) {
     }
 
     fun solvePart2(): Long {
-        tailrec fun merge(ranges: Set<LongRange>) : Set<LongRange> {
+        tailrec fun merge(ranges: List<LongRange>) : List<LongRange> {
             var changed = false
-            val newRanges = ranges.fold(mutableSetOf<LongRange>()) { acc, e ->
+            val newRanges = ranges.fold(mutableListOf<LongRange>()) { acc, e ->
                 if (acc.isEmpty()) {
                     acc.add(e)
                     acc
                 } else {
-                    val newAcc = mutableSetOf<LongRange>()
+                    val newAcc = mutableListOf<LongRange>()
                     var wasMerged = false
                     for (ae in acc) {
-                        if (ae.last <= e.first || e.last <= ae.first) {
+                        if (ae.last < e.first || e.last < ae.first) {
                             newAcc.add(ae)
                             continue
                         }
@@ -40,10 +40,7 @@ class Day05(input: String) {
             }
             return if (changed) merge(newRanges) else newRanges
         }
-
-        println(idRanges)
-        return merge(idRanges.toSet())
-            .also { println(it) }
+        return merge(idRanges)
             .sumOf { it.last - it.first + 1 }
     }
 }

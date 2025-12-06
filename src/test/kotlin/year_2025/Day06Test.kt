@@ -8,17 +8,21 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments.arguments
 import org.junit.jupiter.params.provider.MethodSource
 
-@DisplayName("")
+@DisplayName("Day 6: Trash Compactor")
 class Day06Test {
     companion object {
         val testInput = """
+            123 328  51 64 
+             45 64  387 23 
+              6 98  215 314
+            *   +   *   +  
         """.trimIndent()
 
-        val realInput = TaskData(2025, 5).asString()
+        val realInput = TaskData(2025, 6).asString()
 
         @JvmStatic
         fun part1Data() = listOf(
-            arguments(testInput, UNKNOWN_VALUE),
+            arguments(testInput, 4277556L),
             arguments(realInput, UNKNOWN_VALUE)
         )
 
@@ -31,7 +35,7 @@ class Day06Test {
 
     @ParameterizedTest
     @MethodSource("part1Data")
-    fun part1Test(input: String, result: Int) {
+    fun part1Test(input: String, result: Long) {
         assertThat(
             Day06(input).solvePart1()
         ).isEqualTo(result)

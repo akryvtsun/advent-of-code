@@ -1,7 +1,5 @@
 package year_2025
 
-import UNKNOWN_VALUE
-
 class Day06(val input: String) {
 
     fun solvePart1(): Long {
@@ -20,7 +18,22 @@ class Day06(val input: String) {
         return sum
     }
 
-    fun solvePart2(): Int {
-        return UNKNOWN_VALUE
+    fun solve2(task: Task): Long {
+        val transposedData = task.data.fold(List(task.data.first().length) { "" }) { acc, value ->
+            value.mapIndexed { index, c -> acc[index] + c }
+        }
+        val realData = transposedData.map { it.trim().toLong() }
+        return if (task.op == '+') realData.sum() else realData.reduce { a, b -> a * b }
+    }
+
+    data class Task(val op: Char, val data: List<String>)
+
+    fun solvePart2(): Long {
+        var data = input.lines()
+        val delims = data.last().withIndex().filter { (_, v) -> v != ' ' } + IndexedValue(data.last().length + 1, '.')
+        val operands = data.dropLast(1)
+        val tasks: List<Task> = delims.zipWithNext()
+            .map { (d1, d2) -> Task(d1.value, operands.map { it.substring(d1.index, d2.index - 1) }) }
+        return tasks.sumOf { solve2 (it) }
     }
 }

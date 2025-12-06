@@ -2,30 +2,39 @@ package year_2025
 
 class Day06(val input: String) {
 
-    data class Task(val op: Char, val data: List<String>)
+    data class Task(val op: Char, val data: List<String>) {
 
-    fun solveTask(task: Task): Long {
-        val op: (Long, Long) -> Long  = if (task.op == '+') Long::plus else Long::times
-        val numData = task.data.map { it.trim().toLong() }
-        return numData.reduce(op)
+        fun solve(): Long {
+            val operator: (Long, Long) -> Long  = if (op == '+') Long::plus else Long::times
+            val numbers = data.map(String::trim).map(String::toLong)
+            return numbers.reduce(operator)
+        }
     }
 
-    fun solve(preprOp: (List<String>) -> List<String>): Long {
+    private fun solve(preprOp: (List<String>) -> List<String>): Long {
         val data = input.lines()
         val operators = data.last().withIndex().filter { it.value != ' ' }
         val operands = data.dropLast(1)
-        val tasks: List<Task> = operators.zipWithNext()
-            .map { (d1, d2) -> Task(d1.value, operands.map { it.substring(d1.index, d2.index - 1) }) } +
+        val tasks: List<Task> = buildList {
+            operators.zipWithNext()
+                .map { (d1, d2) ->
+                    add(
+                        Task(d1.value, operands.map { it.substring(d1.index, d2.index - 1) })
+                    )
+                }
+            // last task (goes to end of line)
+            add(
                 Task(operators.last().value, operands.map { it.substring(operators.last().index) })
-        val processed = tasks.map { Task(it.op, preprOp(it.data)) }
-        return processed.sumOf { solveTask(it) }
+            )
+        }.map { task -> task.copy(data = preprOp(task.data)) }
+        return tasks.sumOf { it.solve() }
     }
 
-    fun noOp(data: List<String>): List<String> = data
+    private fun noOp(data: List<String>): List<String> = data
 
     fun solvePart1(): Long = solve(::noOp)
 
-    fun transposeOp(data: List<String>): List<String> {
+    private fun transposeOp(data: List<String>): List<String> {
         val length = data.maxOf { it.length }
 
         return (0 until length).map { col ->

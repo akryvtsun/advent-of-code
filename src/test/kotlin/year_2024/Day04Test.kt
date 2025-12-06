@@ -1,21 +1,20 @@
 package year_2024
 
+import TaskData
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.Nested
-import taskData
-import year_2024.day_04.Task1
-import year_2024.day_04.Task2
-import kotlin.test.Test
-import kotlin.test.assertEquals
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.Arguments.arguments
+import org.junit.jupiter.params.provider.MethodSource
 
 @DisplayName("Day 4: Ceres Search")
 class Day04Test {
+    companion object {
+        val realInput = TaskData(2024, 4).asLines()
 
-    @Nested
-    @DisplayName("Part 1")
-    inner class Part1 {
-        @Test
-        fun `Matches example`() {
+        @JvmStatic
+        fun part1Data(): List<Arguments> {
             val ex1 = listOf(
                 "..X...",
                 ".SAMX.",
@@ -23,7 +22,6 @@ class Day04Test {
                 "XMAS.S",
                 ".X....",
             )
-            assertEquals(4, Task1.solve(ex1))
 
             val ex2 = listOf(
                 "MMMSXXMASM",
@@ -37,27 +35,21 @@ class Day04Test {
                 "MAMMMXMMMM",
                 "MXMXAXMASX",
             )
-            assertEquals(18, Task1.solve(ex2))
+
+            return listOf(
+                arguments(ex1, 4),
+                arguments(ex2, 18),
+                arguments(realInput, 2575)
+            )
         }
 
-        @Test
-        fun `Actual answer`() {
-            val input = taskData(2024, 4).readText()
-            assertEquals(2575, Task1.solve(input.lines()))
-        }
-    }
-
-    @Nested
-    @DisplayName("Part 2")
-    inner class Part2 {
-        @Test
-        fun `Matches example`() {
+        @JvmStatic
+        fun part2Data(): List<Arguments> {
             val ex1 = listOf(
                 "M.S",
                 ".A.",
                 "M.S",
             )
-            assertEquals(1, Task2.solve(ex1))
 
             val ex2 = listOf(
                 ".M.S......",
@@ -71,13 +63,28 @@ class Day04Test {
                 "M.M.M.M.M.",
                 "..........",
             )
-            assertEquals(9, Task2.solve(ex2))
-        }
 
-        @Test
-        fun `Actual answer`() {
-            val input = taskData(2024, 4).readText()
-            assertEquals(2041, Task2.solve(input.lines()))
+            return listOf(
+                arguments(ex1, 1),
+                arguments(ex2, 9),
+                arguments(realInput, 2041)
+            )
         }
+    }
+
+    @ParameterizedTest
+    @MethodSource("part1Data")
+    fun part1Test(input: List<String>, result: Int) {
+        assertThat(
+            Day04(input).solvePart1()
+        ).isEqualTo(result)
+    }
+
+    @ParameterizedTest
+    @MethodSource("part2Data")
+    fun part2Test(input: List<String>, result: Int) {
+        assertThat(
+            Day04(input).solvePart2()
+        ).isEqualTo(result)
     }
 }

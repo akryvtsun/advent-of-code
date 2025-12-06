@@ -1,45 +1,45 @@
 package year_2024
 
+import TaskData
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.Nested
-import taskData
-import year_2024.day_03.Task1
-import year_2024.day_03.Task2
-import kotlin.test.Test
-import kotlin.test.assertEquals
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments.arguments
+import org.junit.jupiter.params.provider.MethodSource
 
 @DisplayName("Day 3: Mull It Over")
 class Day03Test {
+    companion object {
+        val realInput = TaskData(2024, 3).asString()
 
-    @Nested
-    @DisplayName("Part 1")
-    inner class Part1 {
-        @Test
-        fun `Matches example`() {
-            assertEquals(0, Task1.solve("mul(4*, mul(6,9!, ?(12,34),"))
-            assertEquals(0, Task1.solve("mul ( 2 , 4 )"))
-            assertEquals(161, Task1.solve("xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))"))
-        }
+        @JvmStatic
+        fun part1Data() = listOf(
+            arguments("mul(4*, mul(6,9!, ?(12,34),", 0),
+            arguments("mul ( 2 , 4 )", 0),
+            arguments("xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))", 161),
+            arguments(realInput, 173785482)
+        )
 
-        @Test
-        fun `Actual answer`() {
-            val input = taskData(2024, 3).readText()
-            assertEquals(173785482, Task1.solve(input))
-        }
+        @JvmStatic
+        fun part2Data() = listOf(
+            arguments("xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))", 48),
+            arguments(realInput, 83158140)
+        )
     }
 
-    @Nested
-    @DisplayName("Part 2")
-    inner class Part2 {
-        @Test
-        fun `Matches example`() {
-            assertEquals(48, Task2.solve("xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))"))
-        }
+    @ParameterizedTest
+    @MethodSource("part1Data")
+    fun part1Test(input: String, result: Long) {
+        assertThat(
+            Day03(input).solvePart1()
+        ).isEqualTo(result)
+    }
 
-        @Test
-        fun `Actual answer`() {
-            val input = taskData(2024, 3).readText()
-            assertEquals(83158140, Task2.solve(input))
-        }
+    @ParameterizedTest
+    @MethodSource("part2Data")
+    fun part2Test(input: String, result: Long) {
+        assertThat(
+            Day03(input).solvePart2()
+        ).isEqualTo(result)
     }
 }

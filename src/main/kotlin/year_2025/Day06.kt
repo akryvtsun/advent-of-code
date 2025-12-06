@@ -9,7 +9,7 @@ class Day06(val input: String) {
         return if (task.op == '+') realData.sum() else realData.reduce(Long::times)
     }
 
-    fun solve(preprOp: (List<String>) -> List<String>) : Long {
+    fun solve(preprOp: (List<String>) -> List<String>): Long {
         val data = input.lines()
         val operators = data.last().withIndex().filter { it.value != ' ' }
         val operands = data.dropLast(1)
@@ -30,11 +30,9 @@ class Day06(val input: String) {
         return (0 until length).map { col ->
             buildString {
                 data.forEach { row ->
-                    if (col < row.length) {
-                        append(row[col])
-                    } else {
-                        append(' ')
-                    }
+                    append(
+                        if (col < row.length) row[col] else ' '
+                    )
                 }
             }
         }

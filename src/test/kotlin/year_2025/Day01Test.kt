@@ -3,60 +3,54 @@ package year_2025
 import TaskData
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.Nested
-import kotlin.test.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments.arguments
+import org.junit.jupiter.params.provider.MethodSource
 
 @DisplayName("Day 1: Secret Entrance")
 class Day01Test {
+    companion object {
+        val testInput = """
+            L68
+            L30
+            R48
+            L5
+            R60
+            L55
+            L1
+            L99
+            R14
+            L82
+        """.trimIndent().lines()
 
-    val input = """
-        L68
-        L30
-        R48
-        L5
-        R60
-        L55
-        L1
-        L99
-        R14
-        L82
-    """.trimIndent()
+        val realInput = TaskData(2025, 1).asLines()
 
-    @Nested
-    @DisplayName("Part 1")
-    inner class Part1 {
-        @Test
-        fun `Matches example`() {
-            assertThat(
-                Day01(input.lines()).solvePart1()
-            ).isEqualTo(3)
-        }
+        @JvmStatic
+        fun part1Data() = listOf(
+            arguments(testInput, 3),
+            arguments(realInput, 1081)
+        )
 
-        @Test
-        fun `Actual answer`() {
-            val answer = Day01(
-                TaskData(2025, 1).asLines()
-            ).solvePart1()
-            assertThat(answer).isEqualTo(1081)
-        }
+        @JvmStatic
+        fun part2Data() = listOf(
+            arguments(testInput, 6),
+            arguments(realInput, 6689)
+        )
     }
 
-    @Nested
-    @DisplayName("Part 2")
-    inner class Part2 {
-        @Test
-        fun `Matches example`() {
-            assertThat(
-                Day01(input.lines()).solvePart2()
-            ).isEqualTo(6)
-        }
+    @ParameterizedTest
+    @MethodSource("part1Data")
+    fun part1Test(input: List<String>, result: Int) {
+        assertThat(
+            Day01(input).solvePart1()
+        ).isEqualTo(result)
+    }
 
-        @Test
-        fun `Actual answer`() {
-            val answer = Day01(
-                TaskData(2025, 1).asLines()
-            ).solvePart2()
-            assertThat(answer).isEqualTo(6689)
-        }
+    @ParameterizedTest
+    @MethodSource("part2Data")
+    fun part2Test(input: List<String>, result: Int) {
+        assertThat(
+            Day01(input).solvePart2()
+        ).isEqualTo(result)
     }
 }

@@ -6,16 +6,16 @@ class Day06(val input: String) {
 
     fun solveTask(task: Task): Long {
         val realData = task.data.map { it.trim().toLong() }
-        return if (task.op == '+') realData.sum() else realData.reduce { a, b -> a * b }
+        return if (task.op == '+') realData.sum() else realData.reduce(Long::times)
     }
 
     fun solve(preprOp: (List<String>) -> List<String>) : Long {
         val data = input.lines()
-        val delims = data.last().withIndex().filter { (_, v) -> v != ' ' }
+        val operators = data.last().withIndex().filter { it.value != ' ' }
         val operands = data.dropLast(1)
-        val tasks: List<Task> = delims.zipWithNext()
+        val tasks: List<Task> = operators.zipWithNext()
             .map { (d1, d2) -> Task(d1.value, operands.map { it.substring(d1.index, d2.index - 1) }) } +
-                Task(delims.last().value, operands.map { it.substring(delims.last().index) })
+                Task(operators.last().value, operands.map { it.substring(operators.last().index) })
         val processed = tasks.map { Task(it.op, preprOp(it.data)) }
         return processed.sumOf { solveTask(it) }
     }
@@ -26,8 +26,17 @@ class Day06(val input: String) {
 
     fun transposeOp(data: List<String>): List<String> {
         val length = data.maxOf { it.length }
-        return data.fold(List(length) { "" }) { acc, value ->
-            value.mapIndexed { index, c -> acc[index] + c }
+
+        return (0 until length).map { col ->
+            buildString {
+                data.forEach { row ->
+                    if (col < row.length) {
+                        append(row[col])
+                    } else {
+                        append(' ')
+                    }
+                }
+            }
         }
     }
 

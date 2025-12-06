@@ -5,8 +5,9 @@ class Day06(val input: String) {
     data class Task(val op: Char, val data: List<String>)
 
     fun solveTask(task: Task): Long {
-        val realData = task.data.map { it.trim().toLong() }
-        return if (task.op == '+') realData.sum() else realData.reduce(Long::times)
+        val op: (Long, Long) -> Long  = if (task.op == '+') Long::plus else Long::times
+        val numData = task.data.map { it.trim().toLong() }
+        return numData.reduce(op)
     }
 
     fun solve(preprOp: (List<String>) -> List<String>): Long {

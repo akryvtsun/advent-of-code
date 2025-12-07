@@ -48,22 +48,21 @@ class Day07(val input: String) {
     }
 
     fun solvePart2(): Long {
-        var beams = mutableMapOf(startPos to 1L)
+        var beams = mapOf(startPos to 1L)
         while (true) {
             val newBeams = mutableMapOf<Point, Long>()
 
-            fun smartPut(p: Point, count: Long) =
-                newBeams.compute(p) { _, v -> v?.plus(count) ?: count }
-
-            beams.forEach { (b, c) ->
+            beams.flatMap { (b, c) ->
                 val newB = b.down()
                 if (newB in splitters) {
-                    smartPut(newB.left(), c)
-                    smartPut(newB.right(), c)
+                    listOf(newB.left() to c, newB.right() to c)
                 } else
-                    smartPut(newB, c)
+                    listOf(newB to c)
             }
-            newBeams.entries.removeIf { (p, _) -> p !in area }
+                .filter { (p, _) -> p in area }
+                .forEach { (p, c) ->
+                    newBeams.compute(p) { _, v -> v?.plus(c) ?: c }
+                }
 
             if (newBeams.isEmpty()) break
             beams = newBeams

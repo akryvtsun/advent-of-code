@@ -2,31 +2,43 @@ package year_2025
 
 class Day07(val input: String) {
 
-    data class Point(val y: Int, val x: Int)
+    data class Point(val y: Int, val x: Int) {
+        fun left() = copy(x = this.x - 1)
+        fun right() = copy(x = this.x + 1)
+        fun down() = copy(y = this.y + 1)
+    }
 
-    val map = input.lines()
+    data class Area(val lines: List<String>) {
 
-    val startPos = Point(0, map.first().indexOf('S'))
-    val splitters: Set<Point> = map
-        .withIndex()
-        .flatMap { line ->
-            line.value.mapIndexedNotNull { x, c -> if (c == '^') Point(line.index, x) else null }
-        }.toSet()
+        fun findAll(symbol: Char) = lines
+            .withIndex()
+            .flatMap { (index, line) ->
+                line.mapIndexedNotNull { x, c -> if (c == symbol) Point(index, x) else null }
+            }
+            .toSet()
 
-    fun isInArea(p: Point) = (p.y in 0..map.size) && (p.x in 0..map.first().length)
+        operator fun contains(p: Point) =
+            p.y in lines.indices &&
+            p.x in lines.first().indices
+    }
+
+    val map = Area(input.lines())
+
+    val startPos = Point(0, map.lines.first().indexOf('S'))
+    val splitters = map.findAll('^')
 
     fun solvePart1(): Int {
         var count = 0
         var beams = setOf(startPos)
         while (true) {
             val newBeams: Set<Point> = beams.flatMap { b ->
-                val newB = b.copy(y = b.y + 1)
+                val newB = b.down()
                 if (newB in splitters) {
                     count++
-                    listOf(newB.copy(x = newB.x - 1), newB.copy(x = newB.x + 1))
+                    listOf(newB.left(), newB.right())
                 } else
                     listOf(newB)
-            }.filter(::isInArea).toSet()
+            }.filter{ it in map }.toSet()
             if (newBeams.isEmpty()) break
             beams = newBeams
         }
@@ -48,14 +60,14 @@ class Day07(val input: String) {
             }
 
             beams.forEach { (b, c) ->
-                val newB = b.copy(y = b.y + 1)
+                val newB = b.down()
                 if (newB in splitters) {
-                    smartPut(newB.copy(x = newB.x - 1), c)
-                    smartPut(newB.copy(x = newB.x + 1), c)
+                    smartPut(newB.left(), c)
+                    smartPut(newB.right(), c)
                 } else
                     smartPut(newB, c)
             }
-            newBeams.entries.removeIf { (p, _) -> !isInArea(p) }
+            newBeams.entries.removeIf { (p, _) -> p !in map }
 
             if (newBeams.isEmpty()) break
             beams = newBeams

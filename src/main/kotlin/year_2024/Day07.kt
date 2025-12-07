@@ -5,7 +5,7 @@ class Day07(private var input: String) {
     data class Equation(val test: Long, val nums: List<Long>)
 
     fun transform(input: String): List<Equation> {
-        return input.split("\n")
+        return input.lines()
             .map { line ->
                 val test = line.substringBefore(':').toLong()
                 val nums = line.substringAfter(": ").split(" ").map { it.toLong() }
@@ -41,29 +41,13 @@ class Day07(private var input: String) {
         }
     }
 
-//  Not optimal generation on Lists
-//        private fun generateOps(side: Int) : List<List<Operation>> {
-//            val permutations = mutableListOf<List<Operation>>()
-//            for (operation in Operation.entries) {
-//                if (side == 1) {
-//                    permutations.add(listOf(operation))
-//                }
-//                else {
-//                    for (permutation in generateOps(side-1)) {
-//                        permutations.add(listOf(operation) + permutation)
-//                    }
-//                }
-//            }
-//            return permutations
-//        }
-
-    private fun generateOps(side: Int) : Sequence<List<Operation>> = sequence {
+    private fun generateOps(size: Int) : Sequence<List<Operation>> = sequence {
         for (operation in Operation.entries) {
-            if (side == 1) {
+            if (size == 1) {
                 yield(listOf(operation))
             }
             else {
-                for (permutation in generateOps(side-1)) {
+                for (permutation in generateOps(size-1)) {
                     yield(listOf(operation) + permutation)
                 }
             }

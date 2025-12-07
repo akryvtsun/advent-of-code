@@ -34,12 +34,13 @@ class Day07(val input: String) {
 
             beams.flatMap { (b, c) ->
                 val newB = b.down()
-                if (newB in splitters) {
-                    listOf(newB.left() to c, newB.right() to c)
+                val targets = if (newB in splitters) {
+                    listOf(newB.left(), newB.right())
                 } else
-                    listOf(newB to c)
+                    listOf(newB)
+                targets.map { it to c }
             }
-                .filter { it.first in area }
+                .filter { (point, _) -> point in area }
                 .forEach { (point, count) ->
                     newBeams.compute(point) { _, v -> v?.plus(count) ?: count }
                 }

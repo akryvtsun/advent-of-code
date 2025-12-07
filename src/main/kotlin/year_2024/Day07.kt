@@ -17,12 +17,15 @@ class Day07(input: String) {
 
     val data = transform(input)
 
-    fun solvePart1(): Long {
-        val ops: List<LongOp> = listOf(Long::plus, Long::times)
-        return data
-            .filter { isTrue(it, ops) }
-            .sumOf { it.test }
-    }
+    fun solvePart1() = solve(listOf(Long::plus, Long::times))
+
+    fun concat(arg1: Long, arg2: Long) = "$arg1$arg2".toLong()
+
+    fun solvePart2()= solve(listOf(Long::plus, Long::times, ::concat))
+
+    fun solve(ops: List<LongOp>) = data
+        .filter { isTrue(it, ops) }
+        .sumOf { it.test }
 
     private fun isTrue(equation: Equation, ops: List<LongOp>): Boolean {
         val opsPermutations = generateOps(equation.nums.size-1, ops)
@@ -44,14 +47,5 @@ class Day07(input: String) {
                 }
             }
         }
-    }
-
-    fun concat(arg1: Long, arg2: Long) = "$arg1$arg2".toLong()
-
-    fun solvePart2(): Long {
-        val ops: List<LongOp> = listOf(Long::plus, Long::times, ::concat)
-        return data
-            .filter { isTrue(it, ops) }
-            .sumOf { it.test }
     }
 }

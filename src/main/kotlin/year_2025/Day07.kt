@@ -21,7 +21,7 @@ class Day07(val input: String) {
 
         operator fun contains(p: Point) =
             p.y in lines.indices &&
-            p.x in lines.first().indices
+                    p.x in lines.first().indices
     }
 
     val area = Surface(input.lines())
@@ -40,7 +40,9 @@ class Day07(val input: String) {
                     listOf(newB.left(), newB.right())
                 } else
                     listOf(newB)
-            }.filter{ it in area }.toSet()
+            }
+                .filter { it in area }
+                .toSet()
             if (newBeams.isEmpty()) break
             beams = newBeams
         }
@@ -59,9 +61,9 @@ class Day07(val input: String) {
                 } else
                     listOf(newB to c)
             }
-                .filter { (p, _) -> p in area }
-                .forEach { (p, c) ->
-                    newBeams.compute(p) { _, v -> v?.plus(c) ?: c }
+                .filter { it.first in area }
+                .forEach { (point, count) ->
+                    newBeams.compute(point) { _, v -> v?.plus(count) ?: count }
                 }
 
             if (newBeams.isEmpty()) break

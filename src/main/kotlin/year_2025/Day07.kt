@@ -10,6 +10,8 @@ class Day07(val input: String) {
 
     data class Area(val lines: List<String>) {
 
+        fun find(symbol: Char) = findAll(symbol).first()
+
         fun findAll(symbol: Char) = lines
             .withIndex()
             .flatMap { (index, line) ->
@@ -24,7 +26,7 @@ class Day07(val input: String) {
 
     val map = Area(input.lines())
 
-    val startPos = Point(0, map.lines.first().indexOf('S'))
+    val startPos = map.find('S')
     val splitters = map.findAll('^')
 
     fun solvePart1(): Int {

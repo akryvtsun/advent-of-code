@@ -33,12 +33,12 @@ class Day07(val input: String) {
         return count
     }
 
-    fun solvePart2(): Int {
-        var beams = mutableMapOf(startPos to 1)
+    fun solvePart2(): Long {
+        var beams = mutableMapOf(startPos to 1L)
         while (true) {
-            val newBeams = mutableMapOf<Point, Int>()
+            val newBeams = mutableMapOf<Point, Long>()
 
-            fun smartPut(p: Point, count: Int) {
+            fun smartPut(p: Point, count: Long) {
                 val oldCount = newBeams[p]
                 if (oldCount != null) {
                     newBeams[p] = oldCount + count

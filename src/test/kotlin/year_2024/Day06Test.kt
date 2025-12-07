@@ -1,80 +1,56 @@
 package year_2024
 
+import TaskData
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.Nested
-import taskData
-import year_2024.day_06.Direction
-import year_2024.day_06.Position
-import year_2024.day_06.Task1
-import year_2024.day_06.Task2
-import kotlin.test.Test
-import kotlin.test.assertEquals
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments.arguments
+import org.junit.jupiter.params.provider.MethodSource
 
 @DisplayName("Day 6: Guard Gallivant")
 class Day06Test {
+    companion object {
+        val testInput = """
+            ....#.....
+            .........#
+            ..........
+            ..#.......
+            .......#..
+            ..........
+            .#..^.....
+            ........#.
+            #.........
+            ......#...
+        """.trimIndent()
 
-    val input = """
-        ....#.....
-        .........#
-        ..........
-        ..#.......
-        .......#..
-        ..........
-        .#..^.....
-        ........#.
-        #.........
-        ......#...
-    """.trimIndent()
+        val realInput = TaskData(2024, 6).asString()
 
-    @Nested
-    @DisplayName("Part 1")
-    inner class Part1 {
-        @Test
-        fun `Matches example`() {
-            assertEquals(41, Task1.solve(input.split("\n").map { StringBuilder(it) }))
-        }
+        @JvmStatic
+        fun part1Data() = listOf(
+            arguments(testInput, 41),
+            arguments(realInput, 4433)
+        )
 
-        @Test
-        fun `Actual answer`() {
-            val map = taskData(2024, 6).readLines().map { StringBuilder(it) }
-            assertEquals(4433, Task1.solve(map))
-        }
+        @JvmStatic
+        fun part2Data() = listOf(
+            arguments(testInput, 6),
+            arguments(realInput, 1516)
+        )
     }
 
-    @Nested
-    @DisplayName("Part 2")
-    inner class Part2 {
+    @ParameterizedTest
+    @MethodSource("part1Data")
+    fun part1Test(input: String, result: Long) {
+        assertThat(
+            Day06(input).solvePart1()
+        ).isEqualTo(result)
+    }
 
-        private fun doTest(input: String): Int {
-            var initPos: Position? = null
-            val obstacles = mutableListOf<Position>()
-            var width: Int? = null
-            val lines = input.split('\n')
-            var height = lines.size
-            lines.forEachIndexed { i, line ->
-                line.forEachIndexed { j, char ->
-                    when (char) {
-                        '#' -> obstacles.add(Position(i, j))
-                        '^' -> initPos = Position(i, j)
-                    }
-                }
-                width = line.length
-            }
-
-            return Task2.solve(height, width!!, obstacles, initPos!!, Direction.UP)
-        }
-
-        @Test
-        fun `Matches example`() {
-            val result = doTest(input)
-            assertEquals(6, result)
-        }
-
-        @Test
-        fun `Actual answer`() {
-            val input = taskData(2024, 6).readText()
-            val result = doTest(input)
-            assertEquals(1516, result)
-        }
+    @ParameterizedTest
+    @MethodSource("part2Data")
+    fun part2Test(input: String, result: Long) {
+        assertThat(
+            Day06(input).solvePart2()
+        ).isEqualTo(result)
     }
 }

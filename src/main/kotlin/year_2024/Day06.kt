@@ -50,7 +50,7 @@ class Day06(private var input: String) {
                     map[y][x] = 'X'
                 }
             }
-            catch (e: Exception) {
+            catch (_: Exception) {
                 finished = true
             }
         }

@@ -1,30 +1,18 @@
 package year_2025
 
-typealias Surface = List<String>
-
 class Day04(input: String) {
 
-    private val map: Surface = input.lines()
+    private val area = Surface(input.lines())
 
-    data class Point(val y: Int, val x: Int)
-
-    fun Surface.rolls() = buildSet {
-        for (y in this@rolls.indices) {
-            for (x in this@rolls[y].indices) {
-                if (this@rolls[y][x] == '@') {
-                    add(Point(y, x))
-                }
-            }
-        }
-    }
+    fun Surface.rolls() = findAll('@')
 
     fun Set<Point>.isAccessible(candidate: Point): Boolean {
         val places = sequence {
             for (y in candidate.y - 1..candidate.y + 1) {
                 for (x in candidate.x - 1..candidate.x + 1) {
-                    if (y in map.indices && x in map[y].indices) {
-                        yield(Point(y, x))
-                    }
+                    val neighbor = Point(y, x)
+                    if (neighbor in area)
+                        yield(neighbor)
                 }
             }
         }
@@ -32,7 +20,7 @@ class Day04(input: String) {
     }
 
     fun solvePart1(): Int {
-        val rolls = map.rolls()
+        val rolls = area.rolls()
         return rolls.count { rolls.isAccessible(it) }
     }
 
@@ -46,7 +34,7 @@ class Day04(input: String) {
             }
         }
 
-        return count(map.rolls())
+        return count(area.rolls())
     }
 }
 

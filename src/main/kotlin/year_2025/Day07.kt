@@ -8,7 +8,7 @@ class Day07(val input: String) {
         fun down() = copy(y = this.y + 1)
     }
 
-    data class Area(val lines: List<String>) {
+    data class Surface(val lines: List<String>) {
 
         fun find(symbol: Char) = findAll(symbol).first()
 
@@ -24,10 +24,10 @@ class Day07(val input: String) {
             p.x in lines.first().indices
     }
 
-    val map = Area(input.lines())
+    val area = Surface(input.lines())
 
-    val startPos = map.find('S')
-    val splitters = map.findAll('^')
+    val startPos = area.find('S')
+    val splitters = area.findAll('^')
 
     fun solvePart1(): Int {
         var count = 0
@@ -40,7 +40,7 @@ class Day07(val input: String) {
                     listOf(newB.left(), newB.right())
                 } else
                     listOf(newB)
-            }.filter{ it in map }.toSet()
+            }.filter{ it in area }.toSet()
             if (newBeams.isEmpty()) break
             beams = newBeams
         }
@@ -52,14 +52,8 @@ class Day07(val input: String) {
         while (true) {
             val newBeams = mutableMapOf<Point, Long>()
 
-            fun smartPut(p: Point, count: Long) {
-                val oldCount = newBeams[p]
-                if (oldCount != null) {
-                    newBeams[p] = oldCount + count
-                } else {
-                    newBeams[p] = count
-                }
-            }
+            fun smartPut(p: Point, count: Long) =
+                newBeams.compute(p) { _, v -> v?.plus(count) ?: count }
 
             beams.forEach { (b, c) ->
                 val newB = b.down()
@@ -69,7 +63,7 @@ class Day07(val input: String) {
                 } else
                     smartPut(newB, c)
             }
-            newBeams.entries.removeIf { (p, _) -> p !in map }
+            newBeams.entries.removeIf { (p, _) -> p !in area }
 
             if (newBeams.isEmpty()) break
             beams = newBeams

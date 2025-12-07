@@ -23,7 +23,7 @@ class Day07(val input: String) {
                 val newB = Point(b.y + 1, b.x)
                 if (newB in splitters) {
                     count++
-                    listOf(Point(newB.y, newB.x - 1), Point(newB.y, newB.x + 1))
+                    listOf(newB.copy(x = newB.x - 1), newB.copy(x = newB.x + 1))
                 }
                 else
                     listOf(newB)

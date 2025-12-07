@@ -20,7 +20,7 @@ class Day07(val input: String) {
         var beams = setOf(startPos)
         while (true) {
             val newBeams: Set<Point> = beams.flatMap { b ->
-                val newB = Point(b.y + 1, b.x)
+                val newB = b.copy(y = b.y + 1)
                 if (newB in splitters) {
                     count++
                     listOf(newB.copy(x = newB.x - 1), newB.copy(x = newB.x + 1))
@@ -35,21 +35,20 @@ class Day07(val input: String) {
     }
 
     fun solvePart2(): Int {
-        var paths = setOf(listOf(startPos))
-        while (true) {
-            val newPaths: Set<List<Point>> = paths.flatMap { p ->
-                val l = p.last()
-                val newL = l.copy(y = l.y + 1)
-                if (newL in splitters) {
-                    listOf(p + newL.copy(x = newL.x - 1), p + newL.copy(x = newL.x + 1))
-                }
-                else
-                    listOf(p + newL)
-            }.filter { isInArea(it.last()) }
-            .toSet()
-            if (newPaths.isEmpty()) break
-            paths = newPaths
-        }
-        return paths.size
+        var beams = mapOf(startPos to 1)
+//        while (true) {
+//            val newBeams: Set<Point> = beams.flatMap { (b, c) ->
+//                val newB = Point(b.y + 1, b.x)
+//                if (newB in splitters) {
+//                    count++
+//                    listOf(newB.copy(x = newB.x - 1), newB.copy(x = newB.x + 1))
+//                }
+//                else
+//                    listOf(newB)
+//            }.filter(::isInArea).toSet()
+//            if (newBeams.isEmpty()) break
+//            beams = newBeams
+//        }
+        return beams.values.sum()
     }
 }

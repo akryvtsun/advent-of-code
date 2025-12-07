@@ -13,7 +13,7 @@ class Day07(val input: String) {
             line.value.mapIndexedNotNull { x, c -> if (c == '^') Point(line.index, x) else null }
         }.toSet()
 
-    fun isInArea(p: Point) = (p.y in 0..map.size) && (p.x in 0 .. map.first().length)
+    fun isInArea(p: Point) = (p.y in 0..map.size) && (p.x in 0..map.first().length)
 
     fun solvePart1(): Int {
         var count = 0
@@ -24,8 +24,7 @@ class Day07(val input: String) {
                 if (newB in splitters) {
                     count++
                     listOf(newB.copy(x = newB.x - 1), newB.copy(x = newB.x + 1))
-                }
-                else
+                } else
                     listOf(newB)
             }.filter(::isInArea).toSet()
             if (newBeams.isEmpty()) break
@@ -35,20 +34,32 @@ class Day07(val input: String) {
     }
 
     fun solvePart2(): Int {
-        var beams = mapOf(startPos to 1)
-//        while (true) {
-//            val newBeams: Set<Point> = beams.flatMap { (b, c) ->
-//                val newB = Point(b.y + 1, b.x)
-//                if (newB in splitters) {
-//                    count++
-//                    listOf(newB.copy(x = newB.x - 1), newB.copy(x = newB.x + 1))
-//                }
-//                else
-//                    listOf(newB)
-//            }.filter(::isInArea).toSet()
-//            if (newBeams.isEmpty()) break
-//            beams = newBeams
-//        }
+        var beams = mutableMapOf(startPos to 1)
+        while (true) {
+            val newBeams = mutableMapOf<Point, Int>()
+
+            fun smartPut(p: Point, count: Int) {
+                val oldCount = newBeams[p]
+                if (oldCount != null) {
+                    newBeams[p] = oldCount + count
+                } else {
+                    newBeams[p] = count
+                }
+            }
+
+            beams.forEach { (b, c) ->
+                val newB = b.copy(y = b.y + 1)
+                if (newB in splitters) {
+                    smartPut(newB.copy(x = newB.x - 1), c)
+                    smartPut(newB.copy(x = newB.x + 1), c)
+                } else
+                    smartPut(newB, c)
+            }
+            newBeams.entries.removeIf { (p, _) -> !isInArea(p) }
+
+            if (newBeams.isEmpty()) break
+            beams = newBeams
+        }
         return beams.values.sum()
     }
 }

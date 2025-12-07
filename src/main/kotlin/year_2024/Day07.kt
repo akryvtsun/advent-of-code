@@ -1,6 +1,8 @@
 package year_2024
 
-class Day07(private var input: String) {
+typealias LongOp = (Long, Long) -> Long
+
+class Day07(input: String) {
 
     data class Equation(val test: Long, val nums: List<Long>)
 
@@ -15,84 +17,41 @@ class Day07(private var input: String) {
 
     val data = transform(input)
 
-    enum class Operation{
-        PLUS {
-            override fun apply(arg1: Long, arg2: Long) = arg1 + arg2
-        },
-        MULTIPLY {
-            override fun apply(arg1: Long, arg2: Long) = arg1 * arg2
-        };
-
-        abstract fun apply(arg1: Long, arg2: Long): Long
-    }
-
     fun solvePart1(): Long {
+        val ops: List<LongOp> = listOf(Long::plus, Long::times)
         return data
-            .filter { isTrue(it) }
+            .filter { isTrue(it, ops) }
             .sumOf { it.test }
     }
 
-    private fun isTrue(equation: Equation): Boolean {
-        val opsPermutations = generateOps(equation.nums.size-1)
+    private fun isTrue(equation: Equation, ops: List<LongOp>): Boolean {
+        val opsPermutations = generateOps(equation.nums.size-1, ops)
         return opsPermutations.any { operations ->
             equation.nums.reduceIndexed {
-                    index, acc, value -> operations[index-1].apply(acc, value)
+                    index, acc, value -> operations[index-1](acc, value)
             } == equation.test
         }
     }
 
-    private fun generateOps(size: Int) : Sequence<List<Operation>> = sequence {
-        for (operation in Operation.entries) {
+    private fun generateOps(size: Int, ops: List<LongOp>) : Sequence<List<LongOp>> = sequence {
+        for (operation in ops) {
             if (size == 1) {
                 yield(listOf(operation))
             }
             else {
-                for (permutation in generateOps(size-1)) {
+                for (permutation in generateOps(size-1, ops)) {
                     yield(listOf(operation) + permutation)
                 }
             }
         }
     }
 
-    enum class Operation2{
-        PLUS {
-            override fun apply(arg1: Long, arg2: Long) = arg1 + arg2
-        },
-        MULTIPLY {
-            override fun apply(arg1: Long, arg2: Long) = arg1 * arg2
-        },
-        CONCAT {
-            override fun apply(arg1: Long, arg2: Long) = "$arg1$arg2".toLong()
-        };
-
-        abstract fun apply(arg1: Long, arg2: Long): Long
-    }
+    fun concat(arg1: Long, arg2: Long) = "$arg1$arg2".toLong()
 
     fun solvePart2(): Long {
+        val ops: List<LongOp> = listOf(Long::plus, Long::times, ::concat)
         return data
-            .filter { isTrue2(it) }
+            .filter { isTrue(it, ops) }
             .sumOf { it.test }
-    }
-
-    private fun isTrue2(equation: Equation): Boolean {
-        val opsPermutations = generateOps2(equation.nums.size-1)
-        return opsPermutations.any { operations ->
-            equation.nums.reduceIndexed {
-                    index, acc, value -> operations[index-1].apply(acc, value)
-            } == equation.test
-        }
-    }
-
-    private fun generateOps2(side: Int) : Sequence<List<Operation2>> = sequence {
-        for (operation in Operation2.entries) {
-            if (side == 1) {
-                yield(listOf(operation))
-            }
-            else {
-                for (permutation in generateOps2(side-1)) {
-                    yield(listOf(operation) + permutation)
-                }
-            }
-        }
     }
 }

@@ -13,7 +13,7 @@ class Day07(val input: String) {
             line.value.mapIndexedNotNull { x, c -> if (c == '^') Point(line.index, x) else null }
         }.toSet()
 
-    fun inInMap(p: Point) = (p.y in 0..map.size) && (p.x in 0 .. map.first().length)
+    fun isInArea(p: Point) = (p.y in 0..map.size) && (p.x in 0 .. map.first().length)
 
     fun solvePart1(): Int {
         var count = 0
@@ -27,7 +27,7 @@ class Day07(val input: String) {
                 }
                 else
                     listOf(newB)
-            }.filter(::inInMap).toSet()
+            }.filter(::isInArea).toSet()
             if (newBeams.isEmpty()) break
             beams = newBeams
         }
@@ -45,7 +45,7 @@ class Day07(val input: String) {
                 }
                 else
                     listOf(p + newL)
-            }.filter { inInMap(it.last()) }
+            }.filter { isInArea(it.last()) }
             .toSet()
             if (newPaths.isEmpty()) break
             paths = newPaths

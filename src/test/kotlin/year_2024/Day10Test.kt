@@ -1,45 +1,47 @@
 package year_2024
 
+import TaskData
+import org.assertj.core.api.Assertions
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.Nested
-import taskData
-import year_2024.day_10.BLOCK
-import year_2024.day_10.IslandMap
-import year_2024.day_10.Point
-import year_2024.day_10.Task1
-import year_2024.day_10.Task1.Companion.getScore
-import year_2024.day_10.Task2
-import kotlin.test.Test
-import kotlin.test.assertEquals
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments.arguments
+import org.junit.jupiter.params.provider.MethodSource
+import year_2024.Day10.Companion.getScore
 
 @DisplayName("Day 10: Hoof It")
 class Day10Test {
+    companion object {
+        val testInput = """
+            89010123
+            78121874
+            87430965
+            96549874
+            45678903
+            32019012
+            01329801
+            10456732
+        """.trimIndent()
 
-    val input = """
-        89010123
-        78121874
-        87430965
-        96549874
-        45678903
-        32019012
-        01329801
-        10456732
-    """.trimIndent()
+        val realInput = TaskData(2024, 10).asString()
 
-    fun transform(input: String): IslandMap {
-        val lines = input.lines()
-        val rows = lines.map { line ->
-            line.map { if (it == '.') BLOCK else it.digitToInt() }
-        }
-        return IslandMap(rows)
+        @JvmStatic
+        fun part1Data() = listOf(
+            arguments(testInput, 36),
+            arguments(realInput, 501)
+        )
+
+        @JvmStatic
+        fun part2Data() = listOf(
+            arguments(testInput, 81),
+            arguments(realInput, 1017)
+        )
     }
 
-    @Nested
-    @DisplayName("Part 1")
-    inner class Part1 {
-        @Test
-        fun `check score function`(){
-            val input =  """
+    @Test
+    fun `check score function`() {
+        val input = """
             ...0...
             ...1...
             ...2...
@@ -48,13 +50,14 @@ class Day10Test {
             8.....8
             9.....9
         """.trimIndent()
-            val data = transform(input)
-            assertEquals(2, data.getScore(Point(0, 3)))
-        }
+        val data = Day10.transform(input)
+        assertThat(data.getScore(Day10.Point(0, 3)))
+            .isEqualTo(2)
+    }
 
-        @Test
-        fun `check score function 2`(){
-            val input =  """
+    @Test
+    fun `check score function 2`() {
+        val input = """
             ..90..9
             ...1.98
             ...2..7
@@ -63,13 +66,14 @@ class Day10Test {
             876....
             987....
         """.trimIndent()
-            val data = transform(input)
-            assertEquals(4, data.getScore(Point(0, 3)))
-        }
+        val data = Day10.transform(input)
+        assertThat(data.getScore(Day10.Point(0, 3)))
+            .isEqualTo(4)
+    }
 
-        @Test
-        fun `check score function 3`(){
-            val input =  """
+    @Test
+    fun `check score function 3`() {
+        val input = """
             10..9..
             2...8..
             3...7..
@@ -78,39 +82,26 @@ class Day10Test {
             ...9..2
             .....01
         """.trimIndent()
-            val data = transform(input)
-            assertEquals(1, data.getScore(Point(0, 1)))
-            assertEquals(2, data.getScore(Point(6, 5)))
-        }
-
-        @Test
-        fun `Matches example`() {
-            val data = transform(input)
-            assertEquals(36, Task1.solve(data))
-        }
-
-        @Test
-        fun `Actual answer`() {
-            val input = taskData(2024, 10).readText()
-            val data = transform(input)
-            assertEquals(501, Task1.solve(data))
-        }
+        val data = Day10.transform(input)
+        assertThat(data.getScore(Day10.Point(0, 1)))
+            .isEqualTo(1)
+        assertThat(data.getScore(Day10.Point(6, 5)))
+            .isEqualTo(2)
     }
 
-    @Nested
-    @DisplayName("Part 2")
-    inner class Part2 {
-        @Test
-        fun `Matches example`() {
-            val data = transform(input)
-            assertEquals(81, Task2.solve(data))
-        }
+    @ParameterizedTest
+    @MethodSource("part1Data")
+    fun part1Test(input: String, result: Long) {
+        Assertions.assertThat(
+            Day10(input).solvePart1()
+        ).isEqualTo(result)
+    }
 
-        @Test
-        fun `Actual answer`() {
-            val input = taskData(2024, 10).readText()
-            val data = transform(input)
-            assertEquals(1017, Task2.solve(data))
-        }
+    @ParameterizedTest
+    @MethodSource("part2Data")
+    fun part2Test(input: String, result: Long) {
+        assertThat(
+            Day10(input).solvePart2()
+        ).isEqualTo(result)
     }
 }

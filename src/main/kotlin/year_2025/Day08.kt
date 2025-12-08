@@ -31,28 +31,37 @@ class Day08(input: String) {
         return tail.map { head to it } + permutations(tail)
     }
 
-    fun solvePart1(): Int {
+    fun solvePart1(pairs: Int): Int {
         // generate boxes pairs sorted by distance
         val dists =
             permutations(boxes)
-            .sortedBy { (b1, b2) -> b1.distanceTo(b2) }
+                .sortedBy { (b1, b2) -> b1.distanceTo(b2) }
 
         // merge pairs into circuit sets
-        val shortest10dists = dists.take(10)
+        val shortest10dists = dists.take(pairs)
+        val init = boxes.map { setOf(it) }.toMutableList()
         val circuits = shortest10dists
-            .fold(mutableListOf<Circuit>()) { acc, pair ->
-                val c = acc.firstOrNull { pair.first in it || pair.second in it }
-                if (c == null) {
-                    acc.add(setOf(pair.first, pair.second))
+            .fold(init) { acc, pair ->
+                val addSet = mutableSetOf<Point3d>()
+
+                val first = acc.firstOrNull { pair.first in it }
+                first?.let {
+                    acc.remove(it)
+                    addSet.addAll(it)
                 }
-                else {
-                    acc.remove(c)
-                    acc.add(c + setOf(pair.first, pair.second))
+
+                val second = acc.firstOrNull { pair.second in it }
+                second?.let {
+                    acc.remove(it)
+                    addSet.addAll(it)
                 }
+
+                if (addSet.isNotEmpty()) acc.add(addSet)
+
                 acc
             }
 
-        val max3circuits = circuits.sortedBy { it.size }.take(3)
+        val max3circuits = circuits.sortedByDescending { it.size }.take(3)
         return max3circuits.fold(1) { acc, i -> acc * i.size }
     }
 

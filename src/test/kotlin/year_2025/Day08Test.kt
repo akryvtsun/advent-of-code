@@ -38,8 +38,8 @@ class Day08Test {
 
         @JvmStatic
         fun part1Data() = listOf(
-            arguments(testInput, 40),
-            arguments(realInput, UNKNOWN_VALUE)
+            arguments(testInput, 10, 40),
+            arguments(realInput, 1000, 330786)
         )
 
         @JvmStatic
@@ -51,9 +51,9 @@ class Day08Test {
 
     @ParameterizedTest
     @MethodSource("part1Data")
-    fun part1Test(input: String, result: Long) {
+    fun part1Test(input: String, pairs: Int, result: Int) {
         assertThat(
-            Day08(input).solvePart1()
+            Day08(input).solvePart1(pairs)
         ).isEqualTo(result)
     }
 

@@ -44,7 +44,7 @@ class Day08Test {
 
         @JvmStatic
         fun part2Data() = listOf(
-            arguments(testInput, UNKNOWN_VALUE),
+            arguments(testInput, 25272),
             arguments(realInput, UNKNOWN_VALUE)
         )
     }

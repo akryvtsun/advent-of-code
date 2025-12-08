@@ -1,6 +1,5 @@
 package year_2025
 
-import UNKNOWN_VALUE
 import kotlin.math.pow
 import kotlin.math.sqrt
 
@@ -65,7 +64,39 @@ class Day08(input: String) {
         return max3circuits.fold(1) { acc, i -> acc * i.size }
     }
 
-    fun solvePart2(): Int {
-        return UNKNOWN_VALUE
+    fun solvePart2(): Long {
+        // generate boxes pairs sorted by distance
+        val dists =
+            permutations(boxes)
+                .sortedBy { (b1, b2) -> b1.distanceTo(b2) }
+
+        // merge pairs into circuit sets
+        val init = boxes.map { setOf(it) }.toMutableList()
+        var res: Long? = null
+        val circuits = dists
+            .fold(init) { acc, pair ->
+                val addSet = mutableSetOf<Point3d>()
+
+                val first = acc.firstOrNull { pair.first in it }
+                first?.let {
+                    acc.remove(it)
+                    addSet.addAll(it)
+                }
+
+                val second = acc.firstOrNull { pair.second in it }
+                second?.let {
+                    acc.remove(it)
+                    addSet.addAll(it)
+                }
+
+                if (addSet.isNotEmpty()) acc.add(addSet)
+
+                if (acc.size == 1 && res == null) {
+                    res = pair.first.x.toLong() * pair.second.x.toLong()
+                }
+
+                acc
+            }
+        return res!!
     }
 }

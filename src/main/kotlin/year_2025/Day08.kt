@@ -21,15 +21,6 @@ class Day08(input: String) {
             Point3d(x, y, z)
         }
 
-    fun <T> permutations(elements: List<T>) = sequence {
-        val n = elements.size
-        for (i in 0 until n - 1) {
-            for (j in i + 1 until n) {
-                yield(elements[i] to elements[j])
-            }
-        }
-    }
-
     fun solvePart1(pairs: Int): Int {
         // generate boxes pairs sorted by distance
         val dists =

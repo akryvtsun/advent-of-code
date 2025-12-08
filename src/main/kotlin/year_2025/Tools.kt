@@ -21,3 +21,12 @@ data class Surface(val lines: List<String>) {
         p.y in lines.indices &&
                 p.x in lines.first().indices
 }
+
+fun <T> permutations(elements: List<T>) = sequence {
+    val n = elements.size
+    for (i in 0 until n - 1) {
+        for (j in i + 1 until n) {
+            yield(elements[i] to elements[j])
+        }
+    }
+}

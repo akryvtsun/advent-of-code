@@ -1,70 +1,71 @@
 package year_2024
 
+import TaskData
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.Nested
-import taskData
-import year_2024.day_25.Task1
-import kotlin.test.Test
-import kotlin.test.assertEquals
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments.arguments
+import org.junit.jupiter.params.provider.MethodSource
 
 @DisplayName("Day 25: Code Chronicle")
 class Day25Test {
+    companion object {
+        val testInput = """
+            #####
+            .####
+            .####
+            .####
+            .#.#.
+            .#...
+            .....
+            
+            #####
+            ##.##
+            .#.##
+            ...##
+            ...#.
+            ...#.
+            .....
+            
+            .....
+            #....
+            #....
+            #...#
+            #.#.#
+            #.###
+            #####
+            
+            .....
+            .....
+            #.#..
+            ###..
+            ###.#
+            ###.#
+            #####
+            
+            .....
+            .....
+            .....
+            #....
+            #.#..
+            #.#.#
+            #####
+        """.trimIndent()
 
-    @Nested
-    @DisplayName("Part 1")
-    inner class Part1 {
-        @Test
-        fun `Matches example`() {
-            val input = """
-                #####
-                .####
-                .####
-                .####
-                .#.#.
-                .#...
-                .....
-                
-                #####
-                ##.##
-                .#.##
-                ...##
-                ...#.
-                ...#.
-                .....
-                
-                .....
-                #....
-                #....
-                #...#
-                #.#.#
-                #.###
-                #####
-                
-                .....
-                .....
-                #.#..
-                ###..
-                ###.#
-                ###.#
-                #####
-                
-                .....
-                .....
-                .....
-                #....
-                #.#..
-                #.#.#
-                #####
-            """.trimIndent()
-            val (locks, keys) = Task1.transform(input)
-            assertEquals(3, Task1.solve(locks, keys))
-        }
+        val realInput = TaskData(2024, 25).asString()
 
-        @Test
-        fun `Actual answer`() {
-            val input = taskData(2024, 25).readText()
-            val (locks, keys) = Task1.transform(input)
-            assertEquals(3077, Task1.solve(locks, keys))
-        }
+        @JvmStatic
+        fun part1Data() = listOf(
+            arguments(testInput, 3),
+            arguments(realInput, 3077)
+        )
+    }
+
+    @ParameterizedTest
+    @MethodSource("part1Data")
+    fun part1Test(input: String, result: Int) {
+        assertThat(
+            Day25(input).solvePart1()
+        ).isEqualTo(result)
     }
 }

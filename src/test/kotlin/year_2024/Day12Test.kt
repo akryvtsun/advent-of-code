@@ -1,150 +1,95 @@
 package year_2024
 
+import TaskData
+import org.assertj.core.api.Assertions
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.Nested
-import taskData
-import year_2024.day_12.Task1
-import year_2024.day_12.Task2
-import kotlin.test.Test
-import kotlin.test.assertEquals
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments.arguments
+import org.junit.jupiter.params.provider.MethodSource
 
 @DisplayName("Day 12: Garden Groups")
 class Day12Test {
+    companion object {
+        val map1 = """
+            AAAA
+            BBCD
+            BBCC
+            EEEC
+        """.trimIndent()
 
-    fun transform(input: String) = input.lines(). map { it.toList() }
+        val map2 = """
+            OOOOO
+            OXOXO
+            OOOOO
+            OXOXO
+            OOOOO
+        """.trimIndent()
 
-    @Nested
-    @DisplayName("Part 1")
-    inner class Part1 {
-        @Test
-        fun `should successfully pass task example 1`() {
-            val map = """
-                AAAA
-                BBCD
-                BBCC
-                EEEC
-            """.trimIndent()
-            val input = transform(map)
-            assertEquals(140, Task1.solve(input))
-        }
+        val map3 = """
+            RRRRIICCFF
+            RRRRIICCCF
+            VVRRRCCFFF
+            VVRCCCJFFF
+            VVVVCJJCFE
+            VVIVCCJJEE
+            VVIIICJJEE
+            MIIIIIJJEE
+            MIIISIJEEE
+            MMMISSJEEE
+        """.trimIndent()
 
-        @Test
-        fun `should successfully pass task example 2`() {
-            val map = """
-                OOOOO
-                OXOXO
-                OOOOO
-                OXOXO
-                OOOOO
-            """.trimIndent()
-            val input = transform(map)
-            assertEquals(772, Task1.solve(input))
-        }
+        val map4 = """
+            EEEEE
+            EXXXX
+            EEEEE
+            EXXXX
+            EEEEE
+        """.trimIndent()
 
-        @Test
-        fun `should successfully pass task example 3`() {
-            val map = """
-                RRRRIICCFF
-                RRRRIICCCF
-                VVRRRCCFFF
-                VVRCCCJFFF
-                VVVVCJJCFE
-                VVIVCCJJEE
-                VVIIICJJEE
-                MIIIIIJJEE
-                MIIISIJEEE
-                MMMISSJEEE
-            """.trimIndent()
-            val input = transform(map)
-            assertEquals(1930, Task1.solve(input))
-        }
+        val map5 = """
+            AAAAAA
+            AAABBA
+            AAABBA
+            ABBAAA
+            ABBAAA
+            AAAAAA
+        """.trimIndent()
 
-        @Test
-        fun `Actual answer`() {
-            val map = taskData(2024, 12).readText()
-            val input = transform(map)
-            assertEquals(1457298, Task1.solve(input))
-        }
+        val realInput = TaskData(2024, 12).asString()
+
+        @JvmStatic
+        fun part1Data() = listOf(
+            arguments(map1, 140),
+            arguments(map2, 772),
+            arguments(map3, 1930),
+            arguments(realInput, 1457298)
+        )
+
+        @JvmStatic
+        fun part2Data() = listOf(
+            arguments(map1, 80),
+            arguments(map2, 436),
+            arguments(map4, 236),
+            arguments(map5, 368),
+            arguments(map3, 1206),
+            arguments(realInput, 921636)
+        )
     }
 
-    @Nested
-    @DisplayName("Part 2")
-    inner class Part2 {
-        @Test
-        fun `should successfully pass task example 1`() {
-            val map = """
-                AAAA
-                BBCD
-                BBCC
-                EEEC
-            """.trimIndent()
-            val input = transform(map)
-            assertEquals(80, Task2.solve(input))
-        }
+    @ParameterizedTest
+    @MethodSource("part1Data")
+    fun part1Test(input: String, result: Long) {
+        Assertions.assertThat(
+            Day12(input).solvePart1()
+        ).isEqualTo(result)
+    }
 
-        @Test
-        fun `should successfully pass task example 2`() {
-            val map = """
-                OOOOO
-                OXOXO
-                OOOOO
-                OXOXO
-                OOOOO
-            """.trimIndent()
-            val input = transform(map)
-            assertEquals(436, Task2.solve(input))
-        }
-
-        @Test
-        fun `should successfully pass task example 3`() {
-            val map = """
-                EEEEE
-                EXXXX
-                EEEEE
-                EXXXX
-                EEEEE
-            """.trimIndent()
-            val input = transform(map)
-            assertEquals(236, Task2.solve(input))
-        }
-
-        @Test
-        fun `should successfully pass task example 4`() {
-            val map = """
-                AAAAAA
-                AAABBA
-                AAABBA
-                ABBAAA
-                ABBAAA
-                AAAAAA
-            """.trimIndent()
-            val input = transform(map)
-            assertEquals(368, Task2.solve(input))
-        }
-
-        @Test
-        fun `should successfully pass task example 5`() {
-            val map = """
-                RRRRIICCFF
-                RRRRIICCCF
-                VVRRRCCFFF
-                VVRCCCJFFF
-                VVVVCJJCFE
-                VVIVCCJJEE
-                VVIIICJJEE
-                MIIIIIJJEE
-                MIIISIJEEE
-                MMMISSJEEE
-            """.trimIndent()
-            val input = transform(map)
-            assertEquals(1206, Task2.solve(input))
-        }
-
-        @Test
-        fun `Actual answer`() {
-            val map = taskData(2024, 12).readText()
-            val input = transform(map)
-            assertEquals(921636, Task2.solve(input))
-        }
+    @ParameterizedTest
+    @MethodSource("part2Data")
+    fun part2Test(input: String, result: Long) {
+        assertThat(
+            Day12(input).solvePart2()
+        ).isEqualTo(result)
     }
 }

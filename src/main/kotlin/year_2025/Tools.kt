@@ -1,15 +1,23 @@
 package year_2025
 
+/**
+ * 2D point representation
+ */
 data class Point(val y: Int, val x: Int) {
     fun left() = copy(x = this.x - 1)
     fun right() = copy(x = this.x + 1)
     fun down() = copy(y = this.y + 1)
 }
 
+/**
+ * Map holder
+ */
 data class Surface(val lines: List<String>) {
 
+    // finds initial puzzle position
     fun find(symbol: Char) = findAll(symbol).first()
 
+    // finds all similar elements (walls, rolls etc.) Typically, there are obstacles.
     fun findAll(symbol: Char) = lines
         .withIndex()
         .flatMap { (index, line) ->
@@ -17,11 +25,15 @@ data class Surface(val lines: List<String>) {
         }
         .toSet()
 
+    // checks whether point is in map area
     operator fun contains(p: Point) =
         p.y in lines.indices &&
                 p.x in lines.first().indices
 }
 
+/**
+ * Creates sequence unique pairs built from provided list of elements
+ */
 fun <T> permutations(elements: List<T>) = sequence {
     val n = elements.size
     for (i in 0 until n - 1) {

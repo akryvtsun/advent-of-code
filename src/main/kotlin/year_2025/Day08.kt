@@ -3,19 +3,17 @@ package year_2025
 import kotlin.math.pow
 import kotlin.math.sqrt
 
-data class Point3d(val x: Int, val y: Int, val z: Int) {
-    // not Manhattan distance!
-    fun distanceTo(other: Point3d): Double =
-        sqrt(
-            (x - other.x).toDouble().pow(2) +
-                    (y - other.y).toDouble().pow(2) +
-                    (z - other.z).toDouble().pow(2)
-        )
-}
-
-typealias Circuit = Set<Point3d>
-
 class Day08(input: String) {
+
+    data class Point3d(val x: Int, val y: Int, val z: Int) {
+        // not Manhattan distance!
+        fun distanceTo(other: Point3d): Double =
+            sqrt(
+                (x - other.x).toDouble().pow(2) +
+                        (y - other.y).toDouble().pow(2) +
+                        (z - other.z).toDouble().pow(2)
+            )
+    }
 
     val boxes = input.lines()
         .map {
@@ -23,11 +21,13 @@ class Day08(input: String) {
             Point3d(x, y, z)
         }
 
-    fun permutations(elements: List<Point3d>): List<Pair<Point3d, Point3d>> {
-        if (elements.size == 1) return emptyList()
-        val head = elements.first()
-        val tail = elements.drop(1)
-        return tail.map { head to it } + permutations(tail)
+    fun <T> permutations(elements: List<T>) = sequence {
+        val n = elements.size
+        for (i in 0 until n - 1) {
+            for (j in i + 1 until n) {
+                yield(elements[i] to elements[j])
+            }
+        }
     }
 
     fun solvePart1(pairs: Int): Int {

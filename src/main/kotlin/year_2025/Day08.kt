@@ -26,35 +26,9 @@ class Day08(input: String) {
         permutations(boxes)
             .sortedBy { (b1, b2) -> b1.distanceTo(b2) }
 
-    fun solvePart1(pairsLimit: Int): Int {
-        val limitedDists = distances.take(pairsLimit)
-
-        // merge pairs into circuit sets
+    private fun mergeCircuits(distances: Sequence<Pair<Point3d, Point3d>>): Pair<List<Set<Point3d>>, Pair<Point3d, Point3d>?> {
         val circuits = boxes.map { setOf(it) }.toMutableList()
-        for (pair in limitedDists) {
-            val mergedCircuit = mutableSetOf<Point3d>()
-
-            fun process(box: Point3d) {
-                val oldCircuit = circuits.firstOrNull { box in it }
-                oldCircuit?.let {
-                    circuits.remove(it)
-                    mergedCircuit.addAll(it)
-                }
-            }
-
-            process(pair.first)
-            process(pair.second)
-
-            if (mergedCircuit.isNotEmpty()) circuits.add(mergedCircuit)
-        }
-
-        val max3circuits = circuits.sortedByDescending { it.size }.take(3)
-        return max3circuits.fold(1) { acc, i -> acc * i.size }
-    }
-
-    fun solvePart2(): Long {
-        // merge pairs into circuit sets till all boxes joined
-        val circuits = boxes.map { setOf(it) }.toMutableList()
+        var lastPair: Pair<Point3d, Point3d>? = null
         for (pair in distances) {
             val mergedCircuit = mutableSetOf<Point3d>()
 
@@ -71,10 +45,24 @@ class Day08(input: String) {
 
             if (mergedCircuit.isNotEmpty()) circuits.add(mergedCircuit)
 
-            if (circuits.size == 1) {
-                return pair.first.x.toLong() * pair.second.x.toLong()
+            if (circuits.size == 1 && lastPair == null) {
+                lastPair = pair
             }
         }
-        throw IllegalStateException("Not reachable")
+        return circuits to lastPair
+    }
+
+    fun solvePart1(pairsLimit: Int): Int {
+        val limitedDists = distances.take(pairsLimit)
+
+        val (circuits, _) = mergeCircuits(limitedDists)
+
+        val max3circuits = circuits.sortedByDescending { it.size }.take(3)
+        return max3circuits.fold(1) { acc, i -> acc * i.size }
+    }
+
+    fun solvePart2(): Long {
+        val (_, lastPair) = mergeCircuits(distances)
+        return lastPair!!.first.x.toLong() * lastPair.second.x.toLong()
     }
 }

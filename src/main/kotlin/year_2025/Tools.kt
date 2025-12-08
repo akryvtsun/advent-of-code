@@ -32,13 +32,12 @@ data class Surface(val lines: List<String>) {
 }
 
 /**
- * Creates sequence unique pairs built from provided list of elements
+ * Creates sequence unique pairs (permutations]) built from provided list of elements
  */
-fun <T> permutations(elements: List<T>) = sequence {
-    val n = elements.size
-    for (i in 0 until n - 1) {
-        for (j in i + 1 until n) {
-            yield(elements[i] to elements[j])
+fun <T> List<T>.pairs(): Sequence<Pair<T, T>> = sequence {
+    for (i in indices) {
+        for (j in i + 1 until size) {
+            yield(get(i) to get(j))
         }
     }
 }

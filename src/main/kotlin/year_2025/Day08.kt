@@ -22,8 +22,7 @@ class Day08(input: String) {
         }
 
     // generate boxes pairs sorted by distance
-    val distances =
-        permutations(boxes)
+    val distances = boxes.pairs()
             .sortedBy { (b1, b2) -> b1.distanceTo(b2) }
 
     private fun mergeCircuits(distances: Sequence<Pair<Point3d, Point3d>>): Pair<List<Set<Point3d>>, Pair<Point3d, Point3d>?> {

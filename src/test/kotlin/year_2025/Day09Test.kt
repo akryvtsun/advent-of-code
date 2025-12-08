@@ -39,7 +39,7 @@ class Day09Test {
 
     @ParameterizedTest
     @MethodSource("part2Data")
-    fun part2Test(input: String, result: Long) {
+    fun part2Test(input: String, result: Int) {
         assertThat(
             Day09(input).solvePart2()
         ).isEqualTo(result)

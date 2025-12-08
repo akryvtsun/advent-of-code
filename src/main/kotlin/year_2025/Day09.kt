@@ -2,7 +2,7 @@ package year_2025
 
 import UNKNOWN_VALUE
 
-class Day09(input: String) {
+class Day09(private val input: String) {
 
     fun solvePart1(): Int {
         return UNKNOWN_VALUE

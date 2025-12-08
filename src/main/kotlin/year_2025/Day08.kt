@@ -52,9 +52,9 @@ class Day08(input: String) {
     }
 
     fun solvePart1(pairsLimit: Int): Int {
-        val limitedDists = distances.take(pairsLimit)
+        val limited = distances.take(pairsLimit)
 
-        val (circuits, _) = mergeCircuits(limitedDists)
+        val (circuits, _) = mergeCircuits(limited)
 
         val max3circuits = circuits.sortedByDescending { it.size }.take(3)
         return max3circuits.fold(1) { acc, i -> acc * i.size }

@@ -1,115 +1,83 @@
 package year_2024
 
+import TaskData
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.Nested
-import taskData
-import year_2024.day_16.Labyrinth
-import year_2024.day_16.Task1
-import year_2024.day_16.Task2
-import kotlin.test.Test
-import kotlin.test.assertEquals
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments.arguments
+import org.junit.jupiter.params.provider.MethodSource
 
 @DisplayName("Day 16: Reindeer Maze")
 class Day16Test {
+    companion object {
+        val input1 = """
+            ###############
+            #.......#....E#
+            #.#.###.#.###.#
+            #.....#.#...#.#
+            #.###.#####.#.#
+            #.#.#.......#.#
+            #.#.#####.###.#
+            #...........#.#
+            ###.#.#####.#.#
+            #...#.....#.#.#
+            #.#.#.###.#.#.#
+            #.....#...#.#.#
+            #.###.#.#.#.#.#
+            #S..#.....#...#
+            ###############
+        """.trimIndent()
 
-    val input1 = """
-        ###############
-        #.......#....E#
-        #.#.###.#.###.#
-        #.....#.#...#.#
-        #.###.#####.#.#
-        #.#.#.......#.#
-        #.#.#####.###.#
-        #...........#.#
-        ###.#.#####.#.#
-        #...#.....#.#.#
-        #.#.#.###.#.#.#
-        #.....#...#.#.#
-        #.###.#.#.#.#.#
-        #S..#.....#...#
-        ###############
-    """.trimIndent()
+        val input2 = """
+            #################
+            #...#...#...#..E#
+            #.#.#.#.#.#.#.#.#
+            #.#.#.#...#...#.#
+            #.#.#.#.###.#.#.#
+            #...#.#.#.....#.#
+            #.#.#.#.#.#####.#
+            #.#...#.#.#.....#
+            #.#.#####.#.###.#
+            #.#.#.......#...#
+            #.#.###.#####.###
+            #.#.#...#.....#.#
+            #.#.#.#####.###.#
+            #.#.#.........#.#
+            #.#.#.#########.#
+            #S#.............#
+            #################
+        """.trimIndent()
 
-    val input2 = """
-        #################
-        #...#...#...#..E#
-        #.#.#.#.#.#.#.#.#
-        #.#.#.#...#...#.#
-        #.#.#.#.###.#.#.#
-        #...#.#.#.....#.#
-        #.#.#.#.#.#####.#
-        #.#...#.#.#.....#
-        #.#.#####.#.###.#
-        #.#.#.......#...#
-        #.#.###.#####.###
-        #.#.#...#.....#.#
-        #.#.#.#####.###.#
-        #.#.#.........#.#
-        #.#.#.#########.#
-        #S#.............#
-        #################
-    """.trimIndent()
+        val realInput = TaskData(2024, 16).asString()
 
-    fun transform(input: String): Labyrinth {
-        var start: Point? = null
-        var end: Point? = null
-        val obstacles = mutableSetOf<Point>()
-        val lines = input.lines()
-        for (y in lines.indices) {
-            for (x in lines.first().indices) {
-                when (lines[y][x]) {
-                    '#' -> obstacles.add(Point(y, x))
-                    'S' -> start = Point(y, x)
-                    'E' -> end = Point(y, x)
-                }
-            }
-        }
-        return Labyrinth(start!!, end!!, obstacles)
+        @JvmStatic
+        fun part1Data() = listOf(
+            arguments(input1, 7036),
+            arguments(input2, 11048),
+            arguments(realInput, 147628)
+        )
+
+        @JvmStatic
+        fun part2Data() = listOf(
+            arguments(input1, 45),
+            arguments(input2, 64),
+            arguments(realInput, 670)
+        )
     }
 
-    @Nested
-    @DisplayName("Part 1")
-    inner class Part1 {
-        @Test
-        fun `Matches example 1`() {
-            val data = transform(input1)
-            assertEquals(7036, Task1.solve(data))
-        }
-
-        @Test
-        fun `Matches example 2`() {
-            val data = transform(input2)
-            assertEquals(11048, Task1.solve(data))
-        }
-
-        @Test
-        fun `Actual answer`() {
-            val input = taskData(2024, 16).readText()
-            val data = transform(input)
-            assertEquals(147628, Task1.solve(data))
-        }
+    @ParameterizedTest
+    @MethodSource("part1Data")
+    fun part1Test(input: String, result: Int) {
+        assertThat(
+            Day16(input).solvePart1()
+        ).isEqualTo(result)
     }
 
-    @Nested
-    @DisplayName("Part 2")
-    inner class Part2 {
-        @Test
-        fun `Matches example 1`() {
-            val data = transform(input1)
-            assertEquals(45, Task2.solve(data))
-        }
-
-        @Test
-        fun `Matches example 2`() {
-            val data = transform(input2)
-            assertEquals(64, Task2.solve(data))
-        }
-
-        @Test
-        fun `Actual answer`() {
-            val input = taskData(2024, 16).readText()
-            val data = transform(input)
-            assertEquals(670, Task2.solve(data))
-        }
+    @ParameterizedTest
+    @MethodSource("part2Data")
+    fun part2Test(input: String, result: Int) {
+        assertThat(
+            Day16(input).solvePart2()
+        ).isEqualTo(result)
     }
 }

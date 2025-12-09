@@ -23,48 +23,82 @@ class Day09(input: String) {
         return points.pairs().maxOf { it.square() }
     }
 
-    data class Line(val a: Point2d, val b: Point2d)
+   class Line(initA: Point2d, initB: Point2d) {
+        val a: Point2d
+        val b: Point2d
+
+        init {
+            require(initA.x == initB.x || initA.y == initB.y)
+            a = initA
+            b = initB
+        }
+
+        fun isHorizontal() = a.y == b.y
+
+        operator fun contains(p: Point2d) =
+            when {
+                a.x == b.x && a.x == p.x && (p.y in min(a.y, b.y)..max(a.y, b.y)) -> true
+                a.y == b.y && a.y == p.y && (p.x in min(a.x, b.x)..max(a.x, b.x)) -> true
+                else -> false
+            }
+    }
 
     fun solvePart2(): Long {
 
-        fun distance(p1: Point2d, p2: Point2d) =
-            (abs(p1.x - p2.x) + 1) + (abs(p1.y - p2.y) + 1)
+        val hull = (points + points.first()).zipWithNext(::Line)
 
-        fun buildHull(points: List<Point2d>): List<Line> {
-            var candid = points.first()
-            val hull = mutableListOf(candid)
-            var tail = points.drop(1).toMutableList()
+        data class Rect(val minX: Int, val maxX: Int, val minY: Int, val maxY: Int) {
 
-            while (tail.isNotEmpty()) {
-                val next = tail
-                    .filter { candid.x == it.x || candid.y == it.y }
-                    .minWith { p1, p2 -> distance(p1, p2) }
-                hull += next
-                candid = next
-                tail -= candid
-            }
-
-            return (hull + hull.first()).zipWithNext { a, b -> Line(a, b) }
+            fun intersects(line: Line) =
+                if (line.isHorizontal()) {
+                    if (line.a.y !in (minY + 1)..<maxY) {
+                        false
+                    } else {
+                        val segMinX = min(line.a.x, line.b.x)
+                        val segMaxX = max(line.a.x, line.b.x)
+                        segMaxX > minX && segMinX < maxX
+                    }
+                } else {
+                    // line is vertical
+                    if (line.a.x !in (minX + 1)..<maxX) {
+                        false
+                    } else {
+                        val segMinY = min(line.a.y, line.b.y)
+                        val segMaxY = max(line.a.y, line.b.y)
+                        segMaxY > minY && segMinY < maxY
+                    }
+                }
         }
 
-        val hull: List<Line> = buildHull(points)
+        fun Pair<Point2d, Point2d>.toRect(): Rect =
+            Rect(
+                min(first.x, second.x),
+                max(first.x, second.x),
+                min(first.y, second.y),
+                max(first.y, second.y)
+            )
 
         fun isInHull(p: Point2d): Boolean {
-            val c =
-                hull
-                    .filter { it.a.x == it.b.x }    // remove all horizontal lines
-                    .filter { p.x <= it.a.x }       // take only vertical lines from the right
-                    .count {
-                        p.y in min(it.a.y, it.b.y)..max(it.a.y, it.b.y)
-                    }
-            return c % 2 != 0
+            if (hull.any { p in it }) return true
+            val crossings = hull
+                .filterNot { it.isHorizontal() }
+                .count {
+                    val minY = min(it.a.y, it.b.y)
+                    val maxY = max(it.a.y, it.b.y)
+                    // compare with lines at the right from the point
+                    p.x < it.a.x && p.y in minY..<maxY
+                }
+            return crossings % 2 == 1
         }
 
         return points.pairs()
-            .filter {
-                val point3 = Point2d(it.second.x, it.first.y)
-                val point4 = Point2d(it.first.x, it.second.y)
-                isInHull(point3) && isInHull(point4)
+            .filter { pair ->
+                val p3 = Point2d(pair.second.x, pair.first.y)
+                val p4 = Point2d(pair.first.x, pair.second.y)
+                val rect = pair.toRect()
+
+                isInHull(p3) && isInHull(p4) &&
+                        hull.none { rect.intersects(it) }
             }
             .maxOf { it.square() }
     }

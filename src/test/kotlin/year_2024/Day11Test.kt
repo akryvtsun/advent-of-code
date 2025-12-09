@@ -1,63 +1,47 @@
 package year_2024
 
+import TaskData
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.Nested
-import taskData
-import year_2024.day_11.Task1
-import year_2024.day_11.Task2
-import kotlin.test.Test
-import kotlin.test.assertEquals
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments.arguments
+import org.junit.jupiter.params.provider.MethodSource
 
 @DisplayName("Day 11: Plutonian Pebbles")
 class Day11Test {
+    companion object {
+        const val testInput = "125 17"
 
-    fun transform(input: String): List<Long> = input.split(" ").map { it.toLong() }
+        val realInput = TaskData(2024, 11).asString()
 
-    @Nested
-    @DisplayName("Part 1")
-    inner class Part1 {
-        @Test
-        fun `test blink function`(){
-            assertEquals(listOf<Long>(1, 2024, 1, 0, 9, 9, 2021976), Task1.blink(listOf(0, 1, 10, 99, 999)))
-        }
+        @JvmStatic
+        fun part1Data() = listOf(
+            arguments(testInput, 6, 22),
+            arguments(testInput, 25, 55312),
+            arguments(realInput, 25, 217812)
+        )
 
-        @Test
-        fun `Matches example`() {
-            val input = transform("125 17")
-            assertEquals(22, Task1.solve(input, 6))
-            assertEquals(55312, Task1.solve(input, 25))
-        }
-
-        @Test
-        fun `Actual answer`() {
-            val input = taskData(2024, 11).readText()
-            val data = transform(input)
-            assertEquals(217812, Task1.solve(data, 25))
-        }
+        @JvmStatic
+        fun part2Data() = listOf(
+            arguments(testInput, 6, 22),
+            arguments(realInput, 25, 217812),
+            arguments(realInput, 75, 259112729857522)
+        )
     }
 
-    @Nested
-    @DisplayName("Part 2")
-    inner class Part2 {
-        @Test
-        fun `should successfully pass task example`() {
-            val input = transform("125 17")
-            assertEquals(22, Task2.solve(input, 6))
-            assertEquals(55312, Task2.solve(input, 25))
-        }
+    @ParameterizedTest
+    @MethodSource("part1Data")
+    fun part1Test(input: String, blinks: Int, result: Int) {
+        assertThat(
+            Day11(input).solvePart1(blinks)
+        ).isEqualTo(result)
+    }
 
-        @Test
-        fun `Matches example`() {
-            val input = taskData(2024, 11).readText()
-            val data = transform(input)
-            assertEquals(217812, Task2.solve(data, 25))
-        }
-
-        @Test
-        fun `Actual answer`() {
-            val input = taskData(2024, 11).readText()
-            val data = transform(input)
-            assertEquals(259112729857522, Task2.solve(data, 75))
-        }
+    @ParameterizedTest
+    @MethodSource("part2Data")
+    fun part2Test(input: String, blinks: Int, result: Long) {
+        assertThat(
+            Day11(input).solvePart2(blinks)
+        ).isEqualTo(result)
     }
 }

@@ -34,11 +34,12 @@ class Day09(input: String) {
 
         fun isHorizontal() = a.y == b.y
 
-        operator fun contains(p: Point2d) =
-            if (a.x == b.x)
+        operator fun contains(p: Point2d): Boolean =
+            if (a.x == b.x) {                        // vertical line
                 p.x == a.x && p.y in min(a.y, b.y)..max(a.y, b.y)
-            else
+            } else {                                 // horizontal line
                 p.y == a.y && p.x in min(a.x, b.x)..max(a.x, b.x)
+            }
     }
 
     fun solvePart2(): Long {

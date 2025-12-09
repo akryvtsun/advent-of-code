@@ -1,82 +1,71 @@
 package year_2024
 
+import TaskData
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.Nested
-import taskData
-import year_2024.day_18.Task1
-import year_2024.day_18.Task2
-import kotlin.test.Test
-import kotlin.test.assertEquals
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments.arguments
+import org.junit.jupiter.params.provider.MethodSource
 
 @DisplayName("Day 18: RAM Run")
 class Day18Test {
+    companion object {
+        val testInput = """
+            5,4
+            4,2
+            4,5
+            3,0
+            2,1
+            6,3
+            2,4
+            1,5
+            0,6
+            3,3
+            2,6
+            5,1
+            1,2
+            5,5
+            2,5
+            6,5
+            1,4
+            0,4
+            6,4
+            1,1
+            6,1
+            1,0
+            0,5
+            1,6
+            2,0
+        """.trimIndent()
 
-    val input = """
-        5,4
-        4,2
-        4,5
-        3,0
-        2,1
-        6,3
-        2,4
-        1,5
-        0,6
-        3,3
-        2,6
-        5,1
-        1,2
-        5,5
-        2,5
-        6,5
-        1,4
-        0,4
-        6,4
-        1,1
-        6,1
-        1,0
-        0,5
-        1,6
-        2,0
-    """.trimIndent()
+        val realInput = TaskData(2024, 18).asString()
 
-    fun transform(input: String): List<Point> {
-        return input.lines().map { line ->
-            val (x, y) = line.split(',')
-            Point(y.toInt(), x.toInt())
-        }
+        @JvmStatic
+        fun part1Data() = listOf(
+            arguments(testInput, 12, 7, 7, 22),
+            arguments(realInput, 1024, 71, 71, 304)
+        )
+
+        @JvmStatic
+        fun part2Data() = listOf(
+            arguments(testInput, 7, 7, Point(6,1)),
+            arguments(realInput, 71, 71, Point(50,28))
+        )
     }
 
-    @Nested
-    @DisplayName("Part 1")
-    inner class Part1 {
-        @Test
-        fun `Matches example`() {
-            val bytes = transform(input)
-            assertEquals(22, Task1.solve(bytes, 12, 7, 7))
-        }
-
-        @Test
-        fun `Actual answer`() {
-            val input = taskData(2024, 18).readText()
-            val bytes = transform(input)
-            assertEquals(304, Task1.solve(bytes, 1024, 71, 71))
-        }
+    @ParameterizedTest
+    @MethodSource("part1Data")
+    fun part1Test(input: String, length: Int, height: Int, width: Int, result: Int) {
+        assertThat(
+            Day18(input).solvePart1(length, height, width)
+        ).isEqualTo(result)
     }
 
-    @Nested
-    @DisplayName("Part 2")
-    inner class Part2 {
-        @Test
-        fun `Matches example`() {
-            val bytes = transform(input)
-            assertEquals(Point(6,1), Task2.solve(bytes, 7, 7))
-        }
-
-        @Test
-        fun `Actual answer`() {
-            val input = taskData(2024, 18).readText()
-            val bytes = transform(input)
-            assertEquals(Point(50,28), Task2.solve(bytes, 71, 71))
-        }
+    @ParameterizedTest
+    @MethodSource("part2Data")
+    fun part2Test(input: String, height: Int, width: Int, result: Point) {
+        assertThat(
+            Day18(input).solvePart2(height, width)
+        ).isEqualTo(result)
     }
 }

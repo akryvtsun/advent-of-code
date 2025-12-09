@@ -1,17 +1,11 @@
 package year_2025
 
-import kotlin.math.absoluteValue
 import kotlin.math.max
 import kotlin.math.min
 
 class Day09(input: String) {
 
     data class Point2d(val x: Int, val y: Int)
-
-    fun Pair<Point2d, Point2d>.square(): Long =
-        let { (p1, p2) ->
-            ((p1.x - p2.x).absoluteValue + 1L) * ((p1.y - p2.y).absoluteValue + 1L)
-        }
 
     val points = input.lines()
         .map {
@@ -20,7 +14,42 @@ class Day09(input: String) {
                 .let { (x, y) -> Point2d(x, y) }
         }
 
-    fun solvePart1(): Long = points.pairs().maxOf { it.square() }
+    data class Rect (val minX: Int, val maxX: Int, val minY: Int, val maxY: Int) {
+
+        constructor(a: Point2d, b: Point2d) : this(
+            min(a.x, b.x),
+            max(a.x, b.x),
+            min(a.y, b.y),
+            max(a.y, b.y)
+        )
+
+        fun intersects(line: Line) =
+            if (line.isHorizontal()) {
+                if (line.a.y in (minY + 1)..<maxY) {
+                    val segMinX = min(line.a.x, line.b.x)
+                    val segMaxX = max(line.a.x, line.b.x)
+                    overlaps(segMinX, segMaxX, minX, maxX)
+                } else
+                    false
+            } else {
+                // line is vertical
+                if (line.a.x in (minX + 1)..<maxX) {
+                    val segMinY = min(line.a.y, line.b.y)
+                    val segMaxY = max(line.a.y, line.b.y)
+                    overlaps(segMinY, segMaxY, minY, maxY)
+                } else
+                    false
+            }
+
+        fun square(): Long = (maxX - minX + 1L) * (maxY - minY + 1L)
+
+        private fun overlaps(innerMin: Int, innerMax: Int, outerMin: Int, outerMax: Int): Boolean =
+            innerMax > outerMin && innerMin < outerMax
+    }
+
+    fun solvePart1(): Long = points.pairs()
+        .map { (p1, p2) -> Rect(p1, p2) }
+        .maxOf(Rect::square)
 
     class Line(a: Point2d, b: Point2d) {
         val a: Point2d
@@ -46,37 +75,6 @@ class Day09(input: String) {
 
         val hull = (points + points.first()).zipWithNext(::Line)
 
-        data class Rect(val minX: Int, val maxX: Int, val minY: Int, val maxY: Int) {
-
-            constructor(a: Point2d, b: Point2d) : this(
-                min(a.x, b.x),
-                max(a.x, b.x),
-                min(a.y, b.y),
-                max(a.y, b.y)
-            )
-
-            fun intersects(line: Line) =
-                if (line.isHorizontal()) {
-                    if (line.a.y in (minY + 1)..<maxY) {
-                        val segMinX = min(line.a.x, line.b.x)
-                        val segMaxX = max(line.a.x, line.b.x)
-                        overlaps(segMinX, segMaxX, minX, maxX)
-                    } else
-                        false
-                } else {
-                    // line is vertical
-                    if (line.a.x in (minX + 1)..<maxX) {
-                        val segMinY = min(line.a.y, line.b.y)
-                        val segMaxY = max(line.a.y, line.b.y)
-                        overlaps(segMinY, segMaxY, minY, maxY)
-                    } else
-                        false
-                }
-
-            private fun overlaps(innerMin: Int, innerMax: Int, outerMin: Int, outerMax: Int): Boolean =
-                innerMax > outerMin && innerMin < outerMax
-        }
-
         fun isInHull(p: Point2d): Boolean {
             if (hull.any { p in it }) return true
             val crossings = hull
@@ -100,6 +98,7 @@ class Day09(input: String) {
                 isInHull(p3) && isInHull(p4) &&
                         hull.none(rect::intersects)
             }
-            .maxOf { it.square() }
+            .map { (p1, p2) -> Rect(p1, p2) }
+            .maxOf(Rect::square)
     }
 }

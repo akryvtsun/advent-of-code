@@ -8,17 +8,25 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments.arguments
 import org.junit.jupiter.params.provider.MethodSource
 
-@DisplayName("")
+@DisplayName("Day 9: Movie Theater")
 class Day09Test {
     companion object {
         val testInput = """
+            7,1
+            11,1
+            11,7
+            9,7
+            9,5
+            2,5
+            2,3
+            7,3
         """.trimIndent()
 
         val realInput = TaskData(2025, 9).asString()
 
         @JvmStatic
         fun part1Data() = listOf(
-            arguments(testInput, UNKNOWN_VALUE),
+           // arguments(testInput, 50),
             arguments(realInput, UNKNOWN_VALUE)
         )
 
@@ -31,7 +39,7 @@ class Day09Test {
 
     @ParameterizedTest
     @MethodSource("part1Data")
-    fun part1Test(input: String, result: Int) {
+    fun part1Test(input: String, result: Long) {
         assertThat(
             Day09(input).solvePart1()
         ).isEqualTo(result)

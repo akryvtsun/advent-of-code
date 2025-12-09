@@ -11,7 +11,7 @@ class Day04(private val data: Board) {
     data class Step(val dy: Int, val dx: Int)
 
     data class Pattern(private val steps: List<Step>) {
-        fun match(data: Board, y: Int, x: Int) : Boolean {
+        fun match(data: Board, y: Int, x: Int): Boolean {
             try {
                 var match = true
                 for (i in steps.indices) {
@@ -28,18 +28,18 @@ class Day04(private val data: Board) {
     }
 
     private val PATTERNS = listOf<Pattern>(
-        Pattern(listOf(Step(0,0), Step( 0, 1), Step( 0,  2), Step( 0,  3))),   // ->
-        Pattern(listOf(Step(0,0), Step( 0,-1), Step( 0, -2), Step( 0, -3))),   // <-
-        Pattern(listOf(Step(0,0), Step( 1, 0), Step( 2,  0), Step( 3,  0))),   // V
-        Pattern(listOf(Step(0,0), Step(-1, 0), Step(-2,  0), Step(-3,  0))),   // /\
-        Pattern(listOf(Step(0,0), Step( 1,-1), Step( 2, -2), Step( 3, -3))),   // V<
-        Pattern(listOf(Step(0,0), Step( 1, 1), Step( 2,  2), Step( 3,  3))),   // V>
-        Pattern(listOf(Step(0,0), Step(-1,-1), Step(-2, -2), Step(-3, -3))),   // /\<
-        Pattern(listOf(Step(0,0), Step(-1, 1), Step(-2,  2), Step(-3,  3))),   // /\>
+        Pattern(listOf(Step(0, 0), Step(0, 1), Step(0, 2), Step(0, 3))),   // ->
+        Pattern(listOf(Step(0, 0), Step(0, -1), Step(0, -2), Step(0, -3))),   // <-
+        Pattern(listOf(Step(0, 0), Step(1, 0), Step(2, 0), Step(3, 0))),   // V
+        Pattern(listOf(Step(0, 0), Step(-1, 0), Step(-2, 0), Step(-3, 0))),   // /\
+        Pattern(listOf(Step(0, 0), Step(1, -1), Step(2, -2), Step(3, -3))),   // V<
+        Pattern(listOf(Step(0, 0), Step(1, 1), Step(2, 2), Step(3, 3))),   // V>
+        Pattern(listOf(Step(0, 0), Step(-1, -1), Step(-2, -2), Step(-3, -3))),   // /\<
+        Pattern(listOf(Step(0, 0), Step(-1, 1), Step(-2, 2), Step(-3, 3))),   // /\>
     )
 
     private fun Board.patternsCount(y: Int, x: Int): Int {
-        return PATTERNS.count { it.match(this, y, x)  }
+        return PATTERNS.count { it.match(this, y, x) }
     }
 
     fun solvePart1(): Int {
@@ -57,13 +57,13 @@ class Day04(private val data: Board) {
             var match = true
             match = match && this[y][x] == 'A'
             match = match && (
-                    (this[y-1][x-1] == 'M' && this[y+1][x+1] == 'S') ||
-                            (this[y-1][x-1] == 'S' && this[y+1][x+1] == 'M'))
+                    (this[y - 1][x - 1] == 'M' && this[y + 1][x + 1] == 'S') ||
+                            (this[y - 1][x - 1] == 'S' && this[y + 1][x + 1] == 'M'))
             match = match && (
-                    (this[y+1][x-1] == 'M' && this[y-1][x+1] == 'S') ||
-                            (this[y+1][x-1] == 'S' && this[y-1][x+1] == 'M'))
+                    (this[y + 1][x - 1] == 'M' && this[y - 1][x + 1] == 'S') ||
+                            (this[y + 1][x - 1] == 'S' && this[y - 1][x + 1] == 'M'))
             return match
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             return false
         }
     }

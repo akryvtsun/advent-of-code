@@ -21,28 +21,27 @@ class Day07(input: String) {
 
     fun concat(arg1: Long, arg2: Long) = "$arg1$arg2".toLong()
 
-    fun solvePart2()= solve(listOf(Long::plus, Long::times, ::concat))
+    fun solvePart2() = solve(listOf(Long::plus, Long::times, ::concat))
 
     fun solve(ops: List<LongOp>) = data
         .filter { isTrue(it, ops) }
         .sumOf { it.test }
 
     private fun isTrue(equation: Equation, ops: List<LongOp>): Boolean {
-        val opsPermutations = generateOps(equation.nums.size-1, ops)
+        val opsPermutations = generateOps(equation.nums.size - 1, ops)
         return opsPermutations.any { operations ->
-            equation.nums.reduceIndexed {
-                    index, acc, value -> operations[index-1](acc, value)
+            equation.nums.reduceIndexed { index, acc, value ->
+                operations[index - 1](acc, value)
             } == equation.test
         }
     }
 
-    private fun generateOps(size: Int, ops: List<LongOp>) : Sequence<List<LongOp>> = sequence {
+    private fun generateOps(size: Int, ops: List<LongOp>): Sequence<List<LongOp>> = sequence {
         for (operation in ops) {
             if (size == 1) {
                 yield(listOf(operation))
-            }
-            else {
-                for (permutation in generateOps(size-1, ops)) {
+            } else {
+                for (permutation in generateOps(size - 1, ops)) {
                     yield(listOf(operation) + permutation)
                 }
             }

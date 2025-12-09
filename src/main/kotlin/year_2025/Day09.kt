@@ -55,9 +55,6 @@ class Day09(input: String) {
                 max(a.y, b.y)
             )
 
-            private fun overlaps(innerMin: Int, innerMax: Int, outerMin: Int, outerMax: Int): Boolean =
-                innerMax > outerMin && innerMin < outerMax
-
             fun intersects(line: Line) =
                 if (line.isHorizontal()) {
                     if (line.a.y in (minY + 1)..<maxY) {
@@ -75,6 +72,9 @@ class Day09(input: String) {
                     } else
                         false
                 }
+
+            private fun overlaps(innerMin: Int, innerMax: Int, outerMin: Int, outerMax: Int): Boolean =
+                innerMax > outerMin && innerMin < outerMax
         }
 
         fun isInHull(p: Point2d): Boolean {

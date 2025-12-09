@@ -23,14 +23,14 @@ class Day09(input: String) {
         return points.pairs().maxOf { it.square() }
     }
 
-   class Line(initA: Point2d, initB: Point2d) {
+   class Line(a: Point2d, b: Point2d) {
         val a: Point2d
         val b: Point2d
 
         init {
-            require(initA.x == initB.x || initA.y == initB.y)
-            a = initA
-            b = initB
+            require(a.x == b.x || a.y == b.y)
+            this.a = a
+            this.b = b
         }
 
         fun isHorizontal() = a.y == b.y
@@ -51,22 +51,20 @@ class Day09(input: String) {
 
             fun intersects(line: Line) =
                 if (line.isHorizontal()) {
-                    if (line.a.y !in (minY + 1)..<maxY) {
-                        false
-                    } else {
+                    if (line.a.y in (minY + 1)..<maxY) {
                         val segMinX = min(line.a.x, line.b.x)
                         val segMaxX = max(line.a.x, line.b.x)
                         segMaxX > minX && segMinX < maxX
-                    }
+                    } else
+                        false
                 } else {
                     // line is vertical
-                    if (line.a.x !in (minX + 1)..<maxX) {
-                        false
-                    } else {
+                    if (line.a.x in (minX + 1)..<maxX) {
                         val segMinY = min(line.a.y, line.b.y)
                         val segMaxY = max(line.a.y, line.b.y)
                         segMaxY > minY && segMinY < maxY
-                    }
+                    } else
+                        false
                 }
         }
 
@@ -85,7 +83,7 @@ class Day09(input: String) {
                 .count {
                     val minY = min(it.a.y, it.b.y)
                     val maxY = max(it.a.y, it.b.y)
-                    // compare with lines at the right from the point
+                    // compare with lines on the right side from the point
                     p.x < it.a.x && p.y in minY..<maxY
                 }
             return crossings % 2 == 1

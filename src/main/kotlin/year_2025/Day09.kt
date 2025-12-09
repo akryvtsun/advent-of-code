@@ -7,9 +7,17 @@ data class Point2d(val x: Int, val y: Int)
 fun Pair<Point2d, Point2d>.square(): Long =
     (abs(first.x - second.x) + 1L) * (abs(first.y - second.y) + 1)
 
+fun cross(a: Point2d, b: Point2d, c: Point2d): Double =
+    (b.x.toDouble() - a.x.toDouble()) * (c.y.toDouble() - a.y.toDouble()) -
+    (b.y.toDouble() - a.y.toDouble()) * (c.x.toDouble() - a.x.toDouble())
+
 //fun main() {
 //    val s = (Point2d(2, 5) to Point2d(11, 1)).square()
 //    println(s)
+//}
+
+//fun main() {
+//    println(cross(Point2d(7, 3), Point2d(2, 3), Point2d(11, 1)))
 //}
 
 class Day09(input: String) {
@@ -27,9 +35,6 @@ class Day09(input: String) {
     }
 
     fun solvePart2(): Long {
-
-        fun cross(a: Point2d, b: Point2d, c: Point2d): Double =
-            (b.x - a.x.toDouble()) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x)
 
         fun convexHullJarvis(points: List<Point2d>): List<Point2d> {
             if (points.size <= 1) return points
@@ -65,7 +70,28 @@ class Day09(input: String) {
             return hull
         }
 
-        val poly: List<Point2d> = convexHullJarvis(points)
+        fun distance(p1: Point2d, p2: Point2d) =
+            (abs(p1.x - p2.x) + 1) + (abs(p1.y - p2.y) + 1)
+
+        fun convexHull2(points: List<Point2d>): List<Point2d> {
+            var candid = points.first()
+            val hull = mutableListOf(candid)
+            var tail = points.drop(1).toMutableList()
+
+            while (tail.isNotEmpty()) {
+                val next = tail
+                    .filter { candid.x == it.x || candid.y == it.y }
+                    .minWith { p1, p2 -> distance(p1, p2) }
+                hull += next
+                candid = next
+                tail -= candid
+            }
+
+            return hull
+        }
+
+        val poly: List<Point2d> = convexHull2(points)
+        val poly2: List<Point2d> = convexHullJarvis(points)
 
         fun inConvexRegion(p: Point2d): Boolean {
             val n = poly.size
@@ -83,6 +109,15 @@ class Day09(input: String) {
             }
             return true
         }
+
+//        fun inConvexRegion(p: Point2d): Boolean {
+//            val ss = (poly + poly.first())
+//                .zipWithNext()
+//                .map { (p1, p2) -> cross(p1, p2, p) }
+//                .map(Double::sign)
+//                .map { it.toInt() }
+//            return ss.all { it == ss.first() || it == 0 }
+//        }
 
         return points.pairs()
             .filter {

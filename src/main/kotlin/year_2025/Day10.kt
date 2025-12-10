@@ -33,12 +33,32 @@ class Day10(input: String) {
             )
         }
 
-    fun findMinPresses(m: Machine) = 1
+    fun findMinPresses(m: Machine): Int {
+
+        data class State(val lights: BitSet, val count: Int, val past: BitSet? = null)
+
+        val states = ArrayDeque<State>()
+        states.add(State(BitSet(), 0))
+
+        while (true) {
+            val current = states.removeFirst()
+            if (current.lights == m.lights)
+                return current.count
+
+            for (button in m.buttons) {
+                val newLights = BitSet.valueOf(current.lights.toLongArray())
+                if (button == current.past) continue
+                newLights.xor(button)
+                val newState = State(newLights, current.count + 1, button)
+                states.add(newState)
+            }
+        }
+
+        error("unreachable point")
+    }
 
     fun solvePart1(): Int =
-        factory.sumOf {
-            findMinPresses(it)
-        }
+        factory.sumOf { findMinPresses(it) }
 
     fun solvePart2(): Int {
         return UNKNOWN_VALUE

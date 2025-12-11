@@ -30,8 +30,8 @@ class Day11(input: String) {
         return count
     }
 
-    fun solvePart2(): Int {
-        var count = 0
+    fun solvePart2(): Long {
+        var count = 0L
 
         val init = "svr"
         val targetNodes = setOf("dac", "fft")
@@ -45,8 +45,11 @@ class Day11(input: String) {
             val current = state.removeLast() // DFS
 
             if (current.last == "out") {
-                if (current.passed.containsAll(targetNodes))
+                if (current.passed.containsAll(targetNodes)) {
                     count++
+                    if ((count % 100).toInt() == 0)
+                        println(count)
+                }
             }
             else {
                 val to = edges[current.last]!!

@@ -50,7 +50,7 @@ class Day11Test {
 
         @JvmStatic
         fun part2Data() = listOf(
-            arguments(testInput2, 2),
+            arguments(testInput2, 2L),
             arguments(realInput, UNKNOWN_VALUE)
         )
     }
@@ -65,7 +65,7 @@ class Day11Test {
 
     @ParameterizedTest
     @MethodSource("part2Data")
-    fun part2Test(input: String, result: Int) {
+    fun part2Test(input: String, result: Long) {
         assertThat(
             Day11(input).solvePart2()
         ).isEqualTo(result)

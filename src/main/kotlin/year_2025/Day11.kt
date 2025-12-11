@@ -50,12 +50,11 @@ class Day11(input: String) {
             }
             val to = edges[currentNode.node]!!
             for (node in to) {
-                if (node in targetNodes) {
-                    state.add(State(node, currentPass + node))
-                }
-                else {
-                    state.add(State(node, currentPass))
-                }
+                val newPass = if (node in targetNodes)
+                    currentPass + node
+                else
+                    currentPass
+                state.add(State(node, newPass))
             }
         } while (state.isNotEmpty())
 

@@ -4,9 +4,7 @@ class Day11(input: String) {
 
     val graph = input.lines()
         .associate { line ->
-            val inNode = line.substringBefore(":")
-            val outNodes = line.substringAfter(":").trim().split(' ').toSet()
-            inNode to outNodes
+            line.split(": ").let { it[0] to it[1].split(" ") }
         }
 
     fun solvePart1(): Int {

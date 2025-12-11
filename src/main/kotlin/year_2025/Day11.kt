@@ -17,8 +17,7 @@ class Day11(input: String) {
         val state = ArrayDeque<String>()
         state.add(init)
 
-        while (true) {
-            if (state.isEmpty()) break
+       do {
             val current = state.removeFirst()
             if (current == "out") {
                 count++
@@ -26,7 +25,7 @@ class Day11(input: String) {
             }
             val to = edges[current]!!
             state.addAll(to)
-        }
+        } while (state.isNotEmpty())
 
         return count
     }

@@ -33,26 +33,28 @@ class Day11(input: String) {
     fun solvePart2(): Int {
         var count = 0
 
-        data class State(val node: String, val dacFft: Boolean = false)
+        data class State(val node: String, val passed: Set<String> = emptySet())
 
         var init = "svr"
         val state = ArrayDeque<State>()
         state.add(State(init))
 
+        val targetNodes = setOf("dac", "fft")
+
         do {
             val currentNode = state.removeFirst()
-            val currentFlag = currentNode.dacFft
+            val currentPass = currentNode.passed
             if (currentNode.node == "out") {
-                if (currentFlag) count++
+                if (currentPass.containsAll(targetNodes)) count++
                 continue
             }
             val to = edges[currentNode.node]!!
             for (node in to) {
-                if (node == "dac" || node == "fft") {
-                    state.add(State(node, true))
+                if (node in targetNodes) {
+                    state.add(State(node, currentPass + node))
                 }
                 else {
-                    state.add(State(node, currentFlag))
+                    state.add(State(node, currentPass))
                 }
             }
         } while (state.isNotEmpty())

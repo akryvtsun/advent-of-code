@@ -33,28 +33,25 @@ class Day11(input: String) {
     fun solvePart2(): Int {
         var count = 0
 
-        data class State(val node: String, val passed: Set<String> = emptySet())
+        data class State(val path: Set<String>, val last: String)
 
         val init = "svr"
         val state = ArrayDeque<State>()
-        state.add(State(init))
+        state.add(State(setOf(init), init))
 
         val targetNodes = setOf("dac", "fft")
 
         do {
-            val currentNode = state.removeFirst()
-            val currentPass = currentNode.passed
-            if (currentNode.node == "out") {
-                if (currentPass.containsAll(targetNodes)) count++
+            val current = state.removeFirst()
+            if (current.last == "out") {
+                if (current.path.containsAll(targetNodes)) count++
                 continue
             }
-            val to = edges[currentNode.node]!!
+            val to = edges[current.last]!!
             for (node in to) {
-                val newPass = if (node in targetNodes)
-                    currentPass + node
-                else
-                    currentPass
-                state.add(State(node, newPass))
+                if (node !in current.path) {
+                    state.add(State(current.path + node, node))
+                }
             }
         } while (state.isNotEmpty())
 

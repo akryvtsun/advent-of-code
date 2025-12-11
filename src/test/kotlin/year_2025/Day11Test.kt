@@ -1,7 +1,6 @@
 package year_2025
 
 import TaskData
-import UNKNOWN_VALUE
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.params.ParameterizedTest
@@ -51,7 +50,7 @@ class Day11Test {
         @JvmStatic
         fun part2Data() = listOf(
             arguments(testInput2, 2L),
-            arguments(realInput, UNKNOWN_VALUE)
+            arguments(realInput, 462444153119850)
         )
     }
 

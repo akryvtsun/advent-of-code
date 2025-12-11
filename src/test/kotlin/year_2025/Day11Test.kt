@@ -11,7 +11,7 @@ import org.junit.jupiter.params.provider.MethodSource
 @DisplayName("Day 11: Reactor")
 class Day11Test {
     companion object {
-        val testInput = """
+        val testInput1 = """
             aaa: you hhh
             you: bbb ccc
             bbb: ddd eee
@@ -24,17 +24,33 @@ class Day11Test {
             iii: out
         """.trimIndent()
 
+        val testInput2 = """
+            svr: aaa bbb
+            aaa: fft
+            fft: ccc
+            bbb: tty
+            tty: ccc
+            ccc: ddd eee
+            ddd: hub
+            hub: fff
+            eee: dac
+            dac: fff
+            fff: ggg hhh
+            ggg: out
+            hhh: out
+        """.trimIndent()
+
         val realInput = TaskData(2025, 11).asString()
 
         @JvmStatic
         fun part1Data() = listOf(
-            arguments(testInput, 5),
+            arguments(testInput1, 5),
             arguments(realInput, 764)
         )
 
         @JvmStatic
         fun part2Data() = listOf(
-            arguments(testInput, UNKNOWN_VALUE),
+            arguments(testInput2, 2),
             arguments(realInput, UNKNOWN_VALUE)
         )
     }

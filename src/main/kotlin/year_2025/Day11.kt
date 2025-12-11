@@ -30,5 +30,33 @@ class Day11(input: String) {
         return count
     }
 
-    fun solvePart2(): Int = -1
+    fun solvePart2(): Int {
+        var count = 0
+
+        data class State(val node: String, val dacFft: Boolean = false)
+
+        var init = "svr"
+        val state = ArrayDeque<State>()
+        state.add(State(init))
+
+        do {
+            val currentNode = state.removeFirst()
+            val currentFlag = currentNode.dacFft
+            if (currentNode.node == "out") {
+                if (currentFlag) count++
+                continue
+            }
+            val to = edges[currentNode.node]!!
+            for (node in to) {
+                if (node == "dac" || node == "fft") {
+                    state.add(State(node, true))
+                }
+                else {
+                    state.add(State(node, currentFlag))
+                }
+            }
+        } while (state.isNotEmpty())
+
+        return count
+    }
 }

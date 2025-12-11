@@ -13,7 +13,7 @@ class Day11(input: String) {
     fun solvePart1(): Int {
         var count = 0
 
-        var init = "you"
+        val init = "you"
         val state = ArrayDeque<String>()
         state.add(init)
 
@@ -35,7 +35,7 @@ class Day11(input: String) {
 
         data class State(val node: String, val passed: Set<String> = emptySet())
 
-        var init = "svr"
+        val init = "svr"
         val state = ArrayDeque<State>()
         state.add(State(init))
 

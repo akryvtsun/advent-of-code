@@ -30,49 +30,40 @@ class Day11(input: String) {
         return count
     }
 
+    companion object Part2 {
+        const val START = "svr"
+        const val POINT1 = "dac"
+        const val POINT2 = "fft"
+        const val END = "out"
+    }
+
     fun solvePart2(): Long {
 
-        val START = "svr"
-        val POINT1 = "dac"
-        val POINT2 = "fft"
-        val END = "out"
+        data class Path(val start: String, val notPass: Set<String>, val end: String)
 
-        data class State(val passed: Set<String>, val last: String)
+        val memo = mutableMapOf<Path, Long>()
 
-        data class State2(val start: String, val notPass: Set<String>, val end: String)
+        fun track(state: Path): Long {
+            if (state.start == state.end) return 1
+            if (state.start in state.notPass) return 0
 
-        val memo = mutableMapOf<State2, Long>()
-
-        fun track(start: String, notPass: Set<String>, end: String): Long {
-            println("start: $start, notPass: $notPass, end: $end")
-
-            if (start == end) return 1
-            if (start in notPass) return 0
-
-            val to = graph[start]!!
-            return to.sumOf {
-                val newSearch = State2(it, notPass, end)
-
-                if (newSearch in memo) {
-                    memo[newSearch]!!
-                } else {
-                    val count = track(it, notPass, end)
-                    memo[newSearch] = count
-                    count
-                }
+            val next = graph[state.start]!!
+            return next.sumOf {
+                val newState = Path(it, state.notPass, state.end)
+                memo.getOrPut(newState) { track(newState) }
             }
         }
 
-        val pass1 =
-            track(start = START, notPass = setOf(POINT2, END), end = POINT1) *
-            track(start = POINT1, notPass = setOf(START, END), end = POINT2) *
-            track(start = POINT2, notPass = setOf(START, POINT1), end = END)
+        val part1 =
+            track(Path(start = START, notPass = setOf(POINT2, END), end = POINT1)) *
+            track(Path(start = POINT1, notPass = setOf(START, END), end = POINT2)) *
+            track(Path(start = POINT2, notPass = setOf(START, POINT1), end = END))
 
-        val pass2 =
-            track(start = START, notPass = setOf(POINT1, END), end = POINT2) *
-            track(start = POINT2, notPass = setOf(START, END), end = POINT1) *
-            track(start = POINT1, notPass = setOf(START, POINT2), end = END)
+        val part2 =
+            track(Path(start = START, notPass = setOf(POINT1, END), end = POINT2)) *
+            track(Path(start = POINT2, notPass = setOf(START, END), end = POINT1)) *
+            track(Path(start = POINT1, notPass = setOf(START, POINT2), end = END))
 
-        return pass1 + pass2
+        return part1 + part2
     }
 }

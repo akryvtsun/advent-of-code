@@ -3,12 +3,11 @@ package year_2025
 class Day11(input: String) {
 
     val graph = input.lines()
-        .map { line ->
+        .associate { line ->
             val inNode = line.substringBefore(":")
             val outNodes = line.substringAfter(":").trim().split(' ').toSet()
             inNode to outNodes
         }
-        .associate { it.first to it.second }
 
     fun solvePart1(): Int {
         var count = 0

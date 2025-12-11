@@ -14,18 +14,17 @@ class Day11(input: String) {
         var count = 0
 
         val init = "you"
-        val state = ArrayDeque<String>()
-        state.add(init)
+        val state = ArrayDeque(listOf(init))
 
-        do {
-            val current = state.removeFirst()
+        while (state.isNotEmpty()) {
+            val current = state.removeFirst()   // BFS. For DFS *.removeLast() is needed
             if (current == "out") {
                 count++
                 continue
             }
-            val to = graph[current]!!
-            state.addAll(to)
-        } while (state.isNotEmpty())
+            val next = graph[current]!!
+            state += next
+        }
 
         return count
     }

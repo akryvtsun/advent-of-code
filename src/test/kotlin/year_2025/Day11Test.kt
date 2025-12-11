@@ -23,6 +23,14 @@ class Day11Test {
             iii: out
         """.trimIndent()
 
+        val realInput = TaskData(2025, 11).asString()
+
+        @JvmStatic
+        fun part1Data() = listOf(
+            arguments(testInput1, 5),
+            arguments(realInput, 764)
+        )
+
         val testInput2 = """
             svr: aaa bbb
             aaa: fft
@@ -38,14 +46,6 @@ class Day11Test {
             ggg: out
             hhh: out
         """.trimIndent()
-
-        val realInput = TaskData(2025, 11).asString()
-
-        @JvmStatic
-        fun part1Data() = listOf(
-            arguments(testInput1, 5),
-            arguments(realInput, 764)
-        )
 
         @JvmStatic
         fun part2Data() = listOf(

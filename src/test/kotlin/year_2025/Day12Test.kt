@@ -8,17 +8,50 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments.arguments
 import org.junit.jupiter.params.provider.MethodSource
 
-@DisplayName("Day 12")
+@DisplayName("Day 12: Christmas Tree Farm")
 class Day12Test {
     companion object {
         val testInput = """
+            0:
+            ###
+            ##.
+            ##.
+
+            1:
+            ###
+            ##.
+            .##
+
+            2:
+            .##
+            ###
+            ##.
+
+            3:
+            ##.
+            ###
+            ##.
+
+            4:
+            ###
+            #..
+            ###
+
+            5:
+            ###
+            .#.
+            ###
+
+            4x4: 0 0 0 0 2 0
+            12x5: 1 0 1 0 2 2
+            12x5: 1 0 1 0 3 2
         """.trimIndent()
 
         val realInput = TaskData(2025, 12).asString()
 
         @JvmStatic
         fun part1Data() = listOf(
-            arguments(testInput, UNKNOWN_VALUE),
+            arguments(testInput, 2),
             arguments(realInput, UNKNOWN_VALUE)
         )
 

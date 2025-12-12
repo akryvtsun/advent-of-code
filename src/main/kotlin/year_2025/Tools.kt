@@ -3,6 +3,7 @@ package year_2025
 /**
  * 2D point representation
  */
+// TODO rework to x,y instead of y,x
 data class Point(val y: Int, val x: Int) {
     fun left() = copy(x = this.x - 1)
     fun right() = copy(x = this.x + 1)

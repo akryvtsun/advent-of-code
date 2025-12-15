@@ -43,15 +43,14 @@ class Day14(
         }
 
         fun quadrant(c: Point): Int {
-            val y0 = height/2
-            val x0 = width/2
+            val y0 = height / 2
+            val x0 = width / 2
             return if (c.y < y0) {
                 if (c.x < x0) {
                     1
                 } else if (c.x > x0) {
                     2
-                }
-                else {
+                } else {
                     0
                 }
             } else if (c.y > y0) {
@@ -59,12 +58,10 @@ class Day14(
                     3
                 } else if (c.x > x0) {
                     4
-                }
-                else {
+                } else {
                     0
                 }
-            }
-            else {
+            } else {
                 0
             }
         }
@@ -82,6 +79,7 @@ class Day14(
         return solve2(height, width, data)
     }
 
+    // TODO rework Christmas tree detection logic
     fun solve2(height: Int, width: Int, robots: List<Robot>): Int {
 
         fun Robot.doStep(): Robot {

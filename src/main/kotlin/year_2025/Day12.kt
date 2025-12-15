@@ -24,9 +24,6 @@ class Day12(input: String) {
         }
 
     fun Area.canBeFilled(): Boolean {
-        val fs = set.flatMapIndexed { idx, count -> List(count) { figures[idx] } }
-
-        data class State(val comb: List<Pair<Point, Figure>>)
 
         fun Figure.rotate(): Figure =
             Figure(
@@ -37,41 +34,7 @@ class Day12(input: String) {
                 )
             )
 
-        fun allStates(fsSet: List<Figure>): List<State> {
-            if (fsSet.isEmpty()) return emptyList()
-
-            val result = mutableListOf<State>()
-
-            val head = fsSet.first()
-            val tail = fsSet.drop(1)
-
-            val tailStates = allStates(tail)
-
-            fun addHead(shift: Point, f: Figure, states: List<State>): List<State> {
-                val newHead = listOf(shift to f)
-                return if (states.isEmpty()) {
-                    listOf(State(newHead))
-                }
-                else {
-                    states.map { State(listOf(shift to f) + it.comb) }
-                }
-            }
-
-            for (y in 0..this.height - 3) {
-                for (x in 0..this.wide - 3) {
-                    val p = Point(y, x)
-                    var f = head
-                    repeat(4) {
-                        result += addHead(p, f, tailStates)
-                        f = f.rotate()
-                    }
-                }
-            }
-
-            return result
-        }
-
-        fun materialize(shift: Point, f: Figure) = buildList<Point> {
+        fun materialize(shift: Point, f: Figure) = buildSet {
             f.pattern.forEachIndexed { y, string ->
                 string.forEachIndexed { x, ch ->
                     if (ch == '#') add(Point(y + shift.y, x + shift.x))
@@ -79,22 +42,51 @@ class Day12(input: String) {
             }
         }
 
-        fun <T> List<T>.allDistinct(): Boolean =
-            size == toSet().size
+        val fs = set.flatMapIndexed { idx, count -> List(count) { figures[idx] } }
 
-        fun State.notOverlaps() =
-            comb.flatMap { (shift, f) -> materialize(shift, f) }.allDistinct()
+        val rotations = 4
+        val points = 9
 
-        return allStates(fs)
-            .also { println("size ${it.size}") }
-            .any { it.notOverlaps() }
+        val radix = rotations * points
+        val max = radix.toBigInteger().pow(fs.size)
+
+        for (n in 0 until max.toLong()) {
+            val nRadix = n.toString(radix).padStart(fs.size, '0')
+
+            var result = true
+            val memo = mutableSetOf<Point>()
+            nRadix.forEachIndexed { index, d ->
+                val v = Character.digit(d, 36)
+
+                // define figure rotation
+                val r = v % rotations
+                var f = fs[index]
+                repeat(r) {
+                    f = f.rotate()
+                }
+
+                // define point shift
+                val p = v / rotations
+                val point = Point(p / 3, p % 3)
+
+                val mat = materialize(point, f)
+                if (mat.none { it in memo }) {
+                    memo += mat
+                } else {
+                    result = false
+                    return@forEachIndexed
+                }
+            }
+            if (result) return true
+        }
+        return false
     }
 
     fun solvePart1(): Int {
         return areas.count {
             println("area: $it")
             val result = it.canBeFilled()
-            println("... can be filed = $result")
+            println("... can be filled = $result")
             result
         }
     }

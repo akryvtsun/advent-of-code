@@ -25,6 +25,8 @@ class Day12(input: String) {
 
     fun Area.canBeFilled(): Boolean {
 
+        data class State(val filled: Set<Point>, val remain: List<Figure>)
+
         fun Figure.rotate(): Figure =
             Figure(
                 listOf(
@@ -42,43 +44,31 @@ class Day12(input: String) {
             }
         }
 
-        val figures = set.flatMapIndexed { idx, count -> List(count) { this@Day12.figures[idx] } }
+        val fs = set.flatMapIndexed { idx, count -> List(count) { figures[idx] } }
 
-        val rotations = 4
-        val points = 9
+        val stack = ArrayDeque<State>()
+        stack.add(State(emptySet(), fs))
 
-        val radix = rotations * points
-        val allStates = radix.toBigInteger().pow(figures.size)
+        while (stack.isNotEmpty()) {
+            val current = stack.removeLast()    // DFS
+            if (current.remain.isEmpty()) return true
 
-        for (n in 0 until allStates.toLong()) {
-            val nRadix = n.toString(radix).padStart(figures.size, '0')
-
-            var result = true
-            val memo = mutableSetOf<Point>()
-            nRadix.forEachIndexed { index, d ->
-                val v = Character.digit(d, 36)
-
-                // define figure rotation
-                val r = v % rotations
-                var f = figures[index]
-                repeat(r) {
-                    f = f.rotate()
-                }
-
-                // define point shift
-                val p = v / rotations
-                val point = Point(p / 3, p % 3)
-
-                val mat = materialize(point, f)
-                if (mat.none { it in memo }) {
-                    memo += mat
-                } else {
-                    result = false
-                    return@forEachIndexed
+            val curFigure = current.remain.first()
+            for (y in 0 .. height-3) {
+                for (x in 0 .. wide-3) {
+                    val shift = Point(y, x)
+                    var f = curFigure
+                    repeat(4) {
+                        val mat = materialize(shift, f)
+                        if (mat.none { it in current.filled }) {
+                            stack.add(State(current.filled + mat, current.remain.drop(1)))
+                        }
+                        f = f.rotate()
+                    }
                 }
             }
-            if (result) return true
         }
+
         return false
     }
 

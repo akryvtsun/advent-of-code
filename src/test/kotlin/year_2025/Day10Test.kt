@@ -68,6 +68,7 @@ class Day10Test {
         @JvmStatic
         fun part2Data() = listOf(
             arguments(testInput, 33),
+            // TODO implement part 2 to allow next
             //arguments(realInput, UNKNOWN_VALUE)
         )
     }

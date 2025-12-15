@@ -50,6 +50,7 @@ class Day12Test {
 
         @JvmStatic
         fun part1Data() = listOf(
+            // TODO improve algorithm to allow next case
             //arguments(testInput, 2),
             arguments(realInput, 479)
         )

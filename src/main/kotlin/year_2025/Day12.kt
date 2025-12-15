@@ -42,16 +42,16 @@ class Day12(input: String) {
             }
         }
 
-        val fs = set.flatMapIndexed { idx, count -> List(count) { figures[idx] } }
+        val figures = set.flatMapIndexed { idx, count -> List(count) { this@Day12.figures[idx] } }
 
         val rotations = 4
         val points = 9
 
         val radix = rotations * points
-        val max = radix.toBigInteger().pow(fs.size)
+        val allStates = radix.toBigInteger().pow(figures.size)
 
-        for (n in 0 until max.toLong()) {
-            val nRadix = n.toString(radix).padStart(fs.size, '0')
+        for (n in 0 until allStates.toLong()) {
+            val nRadix = n.toString(radix).padStart(figures.size, '0')
 
             var result = true
             val memo = mutableSetOf<Point>()
@@ -60,7 +60,7 @@ class Day12(input: String) {
 
                 // define figure rotation
                 val r = v % rotations
-                var f = fs[index]
+                var f = figures[index]
                 repeat(r) {
                     f = f.rotate()
                 }

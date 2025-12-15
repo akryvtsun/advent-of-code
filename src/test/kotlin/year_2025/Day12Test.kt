@@ -1,7 +1,6 @@
 package year_2025
 
 import TaskData
-import UNKNOWN_VALUE
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.params.ParameterizedTest
@@ -52,13 +51,7 @@ class Day12Test {
         @JvmStatic
         fun part1Data() = listOf(
             arguments(testInput, 2),
-            arguments(realInput, UNKNOWN_VALUE)
-        )
-
-        @JvmStatic
-        fun part2Data() = listOf(
-            arguments(testInput, UNKNOWN_VALUE),
-            arguments(realInput, UNKNOWN_VALUE)
+            arguments(realInput, 479)
         )
     }
 
@@ -67,14 +60,6 @@ class Day12Test {
     fun part1Test(input: String, result: Int) {
         assertThat(
             Day12(input).solvePart1()
-        ).isEqualTo(result)
-    }
-
-    @ParameterizedTest
-    @MethodSource("part2Data")
-    fun part2Test(input: String, result: Long) {
-        assertThat(
-            Day12(input).solvePart2()
         ).isEqualTo(result)
     }
 }

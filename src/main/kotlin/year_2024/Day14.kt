@@ -20,17 +20,17 @@ class Day14(
             Robot(coord, delta)
         }
 
+    fun roundMove(value: Int, delta: Int, border: Int): Int {
+        val newValue = (value + delta) % border
+        return if (newValue < 0) border + newValue else newValue
+    }
+
     fun solvePart1(): Int {
         val data = transform(input)
         return solve1(height, width, data)
     }
 
     fun solve1(height: Int, width: Int, robots: List<Robot>): Int {
-
-        fun roundMove(value: Int, delta: Int, border: Int): Int {
-            val newValue = (value + delta) % border
-            return if (newValue < 0) border + newValue else newValue
-        }
 
         fun move(unit: Robot, rounds: Int): Point {
             var curY = unit.coord.y
@@ -83,11 +83,6 @@ class Day14(
     }
 
     fun solve2(height: Int, width: Int, robots: List<Robot>): Int {
-
-        fun roundMove(value: Int, delta: Int, border: Int): Int {
-            val newValue = (value + delta) % border
-            return if (newValue < 0) border + newValue else newValue
-        }
 
         fun Robot.doStep(): Robot {
             var newY = roundMove(this.coord.y, this.delta.y, height)

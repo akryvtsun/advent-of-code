@@ -1,78 +1,75 @@
 package year_2024
 
+import TaskData
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.Nested
-import taskData
-import year_2024.day_22.Task1
-import year_2024.day_22.Task2
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments.arguments
+import org.junit.jupiter.params.provider.MethodSource
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 @DisplayName("Day 22: Monkey Market")
 class Day22Test {
 
-    fun transform(input: String): List<Long> {
-        return input.lines().map(String::toLong)
+    companion object {
+        val testInput1 = """
+            1
+            10
+            100
+            2024
+        """.trimIndent()
+
+        val realInput = TaskData(2024, 22).asString()
+
+        @JvmStatic
+        fun part1Data() = listOf(
+            arguments(testInput1, 37327623),
+            arguments(realInput, 14119253575)
+        )
+
+        val testInput2 = """
+            1
+            2
+            3
+            2024
+        """.trimIndent()
+
+        @JvmStatic
+        fun part2Data() = listOf(
+            arguments(testInput2, 23),
+            arguments(realInput, 1600)
+        )
     }
 
-    @Nested
-    @DisplayName("Part 1")
-    inner class Part1 {
-        @Test
-        fun `should successfully gen 10 secret numbers`() {
-            var num = 123L
-            val secrets = List(10) {
-                num = Task1.nextSecret(num)
-                num
-            }
-            assertEquals(
-                listOf<Long>(
-                    15887950, 16495136, 527345, 704524, 1553684,
-                    12683156, 11100544, 12249484, 7753432, 5908254),
-                secrets
-            )
+    @Test
+    fun `should successfully gen 10 secret numbers`() {
+        var num = 123L
+        val secrets = List(10) {
+            num = Day22.nextSecret(num)
+            num
         }
-
-        @Test
-        fun `Matches example`() {
-            val input = """
-                1
-                10
-                100
-                2024
-            """.trimIndent()
-            val data = transform(input)
-            assertEquals(37327623, Task1.solve(data))
-        }
-
-        @Test
-        fun `Actual answer`() {
-            val input = taskData(2024, 22).readText()
-            val data = transform(input)
-            assertEquals(14119253575, Task1.solve(data))
-        }
+        assertEquals(
+            listOf<Long>(
+                15887950, 16495136, 527345, 704524, 1553684,
+                12683156, 11100544, 12249484, 7753432, 5908254),
+            secrets
+        )
     }
 
-    @Nested
-    @DisplayName("Part 2")
-    inner class Part2 {
-        @Test
-        fun `Matches example`() {
-            val input = """
-                1
-                2
-                3
-                2024
-            """.trimIndent()
-            val data = transform(input)
-            assertEquals(23, Task2.solve(data))
-        }
+    @ParameterizedTest
+    @MethodSource("part1Data")
+    fun part1Test(input: String, result: Long) {
+        assertThat(
+            Day22(input).solvePart1()
+        ).isEqualTo(result)
+    }
 
-        @Test
-        fun `Actual answer`() {
-            val input = taskData(2024, 22).readText()
-            val data = transform(input)
-            assertEquals(1600, Task2.solve(data))
-        }
+    @ParameterizedTest
+    @MethodSource("part2Data")
+    fun part2Test(input: String,result: Long) {
+        assertThat(
+            Day22(input).solvePart2()
+        ).isEqualTo(result)
     }
 }

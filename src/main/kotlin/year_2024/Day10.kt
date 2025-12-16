@@ -1,6 +1,8 @@
 package year_2024
 
-class Day10(input: String) {
+import AocDay
+
+class Day10(input: String) : AocDay<Int, Int>(input) {
 
     companion object {
         const val BLOCK = -1
@@ -19,8 +21,7 @@ class Day10(input: String) {
             fun getScoreImpl(p: Point) {
                 if (isEnd(p)) {
                     riched.add(p)
-                }
-                else {
+                } else {
                     val newPs = Direction.entries
                         .map { p + it }
                         .filter { isInMap(it) }
@@ -65,7 +66,7 @@ class Day10(input: String) {
 
     val map = transform(input)
 
-    fun solvePart1(): Int {
+    override fun solvePart1(): Int {
         return sequence {
             for (y in 0 until map.height()) {
                 for (x in 0 until map.width()) {
@@ -77,7 +78,7 @@ class Day10(input: String) {
             .sumOf { map.getScore(it) }
     }
 
-    fun solvePart2(): Int {
+    override fun solvePart2(): Int {
         return sequence {
             for (y in 0 until map.height()) {
                 for (x in 0 until map.width()) {
@@ -96,8 +97,7 @@ class Day10(input: String) {
             val newRoute = route + p
             if (isEnd(p)) {
                 routs += newRoute
-            }
-            else {
+            } else {
                 val newPs = Direction.entries
                     .map { p + it }
                     .filter { isInMap(it) }

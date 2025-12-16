@@ -4,7 +4,7 @@ import AocDay
 
 typealias LongOp = (Long, Long) -> Long
 
-class Day07(input: String): AocDay<Long, Long>(input) {
+class Day07(input: String) : AocDay<Long, Long>(input) {
 
     data class Equation(val test: Long, val nums: List<Long>)
 

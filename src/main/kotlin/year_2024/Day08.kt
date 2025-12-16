@@ -1,6 +1,8 @@
 package year_2024
 
-class Day08(input: String) {
+import AocDay
+
+class Day08(input: String) : AocDay<Int, Int>(input) {
 
     data class Position(val y: Int, val x: Int) {
         operator fun plus(pos: Position) = Position(y + pos.y, x + pos.x)
@@ -33,7 +35,7 @@ class Day08(input: String) {
         pos.y in 0 until data.height &&
                 pos.x in 0 until data.width
 
-    fun solvePart1(): Int {
+    override fun solvePart1(): Int {
         return data.antennas.groupBy { it.type }
             .map { it.value }
             .flatMap { findAntinodes(it) }
@@ -44,8 +46,8 @@ class Day08(input: String) {
 
     private fun findAntinodes(antennas: List<Antenna>): List<Position> {
         val antinodes = mutableListOf<Position>()
-        for (i in 0 until antennas.size-1) {
-            for (j in i+1 until antennas.size) {
+        for (i in 0 until antennas.size - 1) {
+            for (j in i + 1 until antennas.size) {
                 val a = antennas[i]
                 val b = antennas[j]
                 antinodes.add(point1(a.pos, b.pos))
@@ -65,7 +67,7 @@ class Day08(input: String) {
         return b - delta
     }
 
-    fun solvePart2(): Int {
+    override fun solvePart2(): Int {
 
         fun genPoints1(a: Position, b: Position): List<Position> {
             val positions = mutableListOf<Position>()
@@ -91,8 +93,8 @@ class Day08(input: String) {
 
         fun findAntinodes(antennas: List<Antenna>): List<Position> {
             val antinodes = mutableListOf<Position>()
-            for (i in 0 until antennas.size-1) {
-                for (j in i+1 until antennas.size) {
+            for (i in 0 until antennas.size - 1) {
+                for (j in i + 1 until antennas.size) {
                     val a = antennas[i]
                     val b = antennas[j]
                     antinodes.addAll(genPoints1(a.pos, b.pos))

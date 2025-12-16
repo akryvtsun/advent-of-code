@@ -1,8 +1,9 @@
 package year_2024
 
+import AocDay
 import java.util.Collections
 
-class Day09(private val input: String) {
+class Day09(input: String) : AocDay<Long, Long>(input) {
 
     companion object {
         const val SPACE = -1
@@ -27,7 +28,7 @@ class Day09(private val input: String) {
             acc + i * value
         }
 
-    fun solvePart1(): Long {
+    override fun solvePart1(): Long {
         val viz = makeViz(input)
         val packRez = pack(viz)
         val checksum = calcSum(packRez)
@@ -36,7 +37,7 @@ class Day09(private val input: String) {
 
     fun pack(data: List<Int>): List<Int> {
         var begin = 0
-        var end = data.size-1
+        var end = data.size - 1
         val buf = data.toMutableList()
         while (true) {
             while (buf[begin] != SPACE) begin++
@@ -48,7 +49,7 @@ class Day09(private val input: String) {
         return buf
     }
 
-    fun solvePart2(): Long {
+    override fun solvePart2(): Long {
         val viz = makeViz(input)
         val packRez = pack2(viz)
         val checksum = calcSum(packRez)
@@ -57,7 +58,7 @@ class Day09(private val input: String) {
 
     fun pack2(data: List<Int>): List<Int> {
         val buf = data.toMutableList()
-        var right = buf.size-1
+        var right = buf.size - 1
         while (right >= 0) {
             if (buf[right] != SPACE) {
                 val id = buf[right]
@@ -66,7 +67,7 @@ class Day09(private val input: String) {
                     fsize++
                     if (right == 0) return buf
                 }
-                val fbegin = right+1
+                val fbegin = right + 1
 
                 var left = 0
                 while (left < right) {
@@ -77,7 +78,7 @@ class Day09(private val input: String) {
 
                         if (ssize >= fsize) {
                             for (i in 0 until fsize) {
-                                Collections.swap(buf, sbegin+i, fbegin+i)
+                                Collections.swap(buf, sbegin + i, fbegin + i)
                             }
                             break
                         }

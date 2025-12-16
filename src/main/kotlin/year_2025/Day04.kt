@@ -1,6 +1,8 @@
 package year_2025
 
-class Day04(input: String) {
+import AocDay
+
+class Day04(input: String) : AocDay<Int, Int>(input) {
 
     private val area = Surface(input.lines())
 
@@ -19,12 +21,12 @@ class Day04(input: String) {
         return places.count { it in this } - 1 < 4
     }
 
-    fun solvePart1(): Int {
+    override fun solvePart1(): Int {
         val rolls = area.rolls()
         return rolls.count { rolls.isAccessible(it) }
     }
 
-    fun solvePart2(): Int {
+    override fun solvePart2(): Int {
         tailrec fun count(rolls: Set<Point>, acc: Int = 0): Int {
             val accessible = rolls.filter { rolls.isAccessible(it) }.toSet()
             return if (accessible.isEmpty()) {

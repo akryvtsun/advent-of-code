@@ -1,17 +1,19 @@
 package year_2025
 
-class Day05(input: String) {
+import AocDay
+
+class Day05(input: String) : AocDay<Int, Long>(input) {
 
     val ranges = input.substringBefore("\n\n").lines().map {
-            val range = it.trim().split("-")
-            range[0].toLong()..range[1].toLong()
-        }
+        val range = it.trim().split("-")
+        range[0].toLong()..range[1].toLong()
+    }
 
     val ids = input.substringAfter("\n\n").lines().map(String::toLong)
 
-    fun solvePart1(): Int = ids.count { id -> ranges.any { id in it } }
+    override fun solvePart1(): Int = ids.count { id -> ranges.any { id in it } }
 
-    fun solvePart2(): Long {
+    override fun solvePart2(): Long {
         fun List<LongRange>.compact() = sequence {
             if (isEmpty()) return@sequence
 

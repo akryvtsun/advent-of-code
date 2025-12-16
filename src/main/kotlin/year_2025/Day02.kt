@@ -1,8 +1,10 @@
 package year_2025
 
-class Day02(private val input: String) {
+import AocDay
 
-    fun solvePart1(): Long {
+class Day02(input: String) : AocDay<Long, Long>(input) {
+
+    override fun solvePart1(): Long {
         fun isInvalid(n: Long): Boolean {
             val s = n.toString()
             if (s.length % 2 == 0) {
@@ -21,7 +23,7 @@ class Day02(private val input: String) {
             }
     }
 
-    fun solvePart2(): Long {
+    override fun solvePart2(): Long {
         fun isInvalid(n: Long): Boolean {
             val s = n.toString()
             for (i in 2..(s.length)) {

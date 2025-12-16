@@ -1,13 +1,15 @@
 package year_2025
 
-class Day07(val input: String) {
+import AocDay
+
+class Day07(input: String) : AocDay<Int, Long>(input) {
 
     val area = Surface(input.lines())
 
     val startPoint = area.find('S')
     val splitters = area.findAll('^')
 
-    fun solvePart1(): Int {
+    override fun solvePart1(): Int {
         var count = 0
         var beams = setOf(startPoint)
         while (true) {
@@ -27,7 +29,7 @@ class Day07(val input: String) {
         return count
     }
 
-    fun solvePart2(): Long {
+    override fun solvePart2(): Long {
         var beams = mapOf(startPoint to 1L)
         while (true) {
             val newBeams = mutableMapOf<Point, Long>()

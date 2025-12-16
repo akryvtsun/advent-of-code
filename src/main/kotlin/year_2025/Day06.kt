@@ -1,11 +1,13 @@
 package year_2025
 
-class Day06(val input: String) {
+import AocDay
+
+class Day06(input: String) : AocDay<Long, Long>(input) {
 
     data class Task(val op: Char, val data: List<String>) {
 
         fun solve(): Long {
-            val operator: (Long, Long) -> Long  = if (op == '+') Long::plus else Long::times
+            val operator: (Long, Long) -> Long = if (op == '+') Long::plus else Long::times
             val numbers = data.map(String::trim).map(String::toLong)
             return numbers.reduce(operator)
         }
@@ -32,7 +34,7 @@ class Day06(val input: String) {
 
     private fun noOp(data: List<String>): List<String> = data
 
-    fun solvePart1(): Long = solve(::noOp)
+    override fun solvePart1(): Long = solve(::noOp)
 
     private fun transposeOp(data: List<String>): List<String> {
         val length = data.maxOf { it.length }
@@ -48,5 +50,5 @@ class Day06(val input: String) {
         }
     }
 
-    fun solvePart2(): Long = solve(::transposeOp)
+    override fun solvePart2(): Long = solve(::transposeOp)
 }

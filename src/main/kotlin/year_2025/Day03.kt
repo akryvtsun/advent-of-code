@@ -1,14 +1,16 @@
 package year_2025
 
-class Day03(input: String) {
+import AocDay
+
+class Day03(input: String) : AocDay<Int, Long>(input) {
 
     private val banks = input.lines()
 
-    fun solvePart1() = banks.sumOf {
+    override fun solvePart1() = banks.sumOf {
         findMaxJoltage(it, 2).toInt()
     }
 
-    fun solvePart2() = banks.sumOf {
+    override fun solvePart2() = banks.sumOf {
         findMaxJoltage(it, 12).toLong()
     }
 

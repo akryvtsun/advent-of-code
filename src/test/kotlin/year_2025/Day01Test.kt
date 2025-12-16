@@ -21,9 +21,9 @@ class Day01Test {
             L99
             R14
             L82
-        """.trimIndent().lines()
+        """.trimIndent()
 
-        val realInput = TaskData(2025, 1).asLines()
+        val realInput = TaskData(2025, 1).asString()
 
         @JvmStatic
         fun part1Data() = listOf(
@@ -40,7 +40,7 @@ class Day01Test {
 
     @ParameterizedTest
     @MethodSource("part1Data")
-    fun part1Test(input: List<String>, result: Int) {
+    fun part1Test(input: String, result: Int) {
         assertThat(
             Day01(input).solvePart1()
         ).isEqualTo(result)
@@ -48,7 +48,7 @@ class Day01Test {
 
     @ParameterizedTest
     @MethodSource("part2Data")
-    fun part2Test(input: List<String>, result: Int) {
+    fun part2Test(input: String, result: Int) {
         assertThat(
             Day01(input).solvePart2()
         ).isEqualTo(result)

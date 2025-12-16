@@ -1,5 +1,6 @@
 package year_2025
 
+import AocDay
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -7,7 +8,7 @@ import kotlinx.coroutines.runBlocking
 import java.util.BitSet
 import kotlin.time.measureTimedValue
 
-class Day10(input: String) {
+class Day10(input: String) : AocDay<Int, Int>(input) {
 
     data class Machine(val lights: BitSet, val buttons: List<BitSet>, val joltage: List<Int>)
 
@@ -64,10 +65,10 @@ class Day10(input: String) {
         }
     }
 
-    fun solvePart1(): Int =
+    override fun solvePart1(): Int =
         factory.sumOf { findMinPresses(it) }
 
-    fun solvePart2(): Int = runBlocking(Dispatchers.IO) {
+    override fun solvePart2(): Int = runBlocking(Dispatchers.IO) {
         factory.mapIndexed { index, machine ->
             async {
                 println("Computing $index")

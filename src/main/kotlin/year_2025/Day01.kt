@@ -1,6 +1,8 @@
 package year_2025
 
-class Day01(private val input: List<String>) {
+import AocDay
+
+class Day01(input: String) : AocDay<Int, Int>(input) {
 
     enum class Direction {
         LEFT, RIGHT;
@@ -16,12 +18,12 @@ class Day01(private val input: List<String>) {
 
     data class Rotation(val dir: Direction, val count: Int)
 
-    private fun transform(input: List<String>): List<Rotation> =
-        input
+    private fun transform(input: String): List<Rotation> =
+        input.lines()
             .map { Direction.of(it[0]) to it.substring(1).toInt() }
             .map { Rotation(it.first, it.second) }
 
-    fun solvePart1(): Int {
+    override fun solvePart1(): Int {
         val rotations = transform(input)
         var position = 50
         var count = 0
@@ -45,11 +47,11 @@ class Day01(private val input: List<String>) {
     }
 
     // password method 0x434C49434B
-    fun solvePart2(): Int {
+    override fun solvePart2(): Int {
         var position = 50
         var count = 0
         // no input transformation not data classes - the simplest solution
-        input.forEach { r ->
+        input.lines().forEach { r ->
             val times = r.substring(1).toInt()
             repeat(times) {
                 position += if (r[0] == 'L') -1 else 1

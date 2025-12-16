@@ -1,9 +1,10 @@
 package year_2025
 
+import AocDay
 import kotlin.math.max
 import kotlin.math.min
 
-class Day09(input: String) {
+class Day09(input: String) : AocDay<Long, Long>(input) {
 
     data class Point2d(val x: Int, val y: Int)
 
@@ -14,7 +15,7 @@ class Day09(input: String) {
                 .let { (x, y) -> Point2d(x, y) }
         }
 
-    data class Rect (val minX: Int, val maxX: Int, val minY: Int, val maxY: Int) {
+    data class Rect(val minX: Int, val maxX: Int, val minY: Int, val maxY: Int) {
 
         constructor(a: Point2d, b: Point2d) : this(
             min(a.x, b.x),
@@ -47,7 +48,7 @@ class Day09(input: String) {
             innerMax > outerMin && innerMin < outerMax
     }
 
-    fun solvePart1(): Long = points.pairs()
+    override fun solvePart1(): Long = points.pairs()
         .map { (p1, p2) -> Rect(p1, p2) }
         .maxOf(Rect::square)
 
@@ -71,7 +72,7 @@ class Day09(input: String) {
             }
     }
 
-    fun solvePart2(): Long {
+    override fun solvePart2(): Long {
 
         val hull = (points + points.first()).zipWithNext(::Line)
 

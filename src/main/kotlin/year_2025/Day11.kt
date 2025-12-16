@@ -1,13 +1,15 @@
 package year_2025
 
-class Day11(input: String) {
+import AocDay
+
+class Day11(input: String) : AocDay<Int, Long>(input) {
 
     val graph = input.lines()
         .associate { line ->
             line.split(": ").let { it[0] to it[1].split(" ") }
         }
 
-    fun solvePart1(): Int {
+    override fun solvePart1(): Int {
         var count = 0
 
         val init = "you"
@@ -33,7 +35,7 @@ class Day11(input: String) {
         const val END = "out"
     }
 
-    fun solvePart2(): Long {
+    override fun solvePart2(): Long {
 
         data class Path(val start: String, val notPass: Set<String>, val end: String)
 
@@ -52,13 +54,13 @@ class Day11(input: String) {
 
         val part1 =
             track(Path(start = START, notPass = setOf(POINT2, END), end = POINT1)) *
-            track(Path(start = POINT1, notPass = setOf(START, END), end = POINT2)) *
-            track(Path(start = POINT2, notPass = setOf(START, POINT1), end = END))
+                    track(Path(start = POINT1, notPass = setOf(START, END), end = POINT2)) *
+                    track(Path(start = POINT2, notPass = setOf(START, POINT1), end = END))
 
         val part2 =
             track(Path(start = START, notPass = setOf(POINT1, END), end = POINT2)) *
-            track(Path(start = POINT2, notPass = setOf(START, END), end = POINT1)) *
-            track(Path(start = POINT1, notPass = setOf(START, POINT2), end = END))
+                    track(Path(start = POINT2, notPass = setOf(START, END), end = POINT1)) *
+                    track(Path(start = POINT1, notPass = setOf(START, POINT2), end = END))
 
         return part1 + part2
     }

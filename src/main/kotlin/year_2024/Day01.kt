@@ -1,8 +1,9 @@
 package year_2024
 
+import AocDay
 import kotlin.math.abs
 
-class Day01(private val input: String) {
+class Day01(input: String): AocDay<Long, Long>(input) {
 
     private fun transform(input: String): Pair<List<Long>, List<Long>> {
         val left = mutableListOf<Long>()
@@ -15,7 +16,7 @@ class Day01(private val input: String) {
         return left to right
     }
 
-    fun solvePart1(): Long {
+    override fun solvePart1(): Long {
         val (list1, list2) = transform(input)
         val sorted1 = list1.sorted()
         val sorted2 = list2.sorted()
@@ -23,7 +24,7 @@ class Day01(private val input: String) {
         return pairs.map { abs(it.second - it.first) }.sum()
     }
 
-    fun solvePart2(): Long {
+    override fun solvePart2(): Long {
         val (list1, list2) = transform(input)
         return list1
             .map { target -> target * list2.count { it == target } }

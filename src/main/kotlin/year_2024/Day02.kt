@@ -1,15 +1,16 @@
 package year_2024
 
+import AocDay
 import kotlin.math.abs
 import kotlin.math.sign
 
-class Day02(private val input: String) {
+class Day02(input: String) : AocDay<Int, Int>(input) {
 
     private fun transform(input: String) =
         input.lines()
             .map { it.split(" ").map(String::toInt) }
 
-    fun solvePart1(): Int {
+    override fun solvePart1(): Int {
         val paths = transform(input)
         return paths.count { isSafe(it) }
     }
@@ -26,7 +27,7 @@ class Day02(private val input: String) {
 
     private fun isSafeStep(step: Int) = abs(step) in 1..3
 
-    fun solvePart2(): Int {
+    override fun solvePart2(): Int {
         val paths = transform(input)
         return paths.count { isSafe2(it) }
     }

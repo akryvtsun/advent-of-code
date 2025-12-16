@@ -1,8 +1,10 @@
 package year_2024
 
-class Day03(private val input: String) {
+import AocDay
 
-    fun solvePart1(): Int {
+class Day03(input: String) : AocDay<Int, Int>(input) {
+
+    override fun solvePart1(): Int {
         val pattern = """mul\((\d{1,3}),(\d{1,3})\)""".toRegex()
 
         var sum = 0
@@ -16,7 +18,7 @@ class Day03(private val input: String) {
         return sum
     }
 
-    fun solvePart2(): Int {
+    override fun solvePart2(): Int {
         var sum = 0
         var doFlag = true
         var begin = 0
@@ -35,6 +37,7 @@ class Day03(private val input: String) {
                     begin = i
                     doFlag = false
                 }
+
                 str.startsWith("do()") -> {
                     tryExecuteDo(begin, i)
                     begin = i

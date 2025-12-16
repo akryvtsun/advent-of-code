@@ -1,6 +1,8 @@
 package year_2023
 
-class Day01(private val input: String) {
+import AocDay
+
+class Day01(input: String): AocDay<Int, Int>(input) {
 
     val digiMap = mapOf(
         "zero" to 0,
@@ -15,7 +17,7 @@ class Day01(private val input: String) {
         "nine" to 9,
     )
 
-    fun solvePart1(): Int {
+    override fun solvePart1(): Int {
         return input.lines()
             .map { line ->
                 val first = line.first { it.isDigit() }
@@ -25,7 +27,7 @@ class Day01(private val input: String) {
             .sumOf { it.toInt() }
     }
 
-    fun solvePart2(): Int {
+    override fun solvePart2(): Int {
         return input.lines()
             .sumOf { line ->
                 val nums = numbers(line)

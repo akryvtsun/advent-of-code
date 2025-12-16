@@ -15,7 +15,7 @@ class Day02Test {
             Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red
             Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red
             Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green
-        """.trimIndent().lines()
+        """.trimIndent()
 
     @Nested
     @DisplayName("Part 1")
@@ -30,7 +30,7 @@ class Day02Test {
         @Test
         fun `Actual answer`() {
             val answer = Day02(
-                TaskData(2023, 2).asLines()
+                TaskData(2023, 2).asString()
             ).solvePart1()
             assertThat(answer).isEqualTo(1867)
         }
@@ -49,7 +49,7 @@ class Day02Test {
         @Test
         fun `Actual answer`() {
             val answer = Day02(
-                TaskData(2023, 2).asLines()
+                TaskData(2023, 2).asString()
             ).solvePart2()
             assertThat(answer).isEqualTo(84538)
         }

@@ -1,6 +1,8 @@
 package year_2023
 
-class Day02(private val input: List<String>) {
+import AocDay
+
+class Day02(input: String): AocDay<Int, Int>(input) {
 
     private val limits = mapOf(
         "red" to 12,
@@ -8,8 +10,10 @@ class Day02(private val input: List<String>) {
         "blue" to 14,
     )
 
-    fun solvePart1(): Int =
-        input.sumOf { line ->
+    val data = input.lines()
+
+    override fun solvePart1(): Int =
+        data.sumOf { line ->
             val (gameId, turns) = line.parseGame()
 
             val possible = turns.all { turn ->
@@ -22,8 +26,8 @@ class Day02(private val input: List<String>) {
             if (possible) gameId else 0
         }
 
-    fun solvePart2(): Int =
-        input.sumOf { line ->
+    override fun solvePart2(): Int =
+        data.sumOf { line ->
             val (_, turns) = line.parseGame()
 
             // find max count per color across all turns

@@ -1,8 +1,9 @@
 package year_2024
 
+import AocDay
 import java.util.PriorityQueue
 
-class Day16(private val input: String) {
+class Day16(input: String) : AocDay<Int, Int>(input) {
 
     enum class Direction(val delta: Point) {
         UP(Point(-1, 0)),
@@ -34,7 +35,7 @@ class Day16(private val input: String) {
 
     val config = transform(input)
 
-    fun solvePart1(): Int {
+    override fun solvePart1(): Int {
         val initPos = Step(config.start, Direction.RIGHT)
         val unvisited = PriorityQueue<Pair<Step, Int>>(compareBy { it.second })
         unvisited.add(initPos to 0)
@@ -67,7 +68,7 @@ class Day16(private val input: String) {
         return -1
     }
 
-    fun solvePart2(): Int {
+    override fun solvePart2(): Int {
         val initPos = Step(config.start, Direction.RIGHT)
         val unvisited = PriorityQueue<Pair<List<Step>, Int>>(compareBy { it.second })
         unvisited.add(listOf(initPos) to 0)

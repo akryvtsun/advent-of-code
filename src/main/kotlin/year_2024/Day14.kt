@@ -1,9 +1,11 @@
 package year_2024
 
+import AocDay
+
 class Day14(
-    val input: String,
+    input: String,
     val height: Int, val width: Int
-) {
+) : AocDay<Int, Int>(input) {
 
     data class Robot(val coord: Point, val delta: Point)
 
@@ -25,7 +27,7 @@ class Day14(
         return if (newValue < 0) border + newValue else newValue
     }
 
-    fun solvePart1(): Int {
+    override fun solvePart1(): Int {
         val data = transform(input)
         return solve1(height, width, data)
     }
@@ -74,7 +76,7 @@ class Day14(
             .fold(1) { acc, num -> acc * num }
     }
 
-    fun solvePart2(): Int {
+    override fun solvePart2(): Int {
         val data = transform(input)
         return solve2(height, width, data)
     }

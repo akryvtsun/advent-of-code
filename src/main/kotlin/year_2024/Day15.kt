@@ -1,6 +1,8 @@
 package year_2024
 
-class Day15(val input: String) {
+import AocDay
+
+class Day15(input: String) : AocDay<Int, Int>(input) {
 
     enum class Command(val c: Char, val delta: Point) {
         UP('^', Point(-1, 0)),
@@ -38,7 +40,7 @@ class Day15(val input: String) {
         return wrhs to cmds
     }
 
-    fun solvePart1(): Int {
+    override fun solvePart1(): Int {
         val (data, commands) = transform1(input)
 
         val obstacles = data.obstacles.toList()
@@ -106,7 +108,7 @@ class Day15(val input: String) {
         return wrhs to cmds
     }
 
-    fun solvePart2(): Int {
+    override fun solvePart2(): Int {
         val (data, commands) = transform2(input)
 
         val obstacles = data.obstacles.toList()

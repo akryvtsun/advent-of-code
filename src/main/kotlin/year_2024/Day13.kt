@@ -1,6 +1,8 @@
 package year_2024
 
-class Day13(private val input: String) {
+import AocDay
+
+class Day13(input: String) : AocDay<Int, Long>(input) {
 
     data class Point(val y: Long, val x: Long)
 
@@ -24,7 +26,7 @@ class Day13(private val input: String) {
     fun solve(slots: List<SlotMachine>): Long {
         return slots.sumOf {
             val (a, b) = getMinCoins(it)
-            3*a + b
+            3 * a + b
         }
     }
 
@@ -37,12 +39,12 @@ class Day13(private val input: String) {
         }
     }
 
-    fun solvePart1(): Int {
+    override fun solvePart1(): Int {
         val data = transform(input)
         return solve(data).toInt()
     }
 
-    fun solvePart2(): Long {
+    override fun solvePart2(): Long {
         val data = transform(input, 10000000000000)
         return solve(data)
     }

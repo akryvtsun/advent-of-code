@@ -1,6 +1,8 @@
 package year_2024
 
-class Day12(private val input: String) {
+import AocDay
+
+class Day12(input: String) : AocDay<Long, Long>(input) {
 
     enum class Direction(val delta: Point) {
         UP(Point(-1, 0)),
@@ -47,21 +49,21 @@ class Day12(private val input: String) {
         return regions
     }
 
-    fun transform(input: String) = input.lines(). map { it.toList() }
+    fun transform(input: String) = input.lines().map { it.toList() }
 
     fun perimeter(r: Region): Long {
         return r.fields
             .flatMap { p -> Direction.entries.map { p + it.delta } }
-            .count { it !in r}
+            .count { it !in r }
             .toLong()
     }
 
-    fun solvePart1(): Long {
+    override fun solvePart1(): Long {
         val map = transform(input)
         return findRegions(map).sumOf { it.area() * perimeter(it) }
     }
 
-    fun solvePart2(): Long {
+    override fun solvePart2(): Long {
         val map = transform(input)
         return findRegions(map).sumOf { it.area() * perimeter2(it) }
     }
@@ -108,6 +110,7 @@ class Day12(private val input: String) {
                                     wasCompacted = true
                                     break@outer
                                 }
+
                             Direction.UP, Direction.DOWN ->
                                 if (p1.end + Point(0, 1) == p2.begin) {
                                     result[i] = Line(p1.begin, p2.end) to d1

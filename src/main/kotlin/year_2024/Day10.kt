@@ -3,7 +3,7 @@ package year_2024
 class Day10(input: String) {
 
     companion object {
-        val BLOCK = -1
+        const val BLOCK = -1
 
         fun transform(input: String): IslandMap {
             val lines = input.lines()

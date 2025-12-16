@@ -1,11 +1,12 @@
 package year_2024
 
+import AocDay
 import java.util.PriorityQueue
 
 typealias Keypad = Map<Char, Point>
 typealias Grid<T> = Map<Point, T>
 
-class Day21(val input: String) {
+class Day21(input: String) : AocDay<Int, Long>(input) {
 
     companion object {
         val NORTH = Point(-1, 0)
@@ -44,8 +45,7 @@ class Day21(val input: String) {
                     if (minLength >= path.length) {
                         minLength = path.length
                         paths += path + 'A'
-                    }
-                    else
+                    } else
                         return paths
                 }
                 val next = Direction.entries
@@ -95,7 +95,7 @@ class Day21(val input: String) {
     private fun complexity(pad: String, seq: String) =
         pad.substringBefore('A').toInt() * seq.length
 
-    fun solvePart1(): Int {
+    override fun solvePart1(): Int {
         return pads.sumOf { complexity(it, shortestPath(it)) }
     }
 
@@ -111,7 +111,8 @@ class Day21(val input: String) {
             <v>
         """.trimIndent().toKeypad()
 
-    fun String.toGrid(): Grid<Char> = lines().flatMapIndexed { y, line -> line.mapIndexed { x, c -> Point(y, x) to c } }.toMap()
+    fun String.toGrid(): Grid<Char> =
+        lines().flatMapIndexed { y, line -> line.mapIndexed { x, c -> Point(y, x) to c } }.toMap()
 
     fun String.toKeypad(): Keypad = toGrid().entries.associateBy({ it.value }, { it.key })
 
@@ -161,7 +162,7 @@ class Day21(val input: String) {
         .zipWithNext { a, b -> State(a, b, depth).solve(first) }
         .sum()
 
-    fun solvePart2(): Long {
+    override fun solvePart2(): Long {
         return pads.sumOf { it.sizeOfCommands(25) * it.substringBefore('A').toInt() }
     }
 }

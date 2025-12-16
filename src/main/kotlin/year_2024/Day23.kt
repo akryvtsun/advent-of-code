@@ -1,8 +1,9 @@
 package year_2024
 
+import AocDay
 import java.util.BitSet
 
-class Day23(input: String) {
+class Day23(input: String) : AocDay<Int, String>(input) {
 
     val links = transform(input)
 
@@ -19,7 +20,7 @@ class Day23(input: String) {
         computeIfAbsent(p.second) { mutableSetOf() }.add(p.first)
     }
 
-    fun solvePart1(): Int {
+    override fun solvePart1(): Int {
         // build model
         val model = mutableMapOf<String, MutableSet<String>>()
         links.forEach { model.addPair(it) }
@@ -39,7 +40,7 @@ class Day23(input: String) {
             .count { triple -> triple.any { it.startsWith('t') } }
     }
 
-    fun solvePart2(): String {
+    override fun solvePart2(): String {
         // build model
         val model = mutableMapOf<String, MutableSet<String>>()
         links.forEach { model.addPair(it) }

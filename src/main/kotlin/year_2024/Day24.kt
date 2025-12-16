@@ -1,5 +1,6 @@
 package year_2024
 
+import AocDay
 import java.util.BitSet
 
 typealias State = MutableMap<String, Boolean>
@@ -14,7 +15,7 @@ data class Gate(var in1: String, val in2: String, val out: String, val op: (Bool
     }
 }
 
-class Day24(private val input: String) {
+class Day24(input: String) : AocDay<Long, String>(input) {
 
     val SKELETON = """(\w+) (AND|OR|XOR) (\w+) -> (\w+)""".toRegex()
 
@@ -45,7 +46,7 @@ class Day24(private val input: String) {
         return getInit(blocks[0]).toMutableMap() to getSchema1(blocks[1])
     }
 
-    fun solvePart1(): Long {
+    override fun solvePart1(): Long {
         val (init, gates) = transform1(input)
         // reorder gates
         val gatesStrMap = buildMap {
@@ -109,7 +110,7 @@ class Day24(private val input: String) {
         dkp XOR vsb -> hqh
      */
 
-    fun solvePart2(): String {
+    override fun solvePart2(): String {
         val gates = transform2(input)
 
         val links = mutableSetOf<String>()
@@ -127,13 +128,13 @@ class Day24(private val input: String) {
             val v1 = get(f('x', i), "XOR", f('y', i))
             if (isZ(v1!!)) links += v1!!
             if (notIn(v1!!, "XOR", "AND")) links += v1!!
-            val v2 = get(v1!!, "XOR", C[i-1]) // Zi
+            val v2 = get(v1!!, "XOR", C[i - 1]) // Zi
             if (v2 != f('z', i)) links += v2!!
             // line 2
             val v3 = get(f('x', i), "AND", f('y', i))
             if (isZ(v3!!)) links += v3!!
             if (notIn(v3!!, "OR")) links += v3!!
-            val v4 = get(C[i-1], "AND", v1)
+            val v4 = get(C[i - 1], "AND", v1)
             if (isZ(v4!!)) links += v4!!
             if (notIn(v4!!, "OR")) links += v4!!
             C += get(v3!!, "OR", v4!!)!!

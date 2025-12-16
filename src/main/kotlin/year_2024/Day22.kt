@@ -1,6 +1,8 @@
 package year_2024
 
-class Day22(val input: String) {
+import AocDay
+
+class Day22(input: String) : AocDay<Long, Long>(input) {
 
     companion object {
         fun nextSecret(num: Long): Long {
@@ -9,7 +11,7 @@ class Day22(val input: String) {
             return doIt(secret) { it shl 11 }
         }
 
-        private inline fun doIt(num: Long, op: (Long) -> Long) : Long =
+        private inline fun doIt(num: Long, op: (Long) -> Long): Long =
             prune(op(num) xor num)
 
         private inline fun prune(num: Long) = num and 0xFFFFFF
@@ -21,7 +23,7 @@ class Day22(val input: String) {
 
     private fun nextSecret2000(num: Long): Long {
         var secret = num
-        for (i in 1 .. 2000) {
+        for (i in 1..2000) {
             secret = nextSecret(secret)
         }
         return secret
@@ -29,7 +31,7 @@ class Day22(val input: String) {
 
     val buyers = transform(input)
 
-    fun solvePart1(): Long {
+    override fun solvePart1(): Long {
         return buyers.sumOf { nextSecret2000(it) }
     }
 
@@ -38,7 +40,7 @@ class Day22(val input: String) {
     private fun secrets2000(num: Long) = sequence {
         var secret = num
         yield(secret)
-        for (i in 1 .. 2000) {
+        for (i in 1..2000) {
             secret = nextSecret(secret)
             yield(secret)
         }
@@ -60,7 +62,7 @@ class Day22(val input: String) {
         return model.sumOf { it[seq] ?: 0 }
     }
 
-    fun solvePart2(): Long {
+    override fun solvePart2(): Long {
         val model = buyers.map { createBuyerModel(it) }
         val allSeqs = model
             .flatMap { it.keys }

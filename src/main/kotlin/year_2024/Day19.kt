@@ -1,8 +1,9 @@
 package year_2024
 
+import AocDay
 import java.util.PriorityQueue
 
-class Day19(private val input: String) {
+class Day19(input: String) : AocDay<Int, Long>(input) {
 
     fun transform(input: String): Pair<List<String>, List<String>> {
         val (patterns, designs) = input.split("\n\n")
@@ -26,7 +27,7 @@ class Day19(private val input: String) {
         return root
     }
 
-    fun findTails(design: String, root: Node, tail: Int) : List<Int> {
+    fun findTails(design: String, root: Node, tail: Int): List<Int> {
         val newTails = mutableListOf<Int>()
         var i = tail
         var node = root
@@ -46,7 +47,7 @@ class Day19(private val input: String) {
         return newTails
     }
 
-    fun solvePart1(): Int {
+    override fun solvePart1(): Int {
         fun isPossible(design: String, root: Node): Boolean {
             val queue = LinkedHashSet(listOf(0))
             while (true) {
@@ -63,7 +64,7 @@ class Day19(private val input: String) {
         return designs.count { isPossible(it, root) }
     }
 
-    fun solvePart2(): Long {
+    override fun solvePart2(): Long {
         fun variants(design: String, root: Node): Long {
             val queue = PriorityQueue<Pair<Int, Long>>(compareBy { it.first })
             queue.add(0 to 1L)

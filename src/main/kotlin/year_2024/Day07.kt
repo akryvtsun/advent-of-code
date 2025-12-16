@@ -1,8 +1,10 @@
 package year_2024
 
+import AocDay
+
 typealias LongOp = (Long, Long) -> Long
 
-class Day07(input: String) {
+class Day07(input: String): AocDay<Long, Long>(input) {
 
     data class Equation(val test: Long, val nums: List<Long>)
 
@@ -17,11 +19,11 @@ class Day07(input: String) {
 
     val data = transform(input)
 
-    fun solvePart1() = solve(listOf(Long::plus, Long::times))
+    override fun solvePart1() = solve(listOf(Long::plus, Long::times))
 
     fun concat(arg1: Long, arg2: Long) = "$arg1$arg2".toLong()
 
-    fun solvePart2() = solve(listOf(Long::plus, Long::times, ::concat))
+    override fun solvePart2() = solve(listOf(Long::plus, Long::times, ::concat))
 
     fun solve(ops: List<LongOp>) = data
         .filter { isTrue(it, ops) }

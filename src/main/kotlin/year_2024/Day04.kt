@@ -1,12 +1,16 @@
 package year_2024
 
+import AocDay
+
 typealias Board = List<String>
 
-class Day04(private val data: Board) {
+class Day04(input: String) : AocDay<Int, Int>(input) {
 
     companion object {
         const val XMAS = "XMAS"
     }
+
+    val data = input.lines()
 
     data class Step(val dy: Int, val dx: Int)
 
@@ -42,7 +46,7 @@ class Day04(private val data: Board) {
         return PATTERNS.count { it.match(this, y, x) }
     }
 
-    fun solvePart1(): Int {
+    override fun solvePart1(): Int {
         var sum = 0
         for (y in data.indices) {
             for (x in data.first().indices) {
@@ -68,7 +72,7 @@ class Day04(private val data: Board) {
         }
     }
 
-    fun solvePart2(): Int {
+    override fun solvePart2(): Int {
         var sum = 0
         for (y in data.indices) {
             for (x in data.first().indices) {

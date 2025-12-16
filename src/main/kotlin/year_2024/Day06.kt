@@ -1,11 +1,12 @@
 package year_2024
 
+import AocDay
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import java.util.concurrent.atomic.AtomicInteger
 
-class Day06(private var input: String) {
+class Day06(input: String): AocDay<Int, Int>(input) {
 
     enum class Direction(val dy: Int, val dx: Int) {
         UP(-1, 0),
@@ -25,7 +26,7 @@ class Day06(private var input: String) {
 
     val map: List<StringBuilder> = input.lines().map { StringBuilder(it) }
 
-    fun solvePart1(): Int {
+    override fun solvePart1(): Int {
         var x = 0
         var y = 0
         map.forEachIndexed() { i, row ->
@@ -59,7 +60,7 @@ class Day06(private var input: String) {
         }
     }
 
-    fun solvePart2(): Int {
+    override fun solvePart2(): Int {
 
         data class Position(val y: Int, val x: Int) {
             fun move(dir: Direction) = Position(y + dir.dy, x + dir.dx)

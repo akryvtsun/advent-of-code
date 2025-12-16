@@ -11,30 +11,30 @@ import org.junit.jupiter.params.provider.MethodSource
 @DisplayName("Day 4: Ceres Search")
 class Day04Test {
     companion object {
-        val realInput = TaskData(2024, 4).asLines()
+        val realInput = TaskData(2024, 4).asString()
 
         @JvmStatic
         fun part1Data(): List<Arguments> {
-            val ex1 = listOf(
-                "..X...",
-                ".SAMX.",
-                ".A..A.",
-                "XMAS.S",
-                ".X....",
-            )
+            val ex1 = """
+                ..X...
+                .SAMX.
+                .A..A.
+                XMAS.S
+                .X....
+            """.trimIndent()
 
-            val ex2 = listOf(
-                "MMMSXXMASM",
-                "MSAMXMSMSA",
-                "AMXSXMAAMM",
-                "MSAMASMSMX",
-                "XMASAMXAMM",
-                "XXAMMXXAMA",
-                "SMSMSASXSS",
-                "SAXAMASAAA",
-                "MAMMMXMMMM",
-                "MXMXAXMASX",
-            )
+            val ex2 = """
+                MMMSXXMASM
+                MSAMXMSMSA
+                AMXSXMAAMM
+                MSAMASMSMX
+                XMASAMXAMM
+                XXAMMXXAMA
+                SMSMSASXSS
+                SAXAMASAAA
+                MAMMMXMMMM
+                MXMXAXMASX
+            """.trimIndent()
 
             return listOf(
                 arguments(ex1, 4),
@@ -45,24 +45,24 @@ class Day04Test {
 
         @JvmStatic
         fun part2Data(): List<Arguments> {
-            val ex1 = listOf(
-                "M.S",
-                ".A.",
-                "M.S",
-            )
+            val ex1 = """
+                M.S
+                .A.
+                M.S
+            """.trimIndent()
 
-            val ex2 = listOf(
-                ".M.S......",
-                "..A..MSMS.",
-                ".M.S.MAA..",
-                "..A.ASMSM.",
-                ".M.S.M....",
-                "..........",
-                "S.S.S.S.S.",
-                ".A.A.A.A..",
-                "M.M.M.M.M.",
-                "..........",
-            )
+            val ex2 = """
+                .M.S......
+                ..A..MSMS.
+                .M.S.MAA..
+                ..A.ASMSM.
+                .M.S.M....
+                ..........
+                S.S.S.S.S.
+                .A.A.A.A..
+                M.M.M.M.M.
+                ..........
+            """.trimIndent()
 
             return listOf(
                 arguments(ex1, 1),
@@ -74,7 +74,7 @@ class Day04Test {
 
     @ParameterizedTest
     @MethodSource("part1Data")
-    fun part1Test(input: List<String>, result: Int) {
+    fun part1Test(input: String, result: Int) {
         assertThat(
             Day04(input).solvePart1()
         ).isEqualTo(result)
@@ -82,7 +82,7 @@ class Day04Test {
 
     @ParameterizedTest
     @MethodSource("part2Data")
-    fun part2Test(input: List<String>, result: Int) {
+    fun part2Test(input: String, result: Int) {
         assertThat(
             Day04(input).solvePart2()
         ).isEqualTo(result)

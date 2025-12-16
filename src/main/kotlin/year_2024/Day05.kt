@@ -1,6 +1,8 @@
 package year_2024
 
-class Day05(private val input: String) {
+import AocDay
+
+class Day05(input: String) : AocDay<Int, Int>(input) {
 
     fun transform(input: String): Pair<List<Pair<Int, Int>>, List<List<Int>>> {
         val rules = mutableListOf<Pair<Int, Int>>()
@@ -42,14 +44,14 @@ class Day05(private val input: String) {
 
     fun findMiddle(update: List<Int>): Int = update[update.size/2]
 
-    fun solvePart1(): Int {
+    override fun solvePart1(): Int {
         val (rules, updates) = transform(input)
         return updates
             .filter { isCorrect(rules, it) }
             .sumOf { findMiddle(it) }
     }
 
-    fun solvePart2(): Int {
+    override fun solvePart2(): Int {
         val (rules, updates) = transform(input)
 
         fun makeChange(rules: List<Pair<Int, Int>>, mutable: MutableList<Int>): Boolean {
